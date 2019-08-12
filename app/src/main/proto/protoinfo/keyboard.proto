@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package protoinfo;
+
+// 特殊渲染控制字段
+enum KeyType
+{
+    NORMAL = 0x0; // 普通键
+    FUNCTION = 0x1; // 功能键
+}
+
+// 按键的颜色
+enum KeyColor
+{
+    COLOR_NORMAL = 0x0; // 普通色
+    SPECIAL = 0x1; // 特殊色，一般指功能键
+    HIGHLIGHT = 0x2; // 高亮色，一般是回车和返回键
+}
+
+message RectInfo
+{
+    float x = 1;
+    float y = 2;
+    float width = 3;
+    float height = 4;
+    float horPadding = 5;
+    float verPadding = 6;
+}
+
+message KeyInfo
+{
+    uint32 mainCode = 1; // code
+    string text = 2; // 主丝印
+    float textSize = 3; // sp单位
+    float textSizeUpperCase = 4; // sp单位, 专用于qwerty英文键盘的大写状态
+    float baseLine = 5;
+    float upperCaseBaseLine = 6;
+    uint32 hintCode = 7; // 副丝印code
+    string hintText = 8; // 副丝印文字
+    float hintTextSize = 9; // 文字大小
+    float hintTextSizeUpperCase = 10;
+    float hintBaseLine = 11;
+    float hintUpperCaseBaseLine = 12;
+    KeyType type = 13; // 类型
+    RectInfo rectInfo = 14;
+    KeyColor keyColor = 15; // 颜色是否和普通按键不同，一般指的是功能键，以及颜色是否要高亮显示，一般指的是回车键，数字键盘和符号键盘的返回键
+}
+
+message KeyboardInfo
+{
+    repeated KeyInfo keys = 1;
+}
