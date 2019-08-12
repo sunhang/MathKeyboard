@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.kbdmodel
 
 class Keyboard(val keys: List<Key>) {
 }
