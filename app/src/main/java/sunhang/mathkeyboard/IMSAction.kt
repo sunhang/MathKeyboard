@@ -1,0 +1,10 @@
+package sunhang.mathkeyboard
+
+import android.view.inputmethod.EditorInfo
+
+interface IMSAction {
+    fun onCreate(imsContext: IMSContext)
+    fun onStartInputView(info: EditorInfo, restarting: Boolean)
+    fun onFinishInputView(finishingInput: Boolean)
+    fun onDestroy()
+}
