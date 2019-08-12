@@ -10,13 +10,26 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".WizardActivity"
+                  android:screenOrientation="portrait"
+                  android:excludeFromRecents="true"
+                  android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PreviewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+                  android:screenOrientation="portrait"
+                  android:excludeFromRecents="true"
+                  android:launchMode="singleTask"/>
+        <activity android:name=".PreviewActivity"
+                  android:excludeFromRecents="true"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".WizardActivity$CheckIMESetting"
+                  android:excludeFromRecents="true"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTask"/>
         <service android:name=".MathIMS" android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod"/>

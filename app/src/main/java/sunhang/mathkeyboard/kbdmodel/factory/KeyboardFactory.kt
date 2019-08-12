@@ -12,9 +12,9 @@ import sunhang.mathkeyboard.kbdmodel.Keyboard
 
 abstract class KeyboardFactory(protected var context: Context) {
     fun createKeyboard(kbdInfo: KeyboardInfo): Keyboard {
-        return kbdInfo.keysList.map { createKey(it) }.let {
-            Keyboard(it)
-        }
+        return kbdInfo.keysList
+            .map { createKey(it) }
+            .let { Keyboard(it) }
     }
 
     open protected fun createKey(keyInfo: KeyInfo): Key {

@@ -1,12 +1,16 @@
 package sunhang.mathkeyboard.tools
 
+import android.content.ComponentName
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import sunhang.mathkeyboard.GlobalVariable
+import sunhang.mathkeyboard.MathIMS
 import java.lang.reflect.InvocationTargetException
 
 fun sp2Px(sp: Float): Float {
@@ -62,5 +66,25 @@ fun isNetAvailable(context: Context): Boolean {
     } else {
         val networkInfo = connManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isAvailable
+    }
+}
+
+
+fun isImeEnabled(context: Context): Boolean {
+    val myInputMethod = ComponentName(context, MathIMS::class.java)
+    val inputMethodMgr = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    return null != inputMethodMgr.enabledInputMethodList.find {
+        it.component.toShortString() == myInputMethod.toShortString()
+    }
+}
+
+fun isImeDefault(context: Context): Boolean {
+    return try {
+        ComponentName.unflattenFromString(
+            Settings.Secure.getString(context.contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
+        )?.toShortString() == ComponentName(context, MathIMS::class.java).toShortString()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        false
     }
 }

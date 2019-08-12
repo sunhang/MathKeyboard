@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">数学公式键盘</string>
+    <string name="input_setting_error">无法打开系统输入法设置页面</string>
+    <string name="step_one">第一步</string>
+    <string name="step_two">第二步</string>
 </resources>
