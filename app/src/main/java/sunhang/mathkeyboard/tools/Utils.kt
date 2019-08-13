@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.os.Debug
 import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
@@ -93,3 +94,12 @@ fun isImeDefault(context: Context): Boolean {
 fun isPortrait(context: Context): Boolean {
     return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
 }
+
+fun debugTime(): Float {
+    return Debug.threadCpuTimeNanos() / 1000_000.0f
+}
+
+fun elapsedTime(title: String, begin: Float) {
+    i("$title elapsed time : ${debugTime() - begin}")
+}
+

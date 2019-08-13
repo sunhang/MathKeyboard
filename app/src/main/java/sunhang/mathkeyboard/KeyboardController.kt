@@ -3,6 +3,7 @@ package sunhang.mathkeyboard
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.KeyboardView
 import sunhang.mathkeyboard.kbdviews.RootView
+import sunhang.openlibrary.screenWidth
 
 class KeyboardController : BaseController() {
     private lateinit var keyboardView: KeyboardView
@@ -11,7 +12,11 @@ class KeyboardController : BaseController() {
         super.onCreate(imsContext, rootView)
         keyboardView = rootView.keyboardView
 
-        KbdDataSource(imsContext.context).enKbdModel().subscribe {
+        val config = imsContext.imeLayoutConfig
+        val context = imsContext.context
+        val imeHeight = config.toolbarHeight + config.keyboardHeight
+
+        KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight).subscribe {
             keyboardView.keyboard = it
         }.let { compositeDisposable.add(it) }
     }
