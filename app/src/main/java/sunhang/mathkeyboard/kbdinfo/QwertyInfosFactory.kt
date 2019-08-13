@@ -5,7 +5,7 @@ import android.util.Pair
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.tools.dp2Px
-import sunhang.mathkeyboard.isEnter
+import sunhang.mathkeyboard.tools.isEnter
 
 abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
 
@@ -28,13 +28,13 @@ abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
     protected abstract fun setupBaseLine(keyHeight: Float)
 
 
-    override fun createKeyboardInfo(keyboardWidth: Float, keyboardHeight: Float): KbdInfo.KeyboardInfo {
+    override fun createKeyboardInfo(keyboardWidth: Int, keyboardHeight: Int): KbdInfo.KeyboardInfo {
         val paddingLeft = dp2Px(2.5f)
         val paddingRight = dp2Px(2.5f)
         val paddingTop = 0.0f
         val paddingBottom = 0.0f
-        val keyWidth = (keyboardWidth - paddingLeft - paddingRight) / 10
-        val keyHeight = (keyboardHeight - paddingTop - paddingBottom) / 4
+        val keyWidth = (keyboardWidth - paddingLeft - paddingRight) / 10.0f
+        val keyHeight = (keyboardHeight - paddingTop - paddingBottom) / 4.0f
 
         setupBaseLine(keyHeight)
 

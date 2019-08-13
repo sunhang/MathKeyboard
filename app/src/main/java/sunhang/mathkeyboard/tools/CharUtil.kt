@@ -1,4 +1,6 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.tools
+
+import sunhang.mathkeyboard.*
 
 fun isShift(code: Int): Boolean {
     return code == KEYCODE_SHIFT

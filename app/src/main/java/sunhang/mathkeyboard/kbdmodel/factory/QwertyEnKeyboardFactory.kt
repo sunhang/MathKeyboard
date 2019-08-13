@@ -2,8 +2,8 @@ package sunhang.mathkeyboard.kbdmodel.factory
 
 import android.content.Context
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.isLetter
-import sunhang.mathkeyboard.isShift
+import sunhang.mathkeyboard.tools.isLetter
+import sunhang.mathkeyboard.tools.isShift
 import sunhang.mathkeyboard.kbdmodel.Key
 import sunhang.mathkeyboard.kbdmodel.ShiftKey
 import sunhang.mathkeyboard.kbdmodel.UpperCaseSupportedKey

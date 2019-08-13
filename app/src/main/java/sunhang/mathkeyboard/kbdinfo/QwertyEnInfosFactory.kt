@@ -3,6 +3,8 @@ package sunhang.mathkeyboard.kbdinfo
 import android.content.Context
 import android.util.Pair
 import sunhang.mathkeyboard.*
+import sunhang.mathkeyboard.tools.isEnter
+import sunhang.mathkeyboard.tools.isSwitchCode
 import sunhang.mathkeyboard.tools.sp2Px
 import sunhang.openlibrary.isPortrait
 

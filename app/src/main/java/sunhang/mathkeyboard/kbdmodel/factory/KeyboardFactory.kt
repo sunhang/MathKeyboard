@@ -9,6 +9,9 @@ import sunhang.mathkeyboard.kbdmodel.BackspaceKey
 import sunhang.mathkeyboard.kbdmodel.EnterKey
 import sunhang.mathkeyboard.kbdmodel.Key
 import sunhang.mathkeyboard.kbdmodel.Keyboard
+import sunhang.mathkeyboard.tools.isBackslash
+import sunhang.mathkeyboard.tools.isEnter
+import sunhang.mathkeyboard.tools.isSpace
 
 abstract class KeyboardFactory(protected var context: Context) {
     fun createKeyboard(kbdInfo: KeyboardInfo): Keyboard {
