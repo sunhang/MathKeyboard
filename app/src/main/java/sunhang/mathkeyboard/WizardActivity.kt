@@ -58,6 +58,7 @@ class WizardActivity : AppCompatActivity() {
     private fun checkAndLaunchMainActivity() {
         if (isImeDefault(this) && isImeEnabled(this)) {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
