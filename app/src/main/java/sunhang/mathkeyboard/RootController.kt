@@ -1,5 +1,7 @@
 package sunhang.mathkeyboard
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import sunhang.mathkeyboard.kbdskin.KbdVisualAttrFactory
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
@@ -27,13 +29,18 @@ class RootController : BaseController(), SkinAttrUser{
 
         val topViewLp = rootView.topView.layoutParams
         val kbdViewLp = rootView.keyboardView.layoutParams
-        val imeLayoutConfig = imsContext.imeLayoutConfig
+        val wallpaperLp = rootView.wallpaperView.layoutParams
+        val layoutConfig = imsContext.imeLayoutConfig
 
-        topViewLp.height = imeLayoutConfig.toolbarHeight
-        kbdViewLp.height = imeLayoutConfig.keyboardHeight
+        topViewLp.height = layoutConfig.toolbarHeight
+        kbdViewLp.height = layoutConfig.keyboardHeight
+        wallpaperLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
+
     }
 
     override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
         super.useSkinAttr(skinAttri)
+
+        rootView.wallpaperView.background = skinAttri.wallpaper
     }
 }

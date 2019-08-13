@@ -2,6 +2,11 @@
 <sunhang.mathkeyboard.kbdviews.RootView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+    <ImageView
+            android:id="@+id/iv_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
     <sunhang.mathkeyboard.kbdviews.KeyboardView
             android:id="@+id/kbd"
             android:layout_width="match_parent"
