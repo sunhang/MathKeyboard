@@ -3,11 +3,19 @@ package sunhang.mathkeyboard
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import io.reactivex.disposables.CompositeDisposable
+import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
+import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
 
-open class BaseController : IMSAction {
+open class BaseController : IMSAction, SkinAttrUser {
     protected val imsActions = mutableListOf<IMSAction>()
+    protected val skinAttrUsers = mutableListOf<SkinAttrUser>()
     protected val compositeDisposable = CompositeDisposable()
+
+    protected fun attach(baseController: BaseController) {
+        imsActions.add(baseController)
+        skinAttrUsers.add(baseController)
+    }
 
     override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         imsActions.forEach { it.onCreate(imsContext, rootView) }
@@ -29,4 +37,9 @@ open class BaseController : IMSAction {
         imsActions.forEach { it.onDestroy() }
         compositeDisposable.clear()
     }
+
+    override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
+        skinAttrUsers.forEach { it.useSkinAttr(skinAttri) }
+    }
+
 }

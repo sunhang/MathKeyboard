@@ -1,11 +1,14 @@
 package sunhang.mathkeyboard
 
+import sunhang.mathkeyboard.kbdskin.KbdVisualAttrFactory
+import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
+import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
 
-class RootController : BaseController(){
+class RootController : BaseController(), SkinAttrUser{
     private val keyboardController = KeyboardController()
     init {
-        imsActions.add(keyboardController)
+        attach(keyboardController)
     }
     private lateinit var rootView: RootView
     private lateinit var imsContext: IMSContext
@@ -14,6 +17,9 @@ class RootController : BaseController(){
         super.onCreate(imsContext, rootView)
         this.rootView = rootView
         this.imsContext = imsContext
+
+        val visualAttr = KbdVisualAttrFactory().create()
+        useSkinAttr(visualAttr)
     }
 
     override fun onCreateInputViewInvoked() {
@@ -25,5 +31,9 @@ class RootController : BaseController(){
 
         topViewLp.height = imeLayoutConfig.toolbarHeight
         kbdViewLp.height = imeLayoutConfig.keyboardHeight
+    }
+
+    override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
+        super.useSkinAttr(skinAttri)
     }
 }

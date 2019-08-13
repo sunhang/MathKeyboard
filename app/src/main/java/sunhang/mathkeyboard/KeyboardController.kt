@@ -1,5 +1,7 @@
 package sunhang.mathkeyboard
 
+import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
+import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.KeyboardView
 import sunhang.mathkeyboard.kbdviews.RootView
@@ -20,4 +22,9 @@ class KeyboardController : BaseController() {
             keyboardView.keyboard = it
         }.let { compositeDisposable.add(it) }
     }
+
+    override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
+        super.useSkinAttr(skinAttri)
+    }
+
 }
