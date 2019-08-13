@@ -12,6 +12,10 @@ open class BaseController : IMSAction {
         imsActions.forEach { it.onCreate(imsContext, rootView) }
     }
 
+    override fun onCreateInputViewInvoked() {
+        imsActions.forEach { it.onCreateInputViewInvoked() }
+    }
+
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         imsActions.forEach { it.onStartInputView(info, restarting) }
     }

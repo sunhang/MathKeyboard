@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<sunhang.mathkeyboard.kbdviews.RootView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+    <sunhang.mathkeyboard.kbdviews.KeyboardView
+            android:id="@+id/kbd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    <FrameLayout
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/kbd">
+        <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"/>
 
-</RelativeLayout>
+        <!--
+        <include
+                android:id="@+id/candidate"
+                layout="@layout/candidate" />
+                -->
+    </FrameLayout>
+</sunhang.mathkeyboard.kbdviews.RootView>

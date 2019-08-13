@@ -19,6 +19,7 @@ class MathIMS : InputMethodService() {
     }
 
     override fun onCreateInputView(): View {
+        rootController.onCreateInputViewInvoked()
         return rootView
     }
 

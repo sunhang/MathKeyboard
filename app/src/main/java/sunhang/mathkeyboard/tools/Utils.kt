@@ -2,6 +2,7 @@ package sunhang.mathkeyboard.tools
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -87,4 +88,8 @@ fun isImeDefault(context: Context): Boolean {
         e.printStackTrace()
         false
     }
+}
+
+fun isPortrait(context: Context): Boolean {
+    return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
 }

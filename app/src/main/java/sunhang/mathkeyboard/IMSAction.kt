@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo
 
 interface IMSAction {
     fun onCreate(imsContext: IMSContext, rootView: View)
+    fun onCreateInputViewInvoked()
     fun onStartInputView(info: EditorInfo, restarting: Boolean)
     fun onFinishInputView(finishingInput: Boolean)
     fun onDestroy()
