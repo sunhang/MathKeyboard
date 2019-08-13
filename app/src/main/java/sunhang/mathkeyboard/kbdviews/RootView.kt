@@ -8,7 +8,7 @@ import sunhang.mathkeyboard.R
 
 class RootView(context: Context?, attrs: AttributeSet?) : RelativeLayout(context, attrs) {
     lateinit var topView: View
-    lateinit var keyboardView: View
+    lateinit var keyboardView: KeyboardView
     var extractViewShown = false
 
     override fun onFinishInflate() {

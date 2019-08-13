@@ -3,13 +3,14 @@ package sunhang.mathkeyboard
 import android.inputmethodservice.InputMethodService
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.runOnComputation
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
     private val rootController = RootController()
     private val rootView by uiLazy {
-        View.inflate(this@MathIMS, R.layout.ime_layout, null)
+        View.inflate(this@MathIMS, R.layout.ime_layout, null) as RootView
     }
 
     override fun onCreate() {

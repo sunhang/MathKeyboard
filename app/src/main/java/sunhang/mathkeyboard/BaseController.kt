@@ -3,12 +3,13 @@ package sunhang.mathkeyboard
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import io.reactivex.disposables.CompositeDisposable
+import sunhang.mathkeyboard.kbdviews.RootView
 
 open class BaseController : IMSAction {
     protected val imsActions = mutableListOf<IMSAction>()
     protected val compositeDisposable = CompositeDisposable()
 
-    override fun onCreate(imsContext: IMSContext, rootView: View) {
+    override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         imsActions.forEach { it.onCreate(imsContext, rootView) }
     }
 

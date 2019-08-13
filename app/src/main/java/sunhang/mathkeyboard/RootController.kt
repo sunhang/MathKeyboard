@@ -1,6 +1,5 @@
 package sunhang.mathkeyboard
 
-import android.view.View
 import sunhang.mathkeyboard.kbdviews.RootView
 
 class RootController : BaseController(){
@@ -11,9 +10,9 @@ class RootController : BaseController(){
     private lateinit var rootView: RootView
     private lateinit var imsContext: IMSContext
 
-    override fun onCreate(imsContext: IMSContext, rootView: View) {
+    override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         super.onCreate(imsContext, rootView)
-        this.rootView = rootView as RootView
+        this.rootView = rootView
         this.imsContext = imsContext
     }
 
