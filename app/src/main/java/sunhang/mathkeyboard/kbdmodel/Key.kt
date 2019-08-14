@@ -10,7 +10,7 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
     private val paint = Paint()
     private val keyLayout = KeyLayout(keyInfo.rectInfo)
     private var pressed = false
-    var onKeyClickedListener: OnKeyClickedListener? = null
+    lateinit var onKeyClickedListener: OnKeyClickedListener
 
     init {
         paint.color = Color.DKGRAY
@@ -41,7 +41,7 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
     }
 
     protected fun invokeOnKeyClickedListener() {
-        onKeyClickedListener?.onClick(getMainCode(), this)
+        onKeyClickedListener.onClick(getMainCode(), this)
     }
 
     interface OnKeyClickedListener {

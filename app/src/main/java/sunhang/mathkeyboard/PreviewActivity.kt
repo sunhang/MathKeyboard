@@ -15,10 +15,12 @@ class PreviewActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preview)
 
+        /*
         val rootView = View.inflate(this, R.layout.ime_layout, null) as RootView
         fl.addView(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         val rootController = RootController()
         rootController.onCreate(IMSContext(this), rootView)
+        */
     }
 }
