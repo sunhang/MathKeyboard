@@ -5,19 +5,43 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.tools.sp2Px
 
 open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInfo) {
     private val paint = Paint()
     private val keyLayout = KeyLayout(keyInfo.rectInfo)
+    private var pressed = false
+    var onKeyClickedListener: OnKeyClickedListener? = null
 
     init {
         paint.color = Color.DKGRAY
         paint.textSize = keyInfo.textSize
     }
 
-    open fun draw(canvas: Canvas) {
+    fun getMainCode() = keyInfo.getMainCode()
+
+    open fun onDraw(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
         canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
+    }
+
+    val touchRect get() =  keyLayout.touchRect
+
+    open fun onTouch(touchEvent: TouchEvent) {
+        when (touchEvent.keyMotion) {
+            TouchEvent.DOWN -> pressed = true
+            TouchEvent.CANCEL, TouchEvent.TAKEN_AWAY -> pressed = false
+            TouchEvent.UP -> {
+                pressed = false
+                invokeOnKeyClickedListener()
+            }
+        }
+    }
+
+    protected fun invokeOnKeyClickedListener() {
+        onKeyClickedListener?.onClick(getMainCode(), this)
+    }
+
+    interface OnKeyClickedListener {
+        fun onClick(code: Int, key: Key)
     }
 }

@@ -29,7 +29,7 @@ class KeyboardView(context: Context?, attrs: AttributeSet?) : View(context, attr
 
     private fun drawKeyboard(canvas: Canvas, keyboard: Keyboard) {
         keyboard.keys.forEach {
-            it.draw(canvas)
+            it.onDraw(canvas)
         }
     }
 

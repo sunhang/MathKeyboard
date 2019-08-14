@@ -5,6 +5,6 @@ import android.graphics.Canvas
 import protoinfo.KbdInfo
 
 class EnterKey(context: Context, keyInfo: KbdInfo.KeyInfo) : Key(context, keyInfo) {
-    override fun draw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
     }
 }
