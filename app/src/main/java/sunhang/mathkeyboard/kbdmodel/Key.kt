@@ -4,27 +4,42 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import protoinfo.KbdInfo
+import kotlin.math.roundToInt
 
 open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInfo) {
     private val paint = Paint()
     private val keyLayout = KeyLayout(keyInfo.rectInfo)
     private var pressed = false
+    var normalColor = 0
+    var pressedColor = 0
+    var normalBackground: Drawable = ColorDrawable(Color.TRANSPARENT)
+    var pressedBackground: Drawable = ColorDrawable(Color.TRANSPARENT)
     lateinit var onKeyClickedListener: OnKeyClickedListener
 
     init {
-        paint.color = Color.DKGRAY
-        paint.textSize = keyInfo.textSize
+        with(paint) {
+            textSize = keyInfo.textSize
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+        }
     }
 
     fun getMainCode() = keyInfo.getMainCode()
 
     open fun onDraw(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
+        paint.color = if (pressed) pressedColor else normalColor
         canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
 
-        paint.color = if (pressed) Color.BLACK else Color.WHITE
-        canvas.drawRect(keyLayout.visualRect, paint)
+        val drawable = if (pressed) pressedBackground else normalBackground
+        drawable.setBounds(visualRect.left.roundToInt(),
+            visualRect.top.roundToInt(),
+            visualRect.right.roundToInt(),
+            visualRect.bottom.roundToInt())
+        drawable.draw(canvas)
     }
 
     val touchRect get() =  keyLayout.touchRect

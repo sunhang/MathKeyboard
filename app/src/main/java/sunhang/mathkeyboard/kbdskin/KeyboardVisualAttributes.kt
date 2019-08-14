@@ -6,7 +6,7 @@ data class KeyboardVisualAttributes(
     val skinId: String = "",
     val wallpaper: Drawable,
     val topBackground: Drawable,
-    val keyVisualAttributes: KeyVisualAttributes,
+    val keyVisualAttr: KeyVisualAttributes,
     val specialUil: KeyVisualAttributes,
     val funcHighLight: KeyVisualAttributes,
     val spaceKey: KeyVisualAttributes

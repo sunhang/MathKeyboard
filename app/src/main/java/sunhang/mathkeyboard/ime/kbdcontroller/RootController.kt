@@ -7,12 +7,15 @@ import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.mathkeyboard.tools.setLayoutParamSize
+import sunhang.openlibrary.runOnFile
 
-class RootController : BaseController(), SkinAttrUser{
+class RootController : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController()
+
     init {
         attach(keyboardController)
     }
+
     private lateinit var rootView: RootView
     private lateinit var imsContext: IMSContext
 
@@ -21,8 +24,11 @@ class RootController : BaseController(), SkinAttrUser{
         this.rootView = rootView
         this.imsContext = imsContext
 
-        val visualAttr = KbdVisualAttrFactory().create()
-        useSkinAttr(visualAttr)
+        runOnFile({
+            KbdVisualAttrFactory().create(imsContext.context)
+        }, {
+            it?.let { useSkinAttr(it) }
+        })
     }
 
     override fun onCreateInputViewInvoked() {

@@ -1,7 +1,6 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
 import sunhang.mathkeyboard.ime.IMSContext
-import sunhang.mathkeyboard.ime.InputToEditor
 import sunhang.mathkeyboard.kbdmodel.Key
 import sunhang.mathkeyboard.kbdmodel.Keyboard
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
@@ -13,6 +12,7 @@ import sunhang.openlibrary.screenWidth
 class KeyboardController : BaseController() {
     private lateinit var keyboardView: KeyboardView
     private lateinit var imsContext: IMSContext
+    private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
 
     override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         super.onCreate(imsContext, rootView)
@@ -23,10 +23,14 @@ class KeyboardController : BaseController() {
         val context = imsContext.context
         val imeHeight = config.keyboardHeight
 
-        KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight).subscribe {
-            setListener(it)
-            keyboardView.updateData(it)
-        }.let { compositeDisposable.add(it) }
+        KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight)
+            .subscribe { keyboard ->
+                setListener(keyboard)
+                keyboardView.updateData(keyboard)
+                keyboardVisualAttributes?.let {
+                    setKbdVisualAttr(keyboard, it)
+                }
+            }.let { compositeDisposable.add(it) }
     }
 
     private fun setListener(keyboard: Keyboard) {
@@ -37,6 +41,20 @@ class KeyboardController : BaseController() {
 
     override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
         super.useSkinAttr(skinAttri)
+        keyboardVisualAttributes = skinAttri
+        setKbdVisualAttr(keyboardView.keyboard, skinAttri)
+    }
+
+    private fun setKbdVisualAttr(keyboard: Keyboard, skinAttri: KeyboardVisualAttributes) {
+        val letterKeyAttr = skinAttri.keyVisualAttr
+        keyboard.keys.forEach {
+            with(it) {
+                normalColor = letterKeyAttr.keyLabelColor
+                pressedColor = letterKeyAttr.keyLabelColorPressed
+                normalBackground = letterKeyAttr.keyBackground
+                pressedBackground = letterKeyAttr.keyBackgroundPressed
+            }
+        }
     }
 
     private val onKeyClickedListener = object : Key.OnKeyClickedListener {
