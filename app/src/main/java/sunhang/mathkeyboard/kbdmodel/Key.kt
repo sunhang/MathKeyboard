@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import protoinfo.KbdInfo
+import sunhang.mathkeyboard.tools.sp2Px
 import kotlin.math.roundToInt
 
 open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInfo) {
@@ -21,7 +22,7 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
 
     init {
         with(paint) {
-            textSize = keyInfo.textSize
+            textSize = sp2Px(keyInfo.textSize)
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
         }
@@ -48,7 +49,8 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
     fun drawForeground(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
         paint.color = if (pressed) pressedColor else normalColor
-        canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
+        val y = visualRect.top + visualRect.height() * keyInfo.baseLine
+        canvas.drawText(keyInfo.text, visualRect.centerX(), y, paint)
     }
 
     val touchRect get() =  keyLayout.touchRect

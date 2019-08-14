@@ -14,8 +14,8 @@ class KbdVisualAttrFactory {
     fun create(context: Context): KeyboardVisualAttributes {
         val letterkey = KeyVisualAttributes(keyBackground = getDrawable(context, "key_normal.png"),
             keyBackgroundPressed = getDrawable(context, "key_pressed.png"),
-            keyLabelColor = Color.BLUE,
-            keyLabelColorPressed = Color.WHITE,
+            keyLabelColor = 0xFF48486B.toInt(),
+            keyLabelColorPressed = 0xFF48486B.toInt(),
             keyHintLabelColor = 0,
             keyHintLabelColorPressed = 0
             )
