@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.ime
 
 import android.content.Context
 

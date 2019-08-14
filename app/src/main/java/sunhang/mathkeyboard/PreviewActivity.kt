@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_preview.*
+import sunhang.mathkeyboard.ime.IMSContext
+import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.kbdviews.RootView
 
 class PreviewActivity : AppCompatActivity(){

@@ -1,7 +1,6 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.ime.kbdcontroller
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KbdVisualAttrFactory
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser

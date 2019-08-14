@@ -1,7 +1,7 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.ime.kbdcontroller
 
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
-import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.KeyboardView
 import sunhang.mathkeyboard.kbdviews.RootView

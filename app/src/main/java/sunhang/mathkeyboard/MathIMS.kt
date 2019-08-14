@@ -3,8 +3,9 @@ package sunhang.mathkeyboard
 import android.inputmethodservice.InputMethodService
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import sunhang.mathkeyboard.ime.IMSContext
+import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.kbdviews.RootView
-import sunhang.openlibrary.runOnComputation
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {

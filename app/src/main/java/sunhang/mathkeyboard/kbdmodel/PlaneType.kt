@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.kbdmodel
 
 enum class PlaneType {
     //英文全键盘

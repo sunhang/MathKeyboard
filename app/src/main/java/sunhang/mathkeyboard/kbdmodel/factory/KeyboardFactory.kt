@@ -5,10 +5,7 @@ import protoinfo.KbdInfo
 import protoinfo.KbdInfo.KeyboardInfo
 import protoinfo.KbdInfo.KeyInfo
 import sunhang.mathkeyboard.*
-import sunhang.mathkeyboard.kbdmodel.BackspaceKey
-import sunhang.mathkeyboard.kbdmodel.EnterKey
-import sunhang.mathkeyboard.kbdmodel.Key
-import sunhang.mathkeyboard.kbdmodel.Keyboard
+import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.tools.isBackslash
 import sunhang.mathkeyboard.tools.isEnter
 import sunhang.mathkeyboard.tools.isSpace

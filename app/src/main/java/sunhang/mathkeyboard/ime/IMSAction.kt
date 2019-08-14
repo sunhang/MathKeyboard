@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard
+package sunhang.mathkeyboard.ime
 
 import android.view.View
 import android.view.inputmethod.EditorInfo
