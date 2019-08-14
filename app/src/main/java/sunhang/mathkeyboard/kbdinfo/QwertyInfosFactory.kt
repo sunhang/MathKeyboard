@@ -78,9 +78,17 @@ abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
         val pair = shiftPlaceCodeAndText
         kbdInfoBuilder.addKeys(
             buildKeyInfo(
-                pair.first, pair.second, getTextSize(pair.first), KbdInfo.KeyType.FUNCTION,
-                paddingLeft, yOffset, keyWidth * 1.5f, keyHeight, KbdInfo.KeyColor.SPECIAL,
-                keyHorPadding, keyVerPadding
+                code = pair.first,
+                text = pair.second,
+                textSize = getTextSize(pair.first),
+                keyType = KbdInfo.KeyType.FUNCTION,
+                x = paddingLeft,
+                y = yOffset,
+                keyWidth = keyWidth * 1.5f,
+                keyHeight = keyHeight,
+                keyColor = KbdInfo.KeyColor.SPECIAL,
+                keyHorPadding = keyHorPadding,
+                keyVerPadding = keyVerPadding
             )
         )
 
@@ -93,11 +101,17 @@ abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
         // deletekey
         kbdInfoBuilder.addKeys(
             buildKeyInfo(
-                KEYCODE_DELETE, "", getTextSize(0),
-                KbdInfo.KeyType.FUNCTION,
-                paddingLeft + keyWidth * 8.5f, yOffset, keyWidth * 1.5f, keyHeight,
-                KbdInfo.KeyColor.SPECIAL,
-                keyHorPadding, keyVerPadding
+                code = KEYCODE_DELETE,
+                text = "",
+                textSize = getTextSize(0),
+                keyType = KbdInfo.KeyType.FUNCTION,
+                x = paddingLeft + keyWidth * 8.5f,
+                y = yOffset,
+                keyWidth = keyWidth * 1.5f,
+                keyHeight = keyHeight,
+                keyColor = KbdInfo.KeyColor.SPECIAL,
+                keyHorPadding = keyHorPadding,
+                keyVerPadding = keyVerPadding
             )
         )
     }
@@ -118,6 +132,9 @@ abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
             throw RuntimeException()
         }
 
+        val COMMA: Int = ','.toInt()
+        val PERIOD: Int = '.'.toInt()
+
         val len = triple.first.size
         for (i in 0 until len) {
             val code = triple.first[i]
@@ -134,11 +151,26 @@ abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
                 keyColor = if (code < 0) KbdInfo.KeyColor.SPECIAL else KbdInfo.KeyColor.COLOR_NORMAL
             }
 
+            val baseLine = if (code == COMMA || code == PERIOD) {
+                0.58f
+            } else {
+                0f
+            }
+
             kbdInfoBuilder.addKeys(
                 buildKeyInfo(
-                    code, text, getTextSize(code),
-                    keyType,
-                    xOffset, yOffset, realKeyWidth, keyHeight, keyColor, keyHorPadding, keyVerPadding
+                    code = code,
+                    text = text,
+                    textSize = getTextSize(code),
+                    baseLine = baseLine,
+                    keyType = keyType,
+                    x = xOffset,
+                    y = yOffset,
+                    keyWidth = realKeyWidth,
+                    keyHeight = keyHeight,
+                    keyColor = keyColor,
+                    keyHorPadding = keyHorPadding,
+                    keyVerPadding = keyVerPadding
                 )
             )
 

@@ -7,14 +7,14 @@ fun buildKeyInfo(
     code: Int,
     text: String,
     textSize: Float,
-    textSizeUpperCase: Float,
-    baseLine: Float,
-    upperCaseBaseLine: Float,
-    hintCode: Int,
-    hintText: String?,
-    hintTextSize: Float,
-    hintBaseLine: Float,
-    hintUpperCaseBaseLine: Float,
+    textSizeUpperCase: Float = 0f,
+    baseLine: Float = 0f,
+    upperCaseBaseLine: Float = 0f,
+    hintCode: Int = 0,
+    hintText: String? = null,
+    hintTextSize: Float = 0f,
+    hintBaseLine: Float = 0f,
+    hintUpperCaseBaseLine: Float = 0f,
     keyType: KbdInfo.KeyType,
     x: Float,
     y: Float,
@@ -48,54 +48,6 @@ fun buildKeyInfo(
     keyBuilder.setRectInfo(rectBuilder.build())
 
     return keyBuilder.build()
-}
-
-// 没有baseline
-fun buildKeyInfo(
-    code: Int,
-    text: String,
-    textSize: Float,
-    textSizeUpperCase: Float,
-    hintCode: Int,
-    hintText: String,
-    hintTextSize: Float,
-    keyType: KbdInfo.KeyType,
-    x: Float,
-    y: Float,
-    keyWidth: Float,
-    keyHeight: Float,
-    keyColor: KbdInfo.KeyColor,
-    keyHorPadding: Float,
-    keyVerPadding: Float
-): KbdInfo.KeyInfo {
-    return buildKeyInfo(
-        code, text, textSize, textSizeUpperCase, 0f, 0f,
-        hintCode, hintText, hintTextSize, 0f, 0f,
-        keyType, x, y, keyWidth, keyHeight, keyColor,
-        keyHorPadding, keyVerPadding
-    )
-}
-
-// 没有hint,没有baseline
-fun buildKeyInfo(
-    code: Int,
-    text: String,
-    textSize: Float,
-    keyType: KbdInfo.KeyType,
-    x: Float,
-    y: Float,
-    keyWidth: Float,
-    keyHeight: Float,
-    keyColor: KbdInfo.KeyColor,
-    keyHorPadding: Float,
-    keyVerPadding: Float
-): KbdInfo.KeyInfo {
-    return buildKeyInfo(
-        code, text, textSize, 0f,
-        0, "", 0f,
-        keyType, x, y, keyWidth, keyHeight, keyColor,
-        keyHorPadding, keyVerPadding
-    )
 }
 
 fun buildRow(
@@ -147,48 +99,4 @@ fun buildRow(
             )
         )
     }
-}
-
-// 没有baseline
-fun buildRow(
-    planeBuilder: KbdInfo.KeyboardInfo.Builder,
-    codes: Pair<IntArray, Array<String>>,
-    textSize: Float,
-    textSizeUpperCase: Float,
-    hintCodes: Pair<IntArray, Array<String>>?,
-    hintTextSize: Float,
-    keyWidth: Float,
-    keyHeight: Float,
-    xOffset: Float,
-    yOffset: Float,
-    keyColors: Array<KbdInfo.KeyColor>,
-    keyHorPadding: Float,
-    keyVerPadding: Float
-) {
-    buildRow(
-        planeBuilder, codes, textSize, textSizeUpperCase, 0f, 0f,
-        hintCodes, hintTextSize, 0f, 0f,
-        keyWidth, keyHeight, xOffset, yOffset, keyColors, keyHorPadding, keyVerPadding
-    )
-}
-
-// 没有hint,没有baseline
-fun buildRow(
-    planeBuilder: KbdInfo.KeyboardInfo.Builder,
-    codes: Pair<IntArray, Array<String>>,
-    textSize: Float,
-    textSizeUpperCase: Float,
-    keyWidth: Float,
-    keyHeight: Float,
-    xOffset: Float,
-    yOffset: Float,
-    keyColors: Array<KbdInfo.KeyColor>,
-    keyHorPadding: Float,
-    keyVerPadding: Float
-) {
-    buildRow(
-        planeBuilder, codes, textSize, textSizeUpperCase, null, 0f,
-        keyWidth, keyHeight, xOffset, yOffset, keyColors, keyHorPadding, keyVerPadding
-    )
-
 }
