@@ -30,9 +30,12 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
     fun getMainCode() = keyInfo.getMainCode()
 
     open fun onDraw(canvas: Canvas) {
+        drawBackground(canvas)
+        drawForeground(canvas)
+    }
+
+    fun drawBackground(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
-        paint.color = if (pressed) pressedColor else normalColor
-        canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
 
         val drawable = if (pressed) pressedBackground else normalBackground
         drawable.setBounds(visualRect.left.roundToInt(),
@@ -40,6 +43,12 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
             visualRect.right.roundToInt(),
             visualRect.bottom.roundToInt())
         drawable.draw(canvas)
+    }
+
+    fun drawForeground(canvas: Canvas) {
+        val visualRect = keyLayout.visualRect
+        paint.color = if (pressed) pressedColor else normalColor
+        canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
     }
 
     val touchRect get() =  keyLayout.touchRect
