@@ -21,7 +21,7 @@ class KeyboardController : BaseController() {
 
         val config = imsContext.imeLayoutConfig
         val context = imsContext.context
-        val imeHeight = config.toolbarHeight + config.keyboardHeight
+        val imeHeight = config.keyboardHeight
 
         KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight).subscribe {
             setListener(it)

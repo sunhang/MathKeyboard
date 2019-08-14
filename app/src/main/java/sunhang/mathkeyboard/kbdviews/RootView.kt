@@ -11,6 +11,7 @@ class RootView(context: Context?, attrs: AttributeSet?) : RelativeLayout(context
     lateinit var topView: View
     lateinit var keyboardView: KeyboardView
     lateinit var wallpaperView: ImageView
+    var inputAreaMaxHeight: Int = 0
     var extractViewShown = false
 
     override fun onFinishInflate() {
@@ -20,21 +21,9 @@ class RootView(context: Context?, attrs: AttributeSet?) : RelativeLayout(context
         wallpaperView = findViewById(R.id.iv_wallpaper)
     }
 
-    /*
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var heightMeasureSpec = heightMeasureSpec
-
-        val height: Int
-        if (isPortrait(context)) {
-            height = kbdConfig.getSearchLayerHeight() + mInputAreaMaxHeight
-        } else {
-            val extraHeight = if (mExtractViewShown) 0 else KeyboardConfig.getInstance().getPinyinHeight()
-            height = topView!!.layoutParams.height + mKeyboardLayer!!.layoutParams.height + extraHeight
-        }
-
-        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY))
-
+        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(inputAreaMaxHeight, View.MeasureSpec.EXACTLY))
         val width = View.MeasureSpec.getSize(widthMeasureSpec)
-        setMeasuredDimension(width, height)
-    }*/
+        setMeasuredDimension(width, inputAreaMaxHeight)
+    }
 }

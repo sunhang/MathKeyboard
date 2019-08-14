@@ -10,7 +10,8 @@
     <sunhang.mathkeyboard.kbdviews.KeyboardView
             android:id="@+id/kbd"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"/>
     <FrameLayout
             android:id="@+id/top_view"
             android:layout_width="match_parent"

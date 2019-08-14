@@ -1,10 +1,12 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import android.view.ViewGroup
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KbdVisualAttrFactory
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
+import sunhang.mathkeyboard.tools.setLayoutParamSize
 
 class RootController : BaseController(), SkinAttrUser{
     private val keyboardController = KeyboardController()
@@ -34,7 +36,7 @@ class RootController : BaseController(), SkinAttrUser{
         topViewLp.height = layoutConfig.toolbarHeight
         kbdViewLp.height = layoutConfig.keyboardHeight
         wallpaperLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
-
+        rootView.inputAreaMaxHeight = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
     }
 
     override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
