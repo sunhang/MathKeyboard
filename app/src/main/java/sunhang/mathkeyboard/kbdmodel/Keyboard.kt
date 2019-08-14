@@ -1,4 +1,4 @@
 package sunhang.mathkeyboard.kbdmodel
 
-class Keyboard(val keys: List<Key>) {
+open class Keyboard(val keys: List<Key>) {
 }

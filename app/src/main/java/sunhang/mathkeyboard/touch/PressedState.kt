@@ -2,7 +2,7 @@ package sunhang.mathkeyboard.touch
 
 import android.view.MotionEvent
 import sunhang.mathkeyboard.kbdmodel.Key
-import sunhang.mathkeyboard.kbdmodel.NullKey
+import sunhang.mathkeyboard.kbdmodel.nullobj.NullKey
 import sunhang.mathkeyboard.kbdmodel.TouchEvent
 
 class PressedState(private val touchContext: TouchContext) {
@@ -116,7 +116,6 @@ class PressedState(private val touchContext: TouchContext) {
         }
 
         touchContext.dispatchKeyEvent(oldKey, newKey, TouchEvent.CANCEL, event, x, y)
-
         touchContext.resetState()
     }
 }

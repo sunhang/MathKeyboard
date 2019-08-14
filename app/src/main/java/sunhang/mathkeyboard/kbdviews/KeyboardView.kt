@@ -7,9 +7,18 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import sunhang.mathkeyboard.kbdmodel.Keyboard
+import sunhang.mathkeyboard.kbdmodel.nullobj.NullKeyboard
+import sunhang.mathkeyboard.touch.TouchContext
+import sunhang.openlibrary.uiLazy
 
 class KeyboardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
-    var keyboard: Keyboard? = null
+    var keyboard: Keyboard = NullKeyboard
+    private var touchContext: TouchContext? = null
+
+    fun updateData(keyboard: Keyboard) {
+        this.keyboard = keyboard
+        touchContext = TouchContext(context, keyboard)
+    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -17,23 +26,27 @@ class KeyboardView(context: Context?, attrs: AttributeSet?) : View(context, attr
             return
         }
 
-        drawBackground(canvas)
-        keyboard?.let {
-            drawKeyboard(canvas, it)
-        }
+        drawKeyboard(canvas, keyboard)
     }
 
-    private fun drawBackground(canvas: Canvas) {
-        canvas.drawColor(Color.WHITE)
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        try {
+            touchContext?.let {
+                it.dispatch(event)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            touchContext = TouchContext(context, keyboard)
+        }
+
+        invalidate()
+
+        return true
     }
 
     private fun drawKeyboard(canvas: Canvas, keyboard: Keyboard) {
         keyboard.keys.forEach {
             it.onDraw(canvas)
         }
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
     }
 }

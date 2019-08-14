@@ -19,7 +19,7 @@ class KeyboardController : BaseController() {
         val imeHeight = config.toolbarHeight + config.keyboardHeight
 
         KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight).subscribe {
-            keyboardView.keyboard = it
+            keyboardView.updateData(it)
         }.let { compositeDisposable.add(it) }
     }
 

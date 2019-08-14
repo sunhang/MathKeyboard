@@ -22,6 +22,9 @@ open class Key(private val context: Context, private val keyInfo: KbdInfo.KeyInf
     open fun onDraw(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
         canvas.drawText(keyInfo.text, visualRect.centerX(), visualRect.centerY(), paint)
+
+        paint.color = if (pressed) Color.BLACK else Color.WHITE
+        canvas.drawRect(keyLayout.visualRect, paint)
     }
 
     val touchRect get() =  keyLayout.touchRect
