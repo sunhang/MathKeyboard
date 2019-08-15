@@ -14,17 +14,19 @@ class KeyboardController : BaseController() {
     private lateinit var imsContext: IMSContext
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
     private var shiftState = ShiftState.UNSHIFT
+    private lateinit var kbdDataSource: KbdDataSource
 
     override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         super.onCreate(imsContext, rootView)
         this.imsContext = imsContext
         this.keyboardView = rootView.keyboardView
+        kbdDataSource = KbdDataSource(imsContext.context)
 
         val config = imsContext.imeLayoutConfig
         val context = imsContext.context
         val imeHeight = config.keyboardHeight
 
-        KbdDataSource(imsContext.context).enKbdModel(context.screenWidth, imeHeight)
+        kbdDataSource.enKbdModel(context.screenWidth, imeHeight)
             .subscribe { keyboard ->
                 setListener(keyboard)
                 keyboardView.updateData(keyboard)

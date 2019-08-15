@@ -29,7 +29,7 @@ class KbdDataSource(private val context: Context) {
                 val begin = debugTime()
                 val bytes = file.readBytes()
                 it.onNext(KbdInfo.KeyboardInfo.parseFrom(bytes))
-                elapsedTime("Parse from proto $file", begin)
+                elapsedTime("Parse from proto $file ==>", begin)
             }
 
             it.onComplete()
