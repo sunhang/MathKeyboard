@@ -17,15 +17,17 @@ open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
     protected val keyLayout = KeyLayout(keyInfo.rectInfo)
     private var pressed = false
     private val bounds = Rect()
+    protected open val textSize = sp2Px(keyInfo.textSize)
+    protected open val text: String = keyInfo.text
+    protected open val baseLineRatio: Float = keyInfo.baseLine
     var normalColor = 0
     var pressedColor = 0
     var normalBackground: Drawable = ColorDrawable(Color.TRANSPARENT)
     var pressedBackground: Drawable = ColorDrawable(Color.TRANSPARENT)
-    lateinit var onKeyClickedListener: OnKeyClickedListener
+    open lateinit var onKeyClickedListener: OnKeyClickedListener
 
     init {
         with(paint) {
-            textSize = sp2Px(keyInfo.textSize)
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
         }
@@ -53,16 +55,17 @@ open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
 
     open fun drawForeground(canvas: Canvas) {
         val visualRect = keyLayout.visualRect
+        paint.textSize = textSize
         paint.color = if (pressed) pressedColor else normalColor
 
         val y = if (keyInfo.keyColor == KbdInfo.KeyColor.SPECIAL) {
-            paint.getTextBounds(keyInfo.text, 0, keyInfo.text.length, bounds)
+            paint.getTextBounds(text, 0, text.length, bounds)
             visualRect.centerY() - (bounds.top + bounds.bottom) / 2
         } else {
-            visualRect.top + visualRect.height() * keyInfo.baseLine
+            visualRect.top + visualRect.height() * baseLineRatio
         }
 
-        canvas.drawText(keyInfo.text, visualRect.centerX(), y, paint)
+        canvas.drawText(text, visualRect.centerX(), y, paint)
     }
 
     val touchRect get() = keyLayout.touchRect

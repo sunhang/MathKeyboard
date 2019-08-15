@@ -2,8 +2,7 @@ package sunhang.mathkeyboard.ime.kbdcontroller
 
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.ime.IMSContext
-import sunhang.mathkeyboard.kbdmodel.Key
-import sunhang.mathkeyboard.kbdmodel.Keyboard
+import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.KeyboardView
@@ -14,6 +13,7 @@ class KeyboardController : BaseController() {
     private lateinit var keyboardView: KeyboardView
     private lateinit var imsContext: IMSContext
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
+    private var shiftState = ShiftState.UNSHIFT
 
     override fun onCreate(imsContext: IMSContext, rootView: RootView) {
         super.onCreate(imsContext, rootView)
@@ -35,8 +35,15 @@ class KeyboardController : BaseController() {
     }
 
     private fun setListener(keyboard: Keyboard) {
-        keyboard.keys.forEach {
-            it.onKeyClickedListener = onKeyClickedListener
+        keyboard.keys.forEach { key ->
+            when (key) {
+                is ShiftKey -> {
+                    key.shiftStateListener = onShiftStateListener
+                }
+                else -> {
+                    key.onKeyClickedListener = onKeyClickedListener
+                }
+            }
         }
     }
 
@@ -65,9 +72,31 @@ class KeyboardController : BaseController() {
         keyboardView.invalidate()
     }
 
+    private fun changeUppercaseOfKeys(shiftState: ShiftState) {
+        keyboardView.keyboard.keys.forEach { key ->
+            if (key is UpperCaseSupportedKey) {
+                key.upperCase = shiftState != ShiftState.UNSHIFT
+            }
+        }
+    }
+
     private val onKeyClickedListener = object : Key.OnKeyClickedListener {
         override fun onClick(code: Int, key: Key) {
             imsContext.inputToEditor.inputChar(code)
+
+            if (shiftState == ShiftState.SHIFT) {
+                shiftState = ShiftState.UNSHIFT
+                changeUppercaseOfKeys(shiftState)
+                keyboardView.keyboard.shiftKey?.resetShiftState()
+            }
         }
+    }
+
+    private val onShiftStateListener = object : ShiftKey.ShiftStateListener {
+        override fun onChanged(shiftState: ShiftState) {
+            changeUppercaseOfKeys(shiftState)
+            this@KeyboardController.shiftState = shiftState
+        }
+
     }
 }
