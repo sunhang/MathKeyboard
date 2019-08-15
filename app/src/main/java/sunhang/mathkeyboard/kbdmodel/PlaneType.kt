@@ -5,4 +5,5 @@ enum class PlaneType {
     QWERTY_EN,
     // 数学符号
     MATH_SYMBOL,
+    NUMBER,
 }
