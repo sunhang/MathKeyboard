@@ -22,8 +22,8 @@ class KbdVisualAttrFactory {
 
         val funckey = KeyVisualAttributes(keyBackground = getDrawable(context, "func_key_normal.png"),
             keyBackgroundPressed = getDrawable(context, "key_pressed.png"),
-            keyLabelColor = Color.BLUE,
-            keyLabelColorPressed = Color.WHITE,
+            keyLabelColor = 0xFF706D8E.toInt(),
+            keyLabelColorPressed = 0xFF706D8E.toInt(),
             keyHintLabelColor = 0,
             keyHintLabelColorPressed = 0
         )

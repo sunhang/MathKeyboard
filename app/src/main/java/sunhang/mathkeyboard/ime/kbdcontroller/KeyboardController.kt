@@ -1,5 +1,6 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import protoinfo.KbdInfo
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.Key
 import sunhang.mathkeyboard.kbdmodel.Keyboard
@@ -47,13 +48,19 @@ class KeyboardController : BaseController() {
 
     private fun setKbdVisualAttr(keyboard: Keyboard, skinAttri: KeyboardVisualAttributes) {
         val letterKeyAttr = skinAttri.keyVisualAttr
-        keyboard.keys.forEach {
-            with(it) {
-                normalColor = letterKeyAttr.keyLabelColor
-                pressedColor = letterKeyAttr.keyLabelColorPressed
-                normalBackground = letterKeyAttr.keyBackground
-                pressedBackground = letterKeyAttr.keyBackgroundPressed
+        val specialKeyAttr = skinAttri.specialUil
+        val highLightAttr = skinAttri.funcHighLight
+
+        keyboard.keys.forEach { key ->
+            val keyAttr = when (key.keyInfo.keyColor) {
+                KbdInfo.KeyColor.COLOR_NORMAL -> letterKeyAttr
+                KbdInfo.KeyColor.SPECIAL -> specialKeyAttr
+                else -> highLightAttr
             }
+            key.normalColor = keyAttr.keyLabelColor
+            key.pressedColor = keyAttr.keyLabelColorPressed
+            key.normalBackground = keyAttr.keyBackground
+            key.pressedBackground = keyAttr.keyBackgroundPressed
         }
         keyboardView.invalidate()
     }
