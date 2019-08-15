@@ -25,8 +25,10 @@ class PreviewActivity : AppCompatActivity(){
         val rootView = View.inflate(this, R.layout.ime_layout, null) as RootView
         fl.addView(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
-        val inputToEditor = InputToEditor()
-        inputToEditor.currentInputConnection = (et as EditTextForKbdDebug).inputConnection
+        val inputToEditor = InputToEditor().apply {
+            editorInfo = (et as EditTextForKbdDebug).editorInfo
+            currentInputConnection = (et as EditTextForKbdDebug).inputConnection
+        }
 
         val rootController = RootController()
         rootController.onCreate(IMSContext(this, inputToEditor), rootView)
@@ -34,8 +36,8 @@ class PreviewActivity : AppCompatActivity(){
     }
 
     class EditTextForKbdDebug(context: Context?, attrs: AttributeSet?) : EditText(context, attrs) {
+        val editorInfo by uiLazy { EditorInfo() }
         val inputConnection by uiLazy {
-            val editorInfo = EditorInfo()
             editorInfo.packageName = this.context.packageName
             onCreateInputConnection(editorInfo)
         }

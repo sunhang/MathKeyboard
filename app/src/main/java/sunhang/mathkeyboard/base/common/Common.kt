@@ -13,9 +13,9 @@ fun <T1: Any, T2: Any, T3: Any, T4: Any, T5: Any, R: Any> safeLet(p1: T1?, p2: T
     return if (p1 != null && p2 != null && p3 != null && p4 != null && p5 != null) block(p1, p2, p3, p4, p5) else null
 }
 
-inline fun <T: Any> guardLet(vararg elements: T?, closure: () -> Nothing): List<T> {
-    return if (elements.all { it != null }) {
-        elements.filterNotNull()
+inline fun <T1: Any, T2: Any> guardLet(p1: T1?, p2: T2?, closure: () -> Nothing): Pair<T1, T2>{
+    return if (p1 != null && p2 != null) {
+        Pair<T1, T2>(p1, p2)
     } else {
         closure()
     }

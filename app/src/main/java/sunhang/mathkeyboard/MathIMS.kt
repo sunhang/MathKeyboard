@@ -32,6 +32,7 @@ class MathIMS : InputMethodService() {
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         inputToEditor.currentInputConnection = currentInputConnection
+        inputToEditor.editorInfo = info
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
