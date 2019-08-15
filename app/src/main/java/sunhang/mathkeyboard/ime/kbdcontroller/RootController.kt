@@ -27,7 +27,9 @@ class RootController : BaseController(), SkinAttrUser {
         runOnFile({
             KbdVisualAttrFactory().create(imsContext.context)
         }, {
-            it?.let { useSkinAttr(it) }
+            it?.let {
+                useSkinAttr(it)
+            }
         })
     }
 

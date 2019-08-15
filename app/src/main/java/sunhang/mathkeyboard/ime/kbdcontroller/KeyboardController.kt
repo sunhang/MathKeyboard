@@ -55,6 +55,7 @@ class KeyboardController : BaseController() {
                 pressedBackground = letterKeyAttr.keyBackgroundPressed
             }
         }
+        keyboardView.invalidate()
     }
 
     private val onKeyClickedListener = object : Key.OnKeyClickedListener {
