@@ -15,6 +15,10 @@ class FilePath {
             return File(keyboardBasePath(), "en_${width}_$height")
         }
 
+        fun keyboardNumProtoFile(width: Int, height: Int): File {
+            return File(keyboardBasePath(), "num_${width}_$height")
+        }
+
         private fun checkThenMakeDir(dir: File) {
             if (dir.isFile) {
                 dir.delete()

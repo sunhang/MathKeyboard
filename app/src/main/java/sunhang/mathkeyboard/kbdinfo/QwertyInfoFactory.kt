@@ -7,7 +7,7 @@ import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.mathkeyboard.tools.isEnter
 
-abstract class QwertyInfosFactory(context: Context) : InfosFactory(context) {
+abstract class QwertyInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : InfoFactory(context, kbdWidth, kbdHeight) {
 
     protected abstract val firstRow: Pair<IntArray, Array<String>>
     protected abstract val firstRowHint: Pair<IntArray, Array<String>>

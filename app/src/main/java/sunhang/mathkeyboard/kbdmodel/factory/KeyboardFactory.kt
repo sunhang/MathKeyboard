@@ -10,7 +10,7 @@ import sunhang.mathkeyboard.tools.isBackslash
 import sunhang.mathkeyboard.tools.isEnter
 import sunhang.mathkeyboard.tools.isSpace
 
-abstract class KeyboardFactory(protected var context: Context) {
+open class KeyboardFactory(protected var context: Context) {
     fun createKeyboard(kbdInfo: KeyboardInfo): Keyboard {
         return kbdInfo.keysList
             .map { createKey(it) }

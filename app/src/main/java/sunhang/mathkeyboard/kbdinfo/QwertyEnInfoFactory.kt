@@ -8,7 +8,7 @@ import sunhang.mathkeyboard.tools.isSwitchCode
 import sunhang.mathkeyboard.tools.sp2Px
 import sunhang.openlibrary.isPortrait
 
-class QwertyEnInfosFactory(context: Context) : QwertyInfosFactory(context) {
+class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : QwertyInfoFactory(context, kbdWidth, kbdHeight) {
     override var baseLine: Float = 0.toFloat()
     override var upperCaseBaseLine: Float = 0.toFloat()
     override var hintBaseLine: Float = 0.toFloat()
