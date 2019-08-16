@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -12,7 +13,7 @@ import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.mathkeyboard.tools.sp2Px
 import kotlin.math.roundToInt
 
-class NumColumnView(context: Context) : View(context) {
+class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private val codes = arrayListOf('.', '/', '+', '-', ':', '=', '@', '_')
     private val itemHeight = dp2Px(40.0f) as Int
     private var currentPressed = -1

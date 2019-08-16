@@ -87,18 +87,18 @@ class KbdDataSource(private val context: Context) {
         return Maybe.concat(memSource, keyboardSource).firstElement().observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun enKbdModel(keyboardWidth: Int, imeHeight: Int): Maybe<Keyboard> {
+    fun enKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
         return kbdModel(
-            FilePath.keyboardEnProtoFile(keyboardWidth, imeHeight),
-            QwertyEnInfoFactory(context, keyboardWidth, imeHeight),
+            FilePath.keyboardEnProtoFile(keyboardWidth, keyboardHeight),
+            QwertyEnInfoFactory(context, keyboardWidth, keyboardHeight),
             QwertyEnKeyboardFactory(context)
         )
     }
 
-    fun numKbdModel(keyboardWidth: Int, imeHeight: Int): Maybe<Keyboard> {
+    fun numKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
         return kbdModel(
-            FilePath.keyboardNumProtoFile(keyboardWidth, imeHeight),
-            NumInfoFactory(context, keyboardWidth, imeHeight),
+            FilePath.keyboardNumProtoFile(keyboardWidth, keyboardHeight),
+            NumInfoFactory(context, keyboardWidth, keyboardHeight),
             KeyboardFactory(context)
         )
     }

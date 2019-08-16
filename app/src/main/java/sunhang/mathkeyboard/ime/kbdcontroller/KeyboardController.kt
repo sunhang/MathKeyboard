@@ -1,6 +1,9 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import io.reactivex.functions.Consumer
+import org.reactivestreams.Subscriber
 import protoinfo.KbdInfo
+import sunhang.mathkeyboard.CODE_SWITCH_NUM_SODUKU
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
@@ -10,6 +13,7 @@ import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.screenWidth
 
 class KeyboardController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController() {
+    private val context = imsContext.context
     private val keyboardView = rootView.keyboardView
     private val kbdDataSource = KbdDataSource(imsContext.context)
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
@@ -17,19 +21,27 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
     override fun onCreate() {
         super.onCreate()
+        loadKeyboardData(PlaneType.QWERTY_EN)
+    }
 
+    private fun loadKeyboardData(planeType: PlaneType) {
         val config = imsContext.imeLayoutConfig
-        val context = imsContext.context
-        val imeHeight = config.keyboardHeight
+        val keyboardHeight = config.keyboardHeight
 
-        kbdDataSource.enKbdModel(context.screenWidth, imeHeight)
-            .subscribe { keyboard ->
-                setListener(keyboard)
-                keyboardView.updateData(keyboard)
-                keyboardVisualAttributes?.let {
-                    setKbdVisualAttr(keyboard, it)
-                }
-            }.let { compositeDisposable.add(it) }
+        when (planeType) {
+            PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
+            else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
+        }.subscribe(keyboardConsumer()).let { compositeDisposable.add(it) }
+    }
+
+    private fun keyboardConsumer(): Consumer<Keyboard> {
+        return Consumer<Keyboard>() { keyboard ->
+            setListener(keyboard)
+            keyboardView.updateData(keyboard)
+            keyboardVisualAttributes?.let {
+                setKbdVisualAttr(keyboard, it)
+            }
+        }
     }
 
     private fun setListener(keyboard: Keyboard) {
@@ -80,12 +92,19 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
     private val onKeyClickedListener = object : Key.OnKeyClickedListener {
         override fun onClick(code: Int, key: Key) {
-            imsContext.inputToEditor.inputChar(code)
-
             if (shiftState == ShiftState.SHIFT) {
                 shiftState = ShiftState.UNSHIFT
                 changeUppercaseOfKeys(shiftState)
                 keyboardView.keyboard.shiftKey?.resetShiftState()
+            }
+
+            when (code) {
+                CODE_SWITCH_NUM_SODUKU -> {
+                    loadKeyboardData(PlaneType.NUMBER)
+                }
+                else -> {
+                    imsContext.inputToEditor.inputChar(code)
+                }
             }
         }
     }
