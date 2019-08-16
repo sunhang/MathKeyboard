@@ -2,15 +2,12 @@ package sunhang.mathkeyboard.kbdinfo
 
 import android.content.Context
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.CODE_BACK
-import sunhang.mathkeyboard.CODE_ENTER
-import sunhang.mathkeyboard.CODE_SWITCH_SYMBOL
-import sunhang.mathkeyboard.KEYCODE_DELETE
+import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.tools.dp2Px
 
 class NumInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : InfoFactory(context, kbdWidth, kbdHeight) {
-    override val keyHorPadding: Float = 0f
-    override val keyVerPadding: Float = 0f
+//    override val keyHorPadding: Float = 0f
+//    override val keyVerPadding: Float = 0f
     private val mGeneralTextSize = 23f
 
     object NumKbdRatio {
@@ -99,13 +96,13 @@ class NumInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : InfoFact
             kbdBuilder,
             intArrayOf(
                 CODE_SWITCH_SYMBOL,
-                CODE_BACK,
+                CODE_SWITCH_EN_QWERTY, // CODE_BACK,由于没有返回icon，这里就先实现让它返回到英文键盘
                 '0'.toInt(),
                 ' '.toInt(),
                 CODE_ENTER
             ),
-            floatArrayOf(20f, mGeneralTextSize, mGeneralTextSize, mGeneralTextSize, 17f),
-            arrayOf("符", "", "0", "", ""),
+            floatArrayOf(20f, 20f, mGeneralTextSize, mGeneralTextSize, 17f),
+            arrayOf("符", "ABC", "0", "", ""),
             arrayOf<KbdInfo.KeyType>(KbdInfo.KeyType.FUNCTION,
                 KbdInfo.KeyType.FUNCTION,
                 KbdInfo.KeyType.NORMAL,

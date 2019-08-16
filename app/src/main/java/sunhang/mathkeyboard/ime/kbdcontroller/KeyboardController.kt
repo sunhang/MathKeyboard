@@ -3,6 +3,7 @@ package sunhang.mathkeyboard.ime.kbdcontroller
 import io.reactivex.functions.Consumer
 import org.reactivestreams.Subscriber
 import protoinfo.KbdInfo
+import sunhang.mathkeyboard.CODE_SWITCH_EN_QWERTY
 import sunhang.mathkeyboard.CODE_SWITCH_NUM_SODUKU
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.*
@@ -107,12 +108,19 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             when (code) {
                 CODE_SWITCH_NUM_SODUKU -> {
                     loadKeyboardData(PlaneType.NUMBER)
-                    numKbdColumn.showView()
+                }
+                CODE_SWITCH_EN_QWERTY -> {
+                    loadKeyboardData(PlaneType.QWERTY_EN)
                 }
                 else -> {
                     imsContext.inputToEditor.inputChar(code)
-                    numKbdColumn.dismissView()
                 }
+            }
+
+            if (code == CODE_SWITCH_NUM_SODUKU) {
+                numKbdColumn.showView()
+            } else {
+                numKbdColumn.dismissView()
             }
         }
     }

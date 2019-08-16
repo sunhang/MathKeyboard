@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
     private val paint = Paint()
     protected val keyLayout = KeyLayout(keyInfo.rectInfo)
-    private var pressed = false
+    protected var pressed = false
     private val bounds = Rect()
     protected open val textSize = sp2Px(keyInfo.textSize)
     protected open val text: String = keyInfo.text
@@ -58,7 +58,8 @@ open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
         paint.textSize = textSize
         paint.color = if (pressed) pressedColor else normalColor
 
-        val y = if (keyInfo.keyColor == KbdInfo.KeyColor.SPECIAL) {
+        val displayVerCentered = keyInfo.keyColor == KbdInfo.KeyColor.SPECIAL || baseLineRatio == 0.0f
+        val y = if (displayVerCentered) {
             paint.getTextBounds(text, 0, text.length, bounds)
             visualRect.centerY() - (bounds.top + bounds.bottom) / 2
         } else {

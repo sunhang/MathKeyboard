@@ -22,11 +22,11 @@ open class KeyboardFactory(protected var context: Context) {
             BackspaceKey(context, keyInfo)
         } else if (isEnter(keyInfo.getMainCode())) {
             EnterKey(context, keyInfo)
+        } else if (isSpace(keyInfo.getMainCode())) {
+            SpaceKey(context, keyInfo)
         } else if (keyInfo.getType() === KbdInfo.KeyType.NORMAL) {
             Key(context, keyInfo)
         } else if (isMultiTextDisplayed(keyInfo.getMainCode())) {
-            Key(context, keyInfo)
-        } else if (isSpace(keyInfo.getMainCode())) {
             Key(context, keyInfo)
         } else {
             Key(context, keyInfo)
