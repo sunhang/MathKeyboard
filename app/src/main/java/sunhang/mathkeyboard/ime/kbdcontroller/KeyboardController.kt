@@ -9,18 +9,14 @@ import sunhang.mathkeyboard.kbdviews.KeyboardView
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.screenWidth
 
-class KeyboardController : BaseController() {
-    private lateinit var keyboardView: KeyboardView
-    private lateinit var imsContext: IMSContext
+class KeyboardController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController() {
+    private val keyboardView = rootView.keyboardView
+    private val kbdDataSource = KbdDataSource(imsContext.context)
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
     private var shiftState = ShiftState.UNSHIFT
-    private lateinit var kbdDataSource: KbdDataSource
 
-    override fun onCreate(imsContext: IMSContext, rootView: RootView) {
-        super.onCreate(imsContext, rootView)
-        this.imsContext = imsContext
-        this.keyboardView = rootView.keyboardView
-        kbdDataSource = KbdDataSource(imsContext.context)
+    override fun onCreate() {
+        super.onCreate()
 
         val config = imsContext.imeLayoutConfig
         val context = imsContext.context

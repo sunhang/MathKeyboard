@@ -18,8 +18,8 @@ open class BaseController : IMSAction, SkinAttrUser {
         skinAttrUsers.add(baseController)
     }
 
-    override fun onCreate(imsContext: IMSContext, rootView: RootView) {
-        imsActions.forEach { it.onCreate(imsContext, rootView) }
+    override fun onCreate() {
+        imsActions.forEach { it.onCreate() }
     }
 
     override fun onCreateInputViewInvoked() {

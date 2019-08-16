@@ -13,6 +13,12 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"/>
     <FrameLayout
+            android:id="@+id/kbd_layer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@id/kbd"
+            android:layout_alignBottom="@id/kbd"/>
+    <FrameLayout
             android:id="@+id/top_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

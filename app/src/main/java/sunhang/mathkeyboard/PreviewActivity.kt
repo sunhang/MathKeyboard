@@ -30,8 +30,8 @@ class PreviewActivity : AppCompatActivity(){
             currentInputConnection = (et as EditTextForKbdDebug).inputConnection
         }
 
-        val rootController = RootController()
-        rootController.onCreate(IMSContext(this, inputToEditor), rootView)
+        val rootController = RootController(IMSContext(this, inputToEditor), rootView)
+        rootController.onCreate()
         rootController.onCreateInputViewInvoked()
     }
 

@@ -1,28 +1,21 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
-import android.view.ViewGroup
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KbdVisualAttrFactory
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
-import sunhang.mathkeyboard.tools.setLayoutParamSize
 import sunhang.openlibrary.runOnFile
 
-class RootController : BaseController(), SkinAttrUser {
-    private val keyboardController = KeyboardController()
+class RootController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController(), SkinAttrUser {
+    private val keyboardController = KeyboardController(imsContext, rootView)
 
     init {
         attach(keyboardController)
     }
 
-    private lateinit var rootView: RootView
-    private lateinit var imsContext: IMSContext
-
-    override fun onCreate(imsContext: IMSContext, rootView: RootView) {
-        super.onCreate(imsContext, rootView)
-        this.rootView = rootView
-        this.imsContext = imsContext
+    override fun onCreate() {
+        super.onCreate()
 
         runOnFile({
             KbdVisualAttrFactory().create(imsContext.context)

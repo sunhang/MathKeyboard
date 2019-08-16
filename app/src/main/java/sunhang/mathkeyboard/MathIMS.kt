@@ -11,8 +11,8 @@ import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
-    private val rootController = RootController()
-    private val inputToEditor = InputToEditor()
+    private lateinit var rootController : RootController
+    private lateinit var inputToEditor : InputToEditor
 
     private val rootView by uiLazy {
         View.inflate(this@MathIMS, R.layout.ime_layout, null) as RootView
@@ -20,8 +20,11 @@ class MathIMS : InputMethodService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        inputToEditor = InputToEditor()
         val imsContext = IMSContext(applicationContext, inputToEditor)
-        rootController.onCreate(imsContext, rootView)
+        rootController = RootController(imsContext, rootView)
+        rootController.onCreate()
     }
 
     override fun onCreateInputView(): View {
