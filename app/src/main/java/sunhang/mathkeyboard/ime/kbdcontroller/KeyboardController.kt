@@ -1,7 +1,6 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
 import io.reactivex.functions.Consumer
-import org.reactivestreams.Subscriber
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.CODE_SWITCH_EN_QWERTY
 import sunhang.mathkeyboard.CODE_SWITCH_NUM_SODUKU
@@ -9,9 +8,9 @@ import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
-import sunhang.mathkeyboard.kbdviews.KeyboardView
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.screenWidth
+import kotlin.math.roundToInt
 
 class KeyboardController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController() {
     private val context = imsContext.context
@@ -20,6 +19,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
     private var shiftState = ShiftState.UNSHIFT
     private val numKbdColumn = NumKbdColumn(imsContext, rootView)
+    private var planeType: PlaneType = PlaneType.QWERTY_EN
 
     init {
         attach(numKbdColumn)
@@ -38,17 +38,42 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
             else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
         }
-        observable.subscribe(keyboardConsumer()).let { compositeDisposable.add(it) }
+        observable.subscribe(keyboardConsumer(planeType)).let { compositeDisposable.add(it) }
     }
 
-    private fun keyboardConsumer(): Consumer<Keyboard> {
+    private fun keyboardConsumer(planeType: PlaneType): Consumer<Keyboard> {
         return Consumer<Keyboard>() { keyboard ->
             setListener(keyboard)
             keyboardView.updateData(keyboard)
             keyboardVisualAttributes?.let {
                 setKbdVisualAttr(keyboard, it)
             }
+
+            if (planeType == PlaneType.NUMBER) {
+                numKbdColumn.showViewAlignedWithKbd(keyboard)
+            } else {
+                numKbdColumn.dismissView()
+            }
         }
+    }
+
+    private fun NumKbdColumn.showViewAlignedWithKbd(keyboard: Keyboard) {
+        val keyIndex0 = keyboard.keys[0]
+        val keyIndex8 = keyboard.keys[8]
+        val keyIndex12 = keyboard.keys[12]
+
+        val keyboardHeight = imsContext.imeLayoutConfig.keyboardHeight
+
+        val marginLeft = keyIndex12.visualRect.left.roundToInt()
+        val marginTop = keyIndex0.visualRect.top.roundToInt()
+        val marginBottom = keyboardHeight - keyIndex8.visualRect.bottom.roundToInt()
+        val width = keyIndex12.visualRect.width().roundToInt()
+        showView(
+            marginLeft,
+            marginTop,
+            marginBottom,
+            width)
+
     }
 
     private fun setListener(keyboard: Keyboard) {
@@ -105,22 +130,17 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 keyboardView.keyboard.shiftKey?.resetShiftState()
             }
 
-            when (code) {
-                CODE_SWITCH_NUM_SODUKU -> {
-                    loadKeyboardData(PlaneType.NUMBER)
-                }
-                CODE_SWITCH_EN_QWERTY -> {
-                    loadKeyboardData(PlaneType.QWERTY_EN)
-                }
-                else -> {
-                    imsContext.inputToEditor.inputChar(code)
-                }
+            val planeType = when (code) {
+                CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
+                CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
+                else -> null
             }
 
-            if (code == CODE_SWITCH_NUM_SODUKU) {
-                numKbdColumn.showView()
+            if (planeType != null) {
+                loadKeyboardData(planeType)
+                this@KeyboardController.planeType = planeType
             } else {
-                numKbdColumn.dismissView()
+                imsContext.inputToEditor.inputChar(code)
             }
         }
     }

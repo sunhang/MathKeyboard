@@ -1,10 +1,7 @@
 package sunhang.mathkeyboard.kbdmodel
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import protoinfo.KbdInfo
@@ -33,7 +30,8 @@ open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
         }
     }
 
-    fun getMainCode() = keyInfo.getMainCode()
+    val mainCode get() = keyInfo.mainCode
+    val visualRect get() = keyLayout.visualRect
 
     open fun onDraw(canvas: Canvas) {
         drawBackground(canvas)
@@ -83,7 +81,7 @@ open class Key(private val context: Context, val keyInfo: KbdInfo.KeyInfo) {
     }
 
     protected fun invokeOnKeyClickedListener() {
-        onKeyClickedListener.onClick(getMainCode(), this)
+        onKeyClickedListener.onClick(mainCode, this)
     }
 
     interface OnKeyClickedListener {

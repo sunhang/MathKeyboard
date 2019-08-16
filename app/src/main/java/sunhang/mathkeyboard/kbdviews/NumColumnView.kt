@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 
 class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private val codes = arrayListOf('.', '/', '+', '-', ':', '=', '@', '_')
-    private val itemHeight = dp2Px(40.0f) as Int
+    private val itemHeight = dp2Px(40.0f).roundToInt()
     private var currentPressed = -1
 
     private val gestureDetector: GestureDetector
@@ -105,9 +105,9 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     private fun drawLine(canvas: Canvas, itemRect: Rect) {
-        val startX = (itemRect.left + dp2Px(6.0f)) as Int
+        val startX = (itemRect.left + dp2Px(6.0f)).roundToInt()
         val startY = tempRect.bottom
-        val endX = (tempRect.right - dp2Px(6.0f)) as Int
+        val endX = (tempRect.right - dp2Px(6.0f)).roundToInt()
         val endY = tempRect.bottom
 
         canvas.drawLine(startX.toFloat(), startY.toFloat(), endX.toFloat(), endY.toFloat(), linePaint)

@@ -11,7 +11,7 @@ class BackspaceKey(context: Context, keyInfo: KbdInfo.KeyInfo) : IconKey(context
     override fun getCurrentIcon() = icon
 
     protected fun invokeOnRepeatedClickListener(first: Boolean) {
-        (onKeyClickedListener as? OnBackspaceKeyClickedListener)?.onRepeatedClick(getMainCode(), first, this)
+        (onKeyClickedListener as? OnBackspaceKeyClickedListener)?.onRepeatedClick(mainCode, first, this)
     }
 
     interface OnBackspaceKeyClickedListener : OnKeyClickedListener{
