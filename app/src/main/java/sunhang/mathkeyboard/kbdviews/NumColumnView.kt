@@ -17,15 +17,19 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
     private val codes = arrayListOf('.', '/', '+', '-', ':', '=', '@', '_')
     private val itemHeight = dp2Px(40.0f).roundToInt()
     private var currentPressed = -1
-
     private val gestureDetector: GestureDetector
     private var onItemSelectListener: ((Int) -> Unit)? = null
     private val tempRect = Rect()
     private val tempBound = Rect()
     private val paint: Paint
-    private val linePaint: Paint
     private val itemPressedPaint: Paint
-    private val DEFAULT_SP_TEXTSIZE = 18f
+    val linePaint: Paint
+    var textColor = 0
+    var pressedTextColor = 0
+
+    companion object {
+        private const val DEFAULT_SP_TEXTSIZE = 18f
+    }
 
     init {
         gestureDetector = GestureDetector(getContext(), SimpleOnGestureListener())
@@ -34,10 +38,8 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
         paint.textSize = sp2Px(DEFAULT_SP_TEXTSIZE)
         paint.textAlign = Paint.Align.LEFT
         paint.isAntiAlias = true
-//            paint.color = ContextCompat.getColor(context, R.color.normal_key_text_color)
 
         linePaint = Paint()
-        linePaint.color = -0x181819
 
         itemPressedPaint = Paint()
         itemPressedPaint.color = Color.LTGRAY
@@ -63,14 +65,16 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
             tempRect.top = i * itemHeight
             tempRect.bottom = (i + 1) * itemHeight
 
-//                val itemBackground = if (i == currentPressed) attr.keyBackgroundPressed else attr.keyBackground
-//                paint.setColor(if (i == currentPressed) attr.keyLabelColorPressed else attr.keyLabelColor)
+            if (i == currentPressed) {
+                canvas.drawRect(tempRect, itemPressedPaint)
+            }
 
-            // draw background
-//                itemBackground.setBounds(tempRect)
-//                itemBackground.draw(canvas)
-
-            drawItem(canvas, codes[i].toString(), tempRect)
+            paint.color = if (i == currentPressed) {
+                textColor
+            } else {
+                pressedTextColor
+            }
+            drawItem(canvas, paint, codes[i].toString(), tempRect)
 
             if (i != codes.size - 1) {
                 // draw line
@@ -97,7 +101,7 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
         return true
     }
 
-    private fun drawItem(canvas: Canvas, text: String, rect: Rect) {
+    private fun drawItem(canvas: Canvas, paint: Paint, text: String, rect: Rect) {
         paint.getTextBounds(text, 0, text.length, tempBound)
         val x = (rect.centerX() - tempBound.centerX()).toFloat()
         val y = (rect.centerY() - (tempBound.top + tempBound.bottom) / 2).toFloat()
@@ -105,9 +109,9 @@ class NumColumnView(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     private fun drawLine(canvas: Canvas, itemRect: Rect) {
-        val startX = (itemRect.left + dp2Px(6.0f)).roundToInt()
+        val startX = (itemRect.left + dp2Px(8.0f)).roundToInt()
         val startY = tempRect.bottom
-        val endX = (tempRect.right - dp2Px(6.0f)).roundToInt()
+        val endX = (tempRect.right - dp2Px(8.0f)).roundToInt()
         val endY = tempRect.bottom
 
         canvas.drawLine(startX.toFloat(), startY.toFloat(), endX.toFloat(), endY.toFloat(), linePaint)

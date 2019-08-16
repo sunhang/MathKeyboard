@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:scrollbarStyle="insideOverlay"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="8dp"
+            android:scrollbarSize="4dp"
+            android:paddingBottom="8dp"
             android:layout_width="match_parent"
-            android:background="@color/colorAccent"
             android:layout_height="match_parent">
     <sunhang.mathkeyboard.kbdviews.NumColumnView
             android:id="@+id/num_column"
