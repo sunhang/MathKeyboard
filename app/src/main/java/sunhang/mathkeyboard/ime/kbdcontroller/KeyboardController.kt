@@ -18,6 +18,11 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
     private val kbdDataSource = KbdDataSource(imsContext.context)
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
     private var shiftState = ShiftState.UNSHIFT
+    private val numKbdColumn = NumKbdColumn(imsContext, rootView)
+
+    init {
+        attach(numKbdColumn)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -28,10 +33,11 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
         val config = imsContext.imeLayoutConfig
         val keyboardHeight = config.keyboardHeight
 
-        when (planeType) {
+        val observable = when (planeType) {
             PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
             else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
-        }.subscribe(keyboardConsumer()).let { compositeDisposable.add(it) }
+        }
+        observable.subscribe(keyboardConsumer()).let { compositeDisposable.add(it) }
     }
 
     private fun keyboardConsumer(): Consumer<Keyboard> {
@@ -101,9 +107,11 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             when (code) {
                 CODE_SWITCH_NUM_SODUKU -> {
                     loadKeyboardData(PlaneType.NUMBER)
+                    numKbdColumn.showView()
                 }
                 else -> {
                     imsContext.inputToEditor.inputChar(code)
+                    numKbdColumn.dismissView()
                 }
             }
         }
