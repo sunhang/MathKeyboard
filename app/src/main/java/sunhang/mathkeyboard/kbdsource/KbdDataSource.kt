@@ -59,7 +59,7 @@ class KbdDataSource(private val context: Context) {
         }.subscribeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun kbdModel(file: File, infoFactory: InfoFactory, keyboardFactory: KeyboardFactory): Maybe<Keyboard> {
+    private fun getKbdModel(file: File, infoFactory: InfoFactory, keyboardFactory: KeyboardFactory): Maybe<Keyboard> {
         val diskProto = getKbdProtoFromDisk(file)
         val protoFromFactory = getKbdProtoFromFactory(infoFactory)
             .observeOn(fileScheduler)
@@ -88,7 +88,7 @@ class KbdDataSource(private val context: Context) {
     }
 
     fun enKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
-        return kbdModel(
+        return getKbdModel(
             FilePath.keyboardEnProtoFile(keyboardWidth, keyboardHeight),
             QwertyEnInfoFactory(context, keyboardWidth, keyboardHeight),
             QwertyEnKeyboardFactory(context)
@@ -96,7 +96,7 @@ class KbdDataSource(private val context: Context) {
     }
 
     fun numKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
-        return kbdModel(
+        return getKbdModel(
             FilePath.keyboardNumProtoFile(keyboardWidth, keyboardHeight),
             NumInfoFactory(context, keyboardWidth, keyboardHeight),
             KeyboardFactory(context)
