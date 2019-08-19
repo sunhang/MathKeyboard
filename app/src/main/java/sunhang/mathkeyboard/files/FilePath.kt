@@ -19,6 +19,10 @@ class FilePath {
             return File(keyboardBasePath(), "num_${width}_$height")
         }
 
+        fun keyboardMathSymbolProtoFile(width: Int, height: Int): File {
+            return File(keyboardBasePath(), "math_symbol_${width}_$height")
+        }
+
         private fun checkThenMakeDir(dir: File) {
             if (dir.isFile) {
                 dir.delete()

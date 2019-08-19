@@ -4,6 +4,7 @@ import io.reactivex.functions.Consumer
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.CODE_SWITCH_EN_QWERTY
 import sunhang.mathkeyboard.CODE_SWITCH_NUM_SODUKU
+import sunhang.mathkeyboard.CODE_SWITCH_SYMBOL
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
@@ -36,6 +37,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
         val observable = when (planeType) {
             PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
+            PlaneType.MATH_SYMBOL -> kbdDataSource.mathSymbolKbdModel(context.screenWidth, keyboardHeight)
             else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
         }
         observable.subscribe(keyboardConsumer(planeType)).let { compositeDisposable.add(it) }
@@ -133,6 +135,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             val planeType = when (code) {
                 CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
                 CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
+                CODE_SWITCH_SYMBOL -> PlaneType.MATH_SYMBOL
                 else -> null
             }
 
