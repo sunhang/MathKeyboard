@@ -73,17 +73,17 @@ class MathSymbolInfo1Factory(context: Context, kbdWidth: Int, kbdHeight: Int) :
         val keyTypes = arrayOf(
             Array(10) { KbdInfo.KeyType.NORMAL },
             Array(7) { KbdInfo.KeyType.NORMAL },
-            Array<KbdInfo.KeyType>(0) {},
+            arrayOf<KbdInfo.KeyType>(),
             Array(2) { KbdInfo.KeyType.FUNCTION },
-            Array<KbdInfo.KeyType>(0) {}
+            arrayOf<KbdInfo.KeyType>()
         )
 
         val keyColors = arrayOf(
             Array(10) { KbdInfo.KeyColor.COLOR_NORMAL },
             Array(7) { KbdInfo.KeyColor.COLOR_NORMAL },
-            Array<KbdInfo.KeyColor>(0) {},
+            arrayOf<KbdInfo.KeyColor>(),
             Array(2) { KbdInfo.KeyColor.SPECIAL },
-            Array<KbdInfo.KeyColor>(0) {}
+            arrayOf<KbdInfo.KeyColor>()
         )
 
         val keyTextSizes = arrayOf(
