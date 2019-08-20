@@ -119,6 +119,25 @@ class MathSymbolInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
             }
         )
 
+        val keyTextSizes = arrayOf(
+            FloatArray(10) { 23.0f },
+            FloatArray(10) { 23.0f },
+            FloatArray(10) { 23.0f },
+            FloatArray(9) {
+                when (it) {
+                    0 -> 20.0f
+                    else -> 23.0f
+                }
+            },
+            FloatArray(8) {
+                when (it) {
+                    0, 1 -> 20.0f
+                    7 -> 17.0f
+                    else -> 23.0f
+                }
+            }
+        )
+
         // 打算用两页
 //        charArrayOf('（', '）', '【', '】', '｛', '｝', '⊕', '⊙')
 //        charArrayOf('θ', 'Δ', '∥') '⊥', 'Ⅱ', '‖', '∠', '⌒', '√',
@@ -126,7 +145,7 @@ class MathSymbolInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
 
         // 0的话，会居中显示
         val baseLine = 0.0f
-        val textSize = 23.0f
+//        val textSize = 23.0f
 
         val builder = KbdInfo.KeyboardInfo.newBuilder()
 
@@ -139,7 +158,7 @@ class MathSymbolInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
                 buildKeyInfo(
                     code = codes[rowIndex][columnIndex],
                     text = texts[rowIndex][columnIndex],
-                    textSize = textSize,
+                    textSize = keyTextSizes[rowIndex][columnIndex],
                     baseLine = baseLine,
                     keyType = keyTypes[rowIndex][columnIndex],
                     x = xOffset,
