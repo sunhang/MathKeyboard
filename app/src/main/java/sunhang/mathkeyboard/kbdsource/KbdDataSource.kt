@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.files.FilePath
 import sunhang.mathkeyboard.kbdinfo.InfoFactory
-import sunhang.mathkeyboard.kbdinfo.MathSymbolInfoFactory
+import sunhang.mathkeyboard.kbdinfo.MathSymbolInfo0Factory
 import sunhang.mathkeyboard.kbdinfo.NumInfoFactory
 import sunhang.mathkeyboard.kbdinfo.QwertyEnInfoFactory
 import sunhang.mathkeyboard.kbdmodel.Keyboard
@@ -104,10 +104,10 @@ class KbdDataSource(private val context: Context) {
         )
     }
 
-    fun mathSymbolKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
+    fun mathSymbol0KbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
         return getKbdModel(
             FilePath.keyboardMathSymbolProtoFile(keyboardWidth, keyboardHeight),
-            MathSymbolInfoFactory(context, keyboardWidth, keyboardHeight),
+            MathSymbolInfo0Factory(context, keyboardWidth, keyboardHeight),
             KeyboardFactory(context)
         )
     }

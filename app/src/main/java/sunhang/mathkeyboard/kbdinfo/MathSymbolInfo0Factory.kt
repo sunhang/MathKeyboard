@@ -6,7 +6,7 @@ import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.tools.dp2Px
 import java.lang.RuntimeException
 
-class MathSymbolInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
+class MathSymbolInfo0Factory(context: Context, kbdWidth: Int, kbdHeight: Int) :
     InfoFactory(context, kbdWidth, kbdHeight) {
 
     @Suppress("MoveVariableDeclarationIntoWhen")

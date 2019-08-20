@@ -37,7 +37,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
         val observable = when (planeType) {
             PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
-            PlaneType.MATH_SYMBOL -> kbdDataSource.mathSymbolKbdModel(context.screenWidth, keyboardHeight)
+            PlaneType.MATH_SYMBOL -> kbdDataSource.mathSymbol0KbdModel(context.screenWidth, keyboardHeight)
             else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
         }
         observable.subscribe(keyboardConsumer(planeType)).let { compositeDisposable.add(it) }
