@@ -7,11 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.files.FilePath
-import sunhang.mathkeyboard.kbdinfo.InfoFactory
-import sunhang.mathkeyboard.kbdinfo.MathSymbolInfo0Factory
-import sunhang.mathkeyboard.kbdinfo.NumInfoFactory
-import sunhang.mathkeyboard.kbdinfo.QwertyEnInfoFactory
+import sunhang.mathkeyboard.kbdinfo.*
 import sunhang.mathkeyboard.kbdmodel.Keyboard
+import sunhang.mathkeyboard.kbdmodel.PlaneType
 import sunhang.mathkeyboard.kbdmodel.factory.KeyboardFactory
 import sunhang.mathkeyboard.kbdmodel.factory.QwertyEnKeyboardFactory
 import sunhang.mathkeyboard.tools.debugTime
@@ -88,28 +86,36 @@ class KbdDataSource(private val context: Context) {
         return Maybe.concat(memSource, keyboardSource).firstElement().observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun enKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
-        return getKbdModel(
-            FilePath.keyboardEnProtoFile(keyboardWidth, keyboardHeight),
-            QwertyEnInfoFactory(context, keyboardWidth, keyboardHeight),
-            QwertyEnKeyboardFactory(context)
-        )
-    }
-
-    fun numKbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
-        return getKbdModel(
-            FilePath.keyboardNumProtoFile(keyboardWidth, keyboardHeight),
-            NumInfoFactory(context, keyboardWidth, keyboardHeight),
-            KeyboardFactory(context)
-        )
-    }
-
-    fun mathSymbol0KbdModel(keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
-        return getKbdModel(
-            FilePath.keyboardMathSymbolProtoFile(keyboardWidth, keyboardHeight),
-            MathSymbolInfo0Factory(context, keyboardWidth, keyboardHeight),
-            KeyboardFactory(context)
-        )
+    fun getKbdModel(planeType: PlaneType, keyboardWidth: Int, keyboardHeight: Int): Maybe<Keyboard> {
+        return when (planeType) {
+            PlaneType.NUMBER -> {
+                getKbdModel(
+                    FilePath.keyboardNumProtoFile(keyboardWidth, keyboardHeight),
+                    NumInfoFactory(context, keyboardWidth, keyboardHeight),
+                    KeyboardFactory(context)
+                )
+            }
+            PlaneType.MATH_SYMBOL_0 -> {
+                getKbdModel(
+                    FilePath.keyboardMathSymbol0ProtoFile(keyboardWidth, keyboardHeight),
+                    MathSymbolInfo0Factory(context, keyboardWidth, keyboardHeight),
+                    KeyboardFactory(context)
+                )
+            }
+            PlaneType.MATH_SYMBOL_1 -> {
+                getKbdModel(
+                    FilePath.keyboardMathSymbol1ProtoFile(keyboardWidth, keyboardHeight),
+                    MathSymbolInfo1Factory(context, keyboardWidth, keyboardHeight),
+                    KeyboardFactory(context)
+                )
+            }
+            else -> {
+                getKbdModel(
+                    FilePath.keyboardEnProtoFile(keyboardWidth, keyboardHeight),
+                    QwertyEnInfoFactory(context, keyboardWidth, keyboardHeight),
+                    QwertyEnKeyboardFactory(context))
+            }
+        }
     }
 
     private fun keyFrom(file: File) = file.name.hashCode().toString()

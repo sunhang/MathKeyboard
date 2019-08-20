@@ -1,10 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
-import io.reactivex.functions.Consumer
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.CODE_SWITCH_EN_QWERTY
-import sunhang.mathkeyboard.CODE_SWITCH_NUM_SODUKU
-import sunhang.mathkeyboard.CODE_SWITCH_SYMBOL
+import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
@@ -35,27 +32,23 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
         val config = imsContext.imeLayoutConfig
         val keyboardHeight = config.keyboardHeight
 
-        val observable = when (planeType) {
-            PlaneType.NUMBER -> kbdDataSource.numKbdModel(context.screenWidth, keyboardHeight)
-            PlaneType.MATH_SYMBOL -> kbdDataSource.mathSymbol0KbdModel(context.screenWidth, keyboardHeight)
-            else -> kbdDataSource.enKbdModel(context.screenWidth, keyboardHeight)
-        }
-        observable.subscribe(keyboardConsumer(planeType)).let { compositeDisposable.add(it) }
+        kbdDataSource.getKbdModel(planeType, context.screenWidth, keyboardHeight)
+            .subscribe {
+                handleKeyboard(planeType, it)
+            }.let { compositeDisposable.add(it) }
     }
 
-    private fun keyboardConsumer(planeType: PlaneType): Consumer<Keyboard> {
-        return Consumer<Keyboard>() { keyboard ->
-            setListener(keyboard)
-            keyboardView.updateData(keyboard)
-            keyboardVisualAttributes?.let {
-                setKbdVisualAttr(keyboard, it)
-            }
+    private fun handleKeyboard(planeType: PlaneType, keyboard: Keyboard) {
+        setListener(keyboard)
+        keyboardView.updateData(keyboard)
+        keyboardVisualAttributes?.let {
+            setKbdVisualAttr(keyboard, it)
+        }
 
-            if (planeType == PlaneType.NUMBER) {
-                numKbdColumn.showViewAlignedWithKbd(keyboard)
-            } else {
-                numKbdColumn.dismissView()
-            }
+        if (planeType == PlaneType.NUMBER) {
+            numKbdColumn.showViewAlignedWithKbd(keyboard)
+        } else {
+            numKbdColumn.dismissView()
         }
     }
 
@@ -74,7 +67,8 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             marginLeft,
             marginTop,
             marginBottom,
-            width)
+            width
+        )
 
     }
 
@@ -135,7 +129,9 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             val planeType = when (code) {
                 CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
                 CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
-                CODE_SWITCH_SYMBOL -> PlaneType.MATH_SYMBOL
+                CODE_SWITCH_SYMBOL -> PlaneType.MATH_SYMBOL_0
+                CODE_NEXT_PAGE -> PlaneType.MATH_SYMBOL_1
+                CODE_PRE_PAGE -> PlaneType.MATH_SYMBOL_0
                 else -> null
             }
 

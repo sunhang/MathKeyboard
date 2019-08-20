@@ -19,8 +19,12 @@ class FilePath {
             return File(keyboardBasePath(), "num_${width}_$height")
         }
 
-        fun keyboardMathSymbolProtoFile(width: Int, height: Int): File {
-            return File(keyboardBasePath(), "math_symbol_${width}_$height")
+        fun keyboardMathSymbol0ProtoFile(width: Int, height: Int): File {
+            return File(keyboardBasePath(), "math_symbol_0_${width}_$height")
+        }
+
+        fun keyboardMathSymbol1ProtoFile(width: Int, height: Int): File {
+            return File(keyboardBasePath(), "math_symbol_1_${width}_$height")
         }
 
         private fun checkThenMakeDir(dir: File) {
