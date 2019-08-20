@@ -22,3 +22,5 @@ val CODE_SWITCH_MAIN = -4 + CUSTOM_BEGIN // 切换到中文键盘
 val CODE_ENTER = -5 + CUSTOM_BEGIN // 回车键
 val CODE_CLEAR = -6 + CUSTOM_BEGIN // 清空
 val CODE_BACK = -7 + CUSTOM_BEGIN // 从符号键盘返回
+val CODE_NEXT_PAGE = -8 + CUSTOM_BEGIN // 下一页
+val CODE_PRE_PAGE = -9 + CUSTOM_BEGIN //  上一页

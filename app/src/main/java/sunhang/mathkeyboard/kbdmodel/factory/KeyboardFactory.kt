@@ -40,7 +40,9 @@ open class KeyboardFactory(protected var context: Context) {
                 || code == KEYCODE_APOSTROPHE
                 || code == CODE_SWITCH_MAIN
                 || code == CODE_SWITCH_EN_QWERTY
-                || code == CODE_CLEAR)
+                || code == CODE_CLEAR
+                || code == CODE_NEXT_PAGE
+                || code == CODE_PRE_PAGE)
     }
 
     companion object {
