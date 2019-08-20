@@ -35,7 +35,7 @@ class MathSymbolInfo0Factory(context: Context, kbdWidth: Int, kbdHeight: Int) :
         val codes = arrayOf(
             toIntArray('≈', '≡', '≠', '＝', '≤', '≥', '＜', '＞', '≮', '≯'),
             toIntArray('∷', '±', '＋', '－', '×', '÷', '／', '∫', '∮', '∝'),
-            toIntArray('∞', '∧', '∨', '∑', '∏', '∪', '∩', '∈', '∵', '∴'),
+            toIntArray('∞', '∧', '∨', '∑', '∪', '∩', '∈', '∉', '∵', '∴'),
             toIntArray(CODE_NEXT_PAGE, 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', KEYCODE_DELETE),
             toIntArray(CODE_SWITCH_EN_QWERTY, CODE_SWITCH_NUM_SODUKU, 'e', '≌', KEYCODE_SPACE, '∽', 'Ⅰ', CODE_ENTER)
         )
@@ -43,7 +43,7 @@ class MathSymbolInfo0Factory(context: Context, kbdWidth: Int, kbdHeight: Int) :
         val texts = arrayOf(
             arrayOf("≈", "≡", "≠", "＝", "≤", "≥", "＜", "＞", "≮", "≯"),
             arrayOf("∷", "±", "＋", "－", "×", "÷", "／", "∫", "∮", "∝"),
-            arrayOf("∞", "∧", "∨", "∑", "∏", "∪", "∩", "∈", "∵", "∴"),
+            arrayOf("∞", "∧", "∨", "∑", "∪", "∩", "∈", "∉", "∵", "∴"),
             arrayOf("1/2", "α", "β", "γ", "δ", "ε", "ζ", "η", ""),
             arrayOf("ABC", "123", "e", "≌", " ", "∽", "Ⅰ", "")
         )
