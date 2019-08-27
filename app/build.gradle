@@ -5,7 +5,7 @@ apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+//    buildToolsVersion "29.0.0" // 它把aidl生成的java文件放错位置了
     defaultConfig {
         applicationId "sunhang.mathkeyboard"
         minSdkVersion 19
@@ -13,6 +13,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-Wall"
+            }
+        }
     }
     buildTypes {
         release {

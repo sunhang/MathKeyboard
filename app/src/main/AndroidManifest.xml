@@ -35,6 +35,13 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/method"/>
         </service>
+        <service android:name="com.android.inputmethod.pinyin.PinyinDecoderService"
+                 android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.inputmethod.pinyin.Decoder_Service" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>
