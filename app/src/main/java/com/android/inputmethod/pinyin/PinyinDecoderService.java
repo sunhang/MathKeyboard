@@ -31,6 +31,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import sunhang.mathkeyboard.R;
+import sunhang.mathkeyboard.tools.LKt;
 
 /**
  * This class is used to separate the input method kernel in an individual
@@ -133,8 +134,7 @@ public class PinyinDecoderService extends Service {
         AssetFileDescriptor afd = getResources().openRawResourceFd(
                 R.raw.dict_pinyin);
         if (Environment.getInstance().needDebug()) {
-            Log
-                    .i("foo", "Dict: start=" + afd.getStartOffset()
+            Log.i("foo", "Dict: start=" + afd.getStartOffset()
                             + ", length=" + afd.getLength() + ", fd="
                             + afd.getParcelFileDescriptor());
         }

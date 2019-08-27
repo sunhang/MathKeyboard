@@ -39,7 +39,7 @@ class MathIMS : InputMethodService() {
         rootController = RootController(imsContext, rootView)
         rootController.onCreate()
 
-        i("${startPinyinDecoderService()}")
+        startPinyinDecoderService()
     }
 
     override fun onCreateInputView(): View {
