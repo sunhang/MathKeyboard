@@ -8,6 +8,7 @@ import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.tools.isBackslash
 import sunhang.mathkeyboard.tools.isEnter
+import sunhang.mathkeyboard.tools.isShift
 import sunhang.mathkeyboard.tools.isSpace
 
 open class KeyboardFactory(protected var context: Context) {
@@ -28,6 +29,8 @@ open class KeyboardFactory(protected var context: Context) {
             Key(context, keyInfo)
         } else if (isMultiTextDisplayed(keyInfo.getMainCode())) {
             Key(context, keyInfo)
+        } else if (isShift(keyInfo.mainCode)) {
+            return ShiftKey(context, keyInfo)
         } else {
             Key(context, keyInfo)
         }

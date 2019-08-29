@@ -12,6 +12,7 @@ import sunhang.mathkeyboard.kbdmodel.Keyboard
 import sunhang.mathkeyboard.kbdmodel.PlaneType
 import sunhang.mathkeyboard.kbdmodel.factory.KeyboardFactory
 import sunhang.mathkeyboard.kbdmodel.factory.QwertyEnKeyboardFactory
+import sunhang.mathkeyboard.kbdmodel.factory.QwertyZHKeyboardFactory
 import sunhang.mathkeyboard.tools.debugTime
 import sunhang.mathkeyboard.tools.elapsedTime
 import sunhang.mathkeyboard.tools.i
@@ -107,6 +108,13 @@ class KbdDataSource(private val context: Context) {
                     FilePath.keyboardMathSymbol1ProtoFile(keyboardWidth, keyboardHeight),
                     MathSymbolInfo1Factory(context, keyboardWidth, keyboardHeight),
                     KeyboardFactory(context)
+                )
+            }
+            PlaneType.QWERTY_ZH -> {
+                getKbdModel(
+                    FilePath.keyboardZhProtoFile(keyboardWidth, keyboardHeight),
+                    QwertyZhInfoFactory(context, keyboardWidth, keyboardHeight),
+                    QwertyZHKeyboardFactory(context)
                 )
             }
             else -> {

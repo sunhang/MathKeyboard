@@ -8,4 +8,6 @@ enum class PlaneType {
     // 数学符号第二个面板
     MATH_SYMBOL_1,
     NUMBER,
+    // 中文输入键盘
+    QWERTY_ZH,
 }

@@ -11,6 +11,10 @@ class FilePath {
             return dir
         }
 
+        fun keyboardZhProtoFile(width: Int, height: Int): File {
+            return File(keyboardBasePath(), "zh_${width}_$height")
+        }
+
         fun keyboardEnProtoFile(width: Int, height: Int): File {
             return File(keyboardBasePath(), "en_${width}_$height")
         }

@@ -103,3 +103,13 @@ fun elapsedTime(title: String, begin: Float) {
     i("$title elapsed time : ${debugTime() - begin}")
 }
 
+fun applyAlpha(color: Int, alpha: Int): Int {
+    return color and 0x00FFFFFF or (alpha shl 24)
+}
+
+fun multiplyAlpha(color: Int, multiplier: Float): Int {
+    val alpha = color.ushr(24)
+    val newAlpha = (alpha * multiplier + 0.5f).toInt()
+
+    return applyAlpha(color, newAlpha)
+}

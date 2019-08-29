@@ -3,7 +3,8 @@
     <string name="input_setting_error">无法打开系统输入法设置页面</string>
     <string name="step_one">第一步</string>
     <string name="step_two">第二步</string>
-
+    <string name="key_text_zh">中</string>
+    <string name="key_text_en">英</string>
 
     <!-- 第三方 -->
     <string name="ime_name">谷歌拼音输入法</string>

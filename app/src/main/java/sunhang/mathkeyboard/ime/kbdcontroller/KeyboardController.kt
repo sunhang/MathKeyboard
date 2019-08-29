@@ -25,7 +25,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
     override fun onCreate() {
         super.onCreate()
-        loadKeyboardData(PlaneType.QWERTY_EN)
+        loadKeyboardData(PlaneType.QWERTY_ZH)
     }
 
     private fun loadKeyboardData(planeType: PlaneType) {
@@ -128,6 +128,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 
             val planeType = when (code) {
                 CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
+                CODE_SWITCH_MAIN -> PlaneType.QWERTY_ZH
                 CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
                 CODE_SWITCH_SYMBOL -> PlaneType.MATH_SYMBOL_0
                 CODE_NEXT_PAGE -> PlaneType.MATH_SYMBOL_1
