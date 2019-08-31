@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard.base.common
+package sunhang.mathkeyboard.kbdskin
 
 import android.content.res.Resources
 import android.graphics.Bitmap

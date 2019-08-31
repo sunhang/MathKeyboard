@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ScrollView
 import sunhang.mathkeyboard.R
-import sunhang.mathkeyboard.base.common.CloneableNinePatchDrawable
+import sunhang.mathkeyboard.kbdskin.CloneableNinePatchDrawable
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdviews.NumColumnView

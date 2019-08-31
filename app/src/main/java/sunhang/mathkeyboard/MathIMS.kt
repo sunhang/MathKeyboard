@@ -9,19 +9,20 @@ import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import com.android.inputmethod.pinyin.PinyinDecoderService
+import sunhang.mathkeyboard.base.common.InstancesContainer
+import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
 import sunhang.mathkeyboard.ime.IMSContext
-import sunhang.mathkeyboard.ime.InputToEditor
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
+import sunhang.mathkeyboard.ime.logic.Logic
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
-    private lateinit var rootController : RootController
-    private lateinit var inputToEditor : InputToEditor
+    private val rootController : RootController by InstancesContainer
+    private val logic: Logic by InstancesContainer
     /**
      * Connection used to bind the decoding service.
      */
@@ -34,10 +35,16 @@ class MathIMS : InputMethodService() {
     override fun onCreate() {
         super.onCreate()
 
-        inputToEditor = InputToEditor()
-        val imsContext = IMSContext(applicationContext, inputToEditor)
-        rootController = RootController(imsContext, rootView)
+        val logic = Logic()
+        val input = logic.input
+        val imsContext = IMSContext(applicationContext, input)
+        val rootController = RootController(imsContext, rootView)
         rootController.onCreate()
+
+        logic.init()
+
+        putInstanceIntoContainer(this::rootController.name, rootController)
+        putInstanceIntoContainer(this::logic.name, logic)
 
         startPinyinDecoderService()
     }
@@ -56,8 +63,9 @@ class MathIMS : InputMethodService() {
 
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
-        inputToEditor.currentInputConnection = currentInputConnection
-        inputToEditor.editorInfo = info
+
+        logic.attachInputConnection(currentInputConnection)
+        logic.attachEditorInfo(info)
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
@@ -67,6 +75,7 @@ class MathIMS : InputMethodService() {
     override fun onDestroy() {
         super.onDestroy()
         unbindService(pinyinDecoderServiceConnection)
+        logic.dispose()
     }
 
     private fun startPinyinDecoderService(): Boolean {

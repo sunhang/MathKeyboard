@@ -11,8 +11,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_preview.*
 import sunhang.mathkeyboard.ime.IMSContext
-import sunhang.mathkeyboard.ime.InputToEditor
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
+import sunhang.mathkeyboard.ime.logic.Input
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.uiLazy
 
@@ -25,12 +25,17 @@ class PreviewActivity : AppCompatActivity(){
         val rootView = View.inflate(this, R.layout.ime_layout, null) as RootView
         fl.addView(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
-        val inputToEditor = InputToEditor().apply {
-            editorInfo = (et as EditTextForKbdDebug).editorInfo
-            currentInputConnection = (et as EditTextForKbdDebug).inputConnection
+//        val inputToEditor = InputToEditor().apply {
+//            editorInfo = (et as EditTextForKbdDebug).editorInfo
+//            currentInputConnection = (et as EditTextForKbdDebug).inputConnection
+//        }
+
+        val input = object : Input {
+            override fun inputChar(code: Int) {
+            }
         }
 
-        val rootController = RootController(IMSContext(this, inputToEditor), rootView)
+        val rootController = RootController(IMSContext(this, input), rootView)
         rootController.onCreate()
         rootController.onCreateInputViewInvoked()
     }

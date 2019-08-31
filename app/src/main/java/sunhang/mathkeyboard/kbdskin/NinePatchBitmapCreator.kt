@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.drawable.NinePatchDrawable
-import sunhang.mathkeyboard.base.common.CloneableNinePatchDrawable
 import java.util.*
 
 private val COLOR_9 = intArrayOf(1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -13,7 +12,13 @@ private val DEFAULT_PADDING = Rect(0, 0, 0, 0)
 
 fun createNinePatchBitmap(context: Context, bitmap: Bitmap): NinePatchDrawable {
     val chunk = getNinePatchChunk(bitmap.width, bitmap.height)
-    return CloneableNinePatchDrawable(context.resources, bitmap, chunk, DEFAULT_PADDING, "")
+    return CloneableNinePatchDrawable(
+        context.resources,
+        bitmap,
+        chunk,
+        DEFAULT_PADDING,
+        ""
+    )
 }
 
 private fun getNinePatchChunk(bmWidth: Int, bmHeight: Int): ByteArray {

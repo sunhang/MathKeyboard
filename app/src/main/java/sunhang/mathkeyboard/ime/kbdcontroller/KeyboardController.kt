@@ -140,7 +140,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 loadKeyboardData(planeType)
                 this@KeyboardController.planeType = planeType
             } else {
-                imsContext.inputToEditor.inputChar(code)
+                imsContext.input.inputChar(code)
             }
         }
     }

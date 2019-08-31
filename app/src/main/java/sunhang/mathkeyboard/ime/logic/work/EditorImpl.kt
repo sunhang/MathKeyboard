@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard.ime
+package sunhang.mathkeyboard.ime.logic.work
 
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -6,20 +6,14 @@ import android.view.inputmethod.InputConnection
 import sunhang.mathkeyboard.CODE_ENTER
 import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.base.common.guardLet
-import sunhang.openlibrary.runOnMain
+import sunhang.mathkeyboard.ime.getActionId
+import sunhang.mathkeyboard.ime.logic.Editor
 
-class InputToEditor {
-    var currentInputConnection: InputConnection? = null
+class EditorImpl : Editor {
     var editorInfo: EditorInfo? = null
+    var currentInputConnection: InputConnection? = null
 
-    fun inputChar(code: Int) {
-        // 放到队列中去
-        runOnMain {
-            inputCharPosted(code)
-        }
-    }
-
-    private fun inputCharPosted(code: Int) {
+    override fun commitCode(code: Int) {
         when (code) {
             KEYCODE_DELETE -> {
                 currentInputConnection?.run {

@@ -65,16 +65,16 @@ class QwertyZhInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
         get() =
             Pair(
                 intArrayOf(
-                    'Q'.toInt(),
-                    'W'.toInt(),
-                    'E'.toInt(),
-                    'R'.toInt(),
-                    'T'.toInt(),
-                    'Y'.toInt(),
-                    'U'.toInt(),
-                    'I'.toInt(),
-                    'O'.toInt(),
-                    'P'.toInt()
+                    'q'.toInt(),
+                    'w'.toInt(),
+                    'e'.toInt(),
+                    'r'.toInt(),
+                    't'.toInt(),
+                    'y'.toInt(),
+                    'u'.toInt(),
+                    'i'.toInt(),
+                    'o'.toInt(),
+                    'p'.toInt()
                 ),
                 arrayOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P")
             )
@@ -83,22 +83,22 @@ class QwertyZhInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
         get() =
             Pair(
                 intArrayOf(
-                    'A'.toInt(),
-                    'S'.toInt(),
-                    'D'.toInt(),
-                    'F'.toInt(),
-                    'G'.toInt(),
-                    'H'.toInt(),
-                    'J'.toInt(),
-                    'K'.toInt(),
-                    'L'.toInt()
+                    'a'.toInt(),
+                    's'.toInt(),
+                    'd'.toInt(),
+                    'f'.toInt(),
+                    'g'.toInt(),
+                    'h'.toInt(),
+                    'j'.toInt(),
+                    'k'.toInt(),
+                    'l'.toInt()
                 ),
                 arrayOf("A", "S", "D", "F", "G", "H", "J", "K", "L")
             )
 
     override val thirdRow: Pair<IntArray, Array<String>>
         get() = Pair(
-            intArrayOf('Z'.toInt(), 'X'.toInt(), 'C'.toInt(), 'V'.toInt(), 'B'.toInt(), 'N'.toInt(), 'M'.toInt()),
+            intArrayOf('z'.toInt(), 'x'.toInt(), 'c'.toInt(), 'v'.toInt(), 'b'.toInt(), 'n'.toInt(), 'm'.toInt()),
             arrayOf("Z", "X", "C", "V", "B", "N", "M")
         )
 

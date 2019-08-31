@@ -4,12 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.protobuf'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 //    buildToolsVersion "29.0.0" // 它把aidl生成的java文件放错位置了
     defaultConfig {
         applicationId "sunhang.mathkeyboard"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
