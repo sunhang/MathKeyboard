@@ -13,7 +13,14 @@ class IdleState : State {
         val editor = context.editorMsgPasser
 
         when (msg.type) {
-            CODE -> editor.passMessage(Msg.Editor.COMMIT_CODE, (msg.valuePack as SingleValue<Int>).value)
+            CODE -> {
+                if (context.pinyinDecoderReady && context.zhPlane) {
+                    val state = InputState()
+                    state.doAction(context, msg)
+                } else {
+                    editor.passMessage(Msg.Editor.COMMIT_CODE, (msg.valuePack as SingleValue<Int>).value)
+                }
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
     override fun onCreate() {
         super.onCreate()
         loadKeyboardData(PlaneType.QWERTY_ZH)
+        imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, PlaneType.QWERTY_ZH)
     }
 
     private fun loadKeyboardData(planeType: PlaneType) {

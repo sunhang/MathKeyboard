@@ -16,6 +16,7 @@ import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.ime.logic.Logic
+import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.uiLazy
@@ -73,6 +74,7 @@ class MathIMS : InputMethodService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // todo logic中的pinyinDecoder可以使用吗？
         unbindService(pinyinDecoderServiceConnection)
         logic.dispose()
     }
@@ -90,7 +92,7 @@ class MathIMS : InputMethodService() {
     inner class PinyinDecoderServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val pinyinDecoderService = IPinyinDecoderService.Stub.asInterface(service)
-            i("pinyinDecoderService >>  $pinyinDecoderService")
+            logic.logicMsgPasser.passMessage(Msg.Logic.PINYIN_DEOCODER, pinyinDecoderService)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {}
