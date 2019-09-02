@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import sunhang.mathkeyboard.BuildConfig
 import sunhang.mathkeyboard.ime.logic.SingleValue
+import sunhang.mathkeyboard.ime.logic.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.Msg.Logic.Companion.DISPOSE
 import sunhang.mathkeyboard.ime.logic.msg.Msg.Logic.Companion.INIT
@@ -31,14 +32,15 @@ class LogicMsgPasser(logicLooper: Looper, private val logicContext: LogicContext
             }
         }
 
+        // todo 换成ofSingle，handleMsg提到外边去
         when (msg.type) {
             INIT -> logicContext.init()
             DISPOSE -> logicContext.dispose()
             PINYIN_DEOCODER -> {
-                logicContext.pinyinDecoder = (msg.valuePack as SingleValue<IPinyinDecoderService>).value
+                logicContext.pinyinDecoder = msg.valuePack.asSingle<IPinyinDecoderService>().value
             }
             PLANE_TYPE -> {
-                logicContext.planeType = (msg.valuePack as SingleValue<PlaneType>).value
+                logicContext.planeType = msg.valuePack.asSingle<PlaneType>().value
             }
             else -> logicContext.callStateAction(msg)
         }

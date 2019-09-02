@@ -1,6 +1,6 @@
 package sunhang.mathkeyboard.ime.logic.work.state
 
-import sunhang.mathkeyboard.ime.logic.SingleValue
+import sunhang.mathkeyboard.ime.logic.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.State
@@ -13,7 +13,7 @@ class InputState : State {
     override fun doAction(context: LogicContext, msg: Msg) {
         when (msg.type) {
             Msg.Logic.CODE -> {
-                val code = (msg.valuePack as SingleValue<Int>).value
+                val code = msg.valuePack.asSingle<Int>().value
                 val pinyinDecoder = context.pinyinDecoder!!
                 pyBuf[offset++] = code.toByte()
 
