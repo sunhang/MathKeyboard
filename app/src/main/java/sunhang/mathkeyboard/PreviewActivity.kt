@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_preview.*
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
-import sunhang.mathkeyboard.ime.logic.msgpasser.LogicMsgPasser
 import sunhang.mathkeyboard.ime.logic.Editor
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.kbdviews.RootView

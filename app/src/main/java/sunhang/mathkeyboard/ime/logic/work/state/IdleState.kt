@@ -1,8 +1,7 @@
 package sunhang.mathkeyboard.ime.logic.work.state
 
 import androidx.annotation.WorkerThread
-import sunhang.mathkeyboard.ime.logic.SingleValue
-import sunhang.mathkeyboard.ime.logic.asSingle
+import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.Msg.Logic.Companion.CODE
 import sunhang.mathkeyboard.ime.logic.work.LogicContext

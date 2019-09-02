@@ -1,22 +1,14 @@
-package sunhang.mathkeyboard.ime.logic.msgpasser
+package sunhang.mathkeyboard.ime.logic.msg
 
 import android.os.Handler
 import androidx.annotation.WorkerThread
-import sunhang.mathkeyboard.ime.logic.DoubleValue
-import sunhang.mathkeyboard.ime.logic.NoneValue
-import sunhang.mathkeyboard.ime.logic.SingleValue
-import sunhang.mathkeyboard.ime.logic.msg.Msg
 
-abstract class BaseMsgPasser {
-    abstract val handler: Handler
-
-    abstract fun handleMsg(msg: Msg)
-
+class MsgPasser(private val handler: Handler, private val msgExecutor: MsgExecutor) {
     private inner class MsgRunnable(private val msg: Msg) : Runnable {
 
         @WorkerThread
         override fun run() {
-            handleMsg(msg)
+            msgExecutor.execute(msg)
         }
 
     }

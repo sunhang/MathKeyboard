@@ -1,6 +1,6 @@
 package sunhang.mathkeyboard.ime.logic.work.state
 
-import sunhang.mathkeyboard.ime.logic.asSingle
+import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.State

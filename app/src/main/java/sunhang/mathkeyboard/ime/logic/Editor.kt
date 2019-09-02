@@ -1,18 +1,36 @@
 package sunhang.mathkeyboard.ime.logic
 
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.annotation.MainThread
+import sunhang.mathkeyboard.BuildConfig
 import sunhang.mathkeyboard.CODE_ENTER
 import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.base.common.guardLet
 import sunhang.mathkeyboard.ime.getActionId
+import sunhang.mathkeyboard.ime.logic.msg.Msg
+import sunhang.mathkeyboard.ime.logic.msg.MsgExecutor
+import sunhang.mathkeyboard.ime.logic.msg.SingleValue
+import java.lang.RuntimeException
 
 @MainThread
-class Editor {
+class Editor : MsgExecutor{
     var editorInfo: EditorInfo? = null
     var currentInputConnection: InputConnection? = null
+
+    override fun execute(msg: Msg) {
+        if (BuildConfig.DEBUG) {
+            if (Thread.currentThread() != Looper.getMainLooper().thread) {
+                throw RuntimeException("The code should run on main thread")
+            }
+        }
+
+        when (msg.type) {
+            Msg.Editor.COMMIT_CODE -> commitCode((msg.valuePack as SingleValue<Int>).value)
+        }
+    }
 
     fun commitCode(code: Int) {
         when (code) {

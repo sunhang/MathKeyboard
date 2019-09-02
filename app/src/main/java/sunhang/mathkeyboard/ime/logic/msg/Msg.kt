@@ -1,7 +1,5 @@
 package sunhang.mathkeyboard.ime.logic.msg
 
-import sunhang.mathkeyboard.ime.logic.ValuePack
-
 data class Msg(val type: Int, val valuePack: ValuePack) {
     class Logic {
         companion object {

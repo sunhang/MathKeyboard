@@ -1,4 +1,4 @@
-package sunhang.mathkeyboard.ime.logic
+package sunhang.mathkeyboard.ime.logic.msg
 
 interface ValuePack
 
