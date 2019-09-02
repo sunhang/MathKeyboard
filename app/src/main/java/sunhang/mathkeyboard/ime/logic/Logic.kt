@@ -1,25 +1,24 @@
 package sunhang.mathkeyboard.ime.logic
 
-import android.os.Handler
 import android.os.HandlerThread
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.annotation.MainThread
 import sunhang.mathkeyboard.base.common.InstancesContainer
 import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
-import sunhang.mathkeyboard.ime.logic.work.EditorImpl
+import sunhang.mathkeyboard.ime.logic.msg.Msg
+import sunhang.mathkeyboard.ime.logic.msgpasser.EditorMsgPasser
+import sunhang.mathkeyboard.ime.logic.msgpasser.LogicMsgPasser
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
-import sunhang.mathkeyboard.ime.logic.work.state.IdleState
-import java.lang.reflect.Method
-import java.lang.reflect.Proxy
 
 @MainThread
 class Logic {
     private val workThread = HandlerThread("input-logic")
-    private val handler: Handler by InstancesContainer
-    private val editorImpl = EditorImpl()
-    private val logicContext = LogicContext(editorImpl)
+    private val editor = Editor()
+    private val logicContext: LogicContext by InstancesContainer
+    val logicMsgPasser: LogicMsgPasser by InstancesContainer
 
+    /*
     val input = Proxy.newProxyInstance(
         Input::class.java.classLoader,
         arrayOf(Input::class.java)
@@ -35,23 +34,30 @@ class Logic {
             method.invoke(logicContext.state, *array)
         }
     } as Input
+    */
 
     fun attachInputConnection(inputConnection: InputConnection) {
-        editorImpl.currentInputConnection = inputConnection
+        editor.currentInputConnection = inputConnection
     }
 
     fun attachEditorInfo(editorInfo: EditorInfo) {
-        editorImpl.editorInfo = editorInfo
+        editor.editorInfo = editorInfo
     }
 
     fun init() {
         workThread.start()
+        val logicContext = LogicContext(EditorMsgPasser(editor))
         // todo 观察looper此时返回null吗？因为怀疑[Thread.isAlive]
-        val handler = Handler(workThread.looper)
-        putInstanceIntoContainer(this::handler.name, handler)
+        val msgPasser = LogicMsgPasser(workThread.looper, logicContext)
+
+        msgPasser.passMessage(Msg.Logic.INIT)
+
+        putInstanceIntoContainer(this::logicContext.name, logicContext)
+        putInstanceIntoContainer(this::logicMsgPasser.name, msgPasser)
     }
 
     fun dispose() {
+        logicMsgPasser.passMessage(Msg.Logic.DISPOSE)
         workThread.quitSafely()
     }
 

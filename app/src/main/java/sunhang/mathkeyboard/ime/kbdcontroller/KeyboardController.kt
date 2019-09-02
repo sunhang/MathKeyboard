@@ -3,6 +3,7 @@ package sunhang.mathkeyboard.ime.kbdcontroller
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.ime.IMSContext
+import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
@@ -140,7 +141,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 loadKeyboardData(planeType)
                 this@KeyboardController.planeType = planeType
             } else {
-                imsContext.input.inputChar(code)
+                imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
             }
         }
     }

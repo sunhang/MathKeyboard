@@ -1,0 +1,19 @@
+package sunhang.mathkeyboard.ime.logic.msg
+
+import sunhang.mathkeyboard.ime.logic.ValuePack
+
+data class Msg(val type: Int, val valuePack: ValuePack) {
+    class Logic {
+        companion object {
+            const val INIT = 0
+            const val DISPOSE = 1
+            const val CODE = 2
+        }
+    }
+
+    class Editor {
+        companion object {
+            const val COMMIT_CODE = 0
+        }
+    }
+}

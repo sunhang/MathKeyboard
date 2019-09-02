@@ -36,12 +36,11 @@ class MathIMS : InputMethodService() {
         super.onCreate()
 
         val logic = Logic()
-        val input = logic.input
-        val imsContext = IMSContext(applicationContext, input)
+        logic.init()
+
+        val imsContext = IMSContext(applicationContext, logic.logicMsgPasser)
         val rootController = RootController(imsContext, rootView)
         rootController.onCreate()
-
-        logic.init()
 
         putInstanceIntoContainer(this::rootController.name, rootController)
         putInstanceIntoContainer(this::logic.name, logic)

@@ -1,6 +1,7 @@
 package sunhang.mathkeyboard.ime.logic.work
 
-import sunhang.mathkeyboard.ime.logic.Input
-import sunhang.mathkeyboard.ime.logic.Logic
+import sunhang.mathkeyboard.ime.logic.msg.Msg
 
-interface State : Input
+interface State {
+    fun doAction(context: LogicContext, msg: Msg)
+}

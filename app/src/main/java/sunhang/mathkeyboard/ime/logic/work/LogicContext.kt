@@ -1,13 +1,17 @@
 package sunhang.mathkeyboard.ime.logic.work
 
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import sunhang.mathkeyboard.ime.logic.Editor
-import sunhang.openlibrary.runOnMain
-import java.lang.reflect.Method
-import java.lang.reflect.Proxy
+import sunhang.mathkeyboard.ime.logic.msg.Msg
+import sunhang.mathkeyboard.ime.logic.msgpasser.EditorMsgPasser
+import sunhang.mathkeyboard.ime.logic.work.state.IdleState
 
-class LogicContext(private val inputToEditor: EditorImpl) {
+@WorkerThread
+class LogicContext @MainThread constructor(val editorMsgPasser: EditorMsgPasser) {
     var state: State? = null
 
+    /*
     val editor = Proxy.newProxyInstance(
         Editor::class.java.classLoader,
         arrayOf(Editor::class.java)
@@ -17,4 +21,16 @@ class LogicContext(private val inputToEditor: EditorImpl) {
             method?.invoke(inputToEditor, *array)
         }
     } as Editor
+    */
+
+    fun init() {
+        state = IdleState()
+    }
+
+    fun dispose() {
+    }
+
+    fun callStateAction(message: Msg) {
+        state?.doAction(this, message)
+    }
 }
