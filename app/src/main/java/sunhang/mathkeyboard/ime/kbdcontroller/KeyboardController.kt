@@ -141,6 +141,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             if (planeType != null) {
                 loadKeyboardData(planeType)
                 this@KeyboardController.planeType = planeType
+                imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
             } else {
                 imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
             }

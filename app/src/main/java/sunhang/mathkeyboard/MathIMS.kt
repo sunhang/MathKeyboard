@@ -22,30 +22,26 @@ import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
-    private val rootController : RootController by InstancesContainer
-    private val logic: Logic by InstancesContainer
+    private val rootView by uiLazy {
+        View.inflate(this@MathIMS, R.layout.ime_layout, null) as RootView
+    }
+
+    private val logic by uiLazy { Logic() }
+
+    private val rootController by uiLazy {
+        val imsContext = IMSContext(applicationContext, logic.logicMsgPasser)
+        RootController(imsContext, rootView)
+    }
+
     /**
      * Connection used to bind the decoding service.
      */
     private val pinyinDecoderServiceConnection by uiLazy { PinyinDecoderServiceConnection() }
 
-    private val rootView by uiLazy {
-        View.inflate(this@MathIMS, R.layout.ime_layout, null) as RootView
-    }
-
     override fun onCreate() {
         super.onCreate()
 
-        val logic = Logic()
-        logic.init()
-
-        val imsContext = IMSContext(applicationContext, logic.logicMsgPasser)
-        val rootController = RootController(imsContext, rootView)
         rootController.onCreate()
-
-        putInstanceIntoContainer(this::rootController.name, rootController)
-        putInstanceIntoContainer(this::logic.name, logic)
-
         startPinyinDecoderService()
     }
 

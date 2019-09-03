@@ -11,13 +11,19 @@ import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
+import sunhang.openlibrary.uiLazy
 
 @MainThread
 class Logic {
-    private val workThread = HandlerThread("input-logic")
+    private val workThread = HandlerThread("input-logic").apply { start() }
     private val editor = Editor()
-    private val logicContext: LogicContext by InstancesContainer
-    val logicMsgPasser: MsgPasser by InstancesContainer
+    private val logicContext by uiLazy {
+        LogicContext(MsgPasser(Handler(Looper.getMainLooper()), editor))
+    }
+    val logicMsgPasser by uiLazy {
+        // todo 观察looper此时返回null吗？因为怀疑[Thread.isAlive]
+        MsgPasser(Handler(workThread.looper), logicContext)
+    }
 
     /*
     val input = Proxy.newProxyInstance(
@@ -45,20 +51,7 @@ class Logic {
         editor.editorInfo = editorInfo
     }
 
-    fun init() {
-        workThread.start()
-        val logicContext = LogicContext(MsgPasser(Handler(Looper.getMainLooper()), editor))
-        // todo 观察looper此时返回null吗？因为怀疑[Thread.isAlive]
-        val logicMsgPasser = MsgPasser(Handler(workThread.looper), logicContext)
-
-        logicMsgPasser.passMessage(Msg.Logic.INIT)
-
-        putInstanceIntoContainer(this::logicContext.name, logicContext)
-        putInstanceIntoContainer(this::logicMsgPasser.name, logicMsgPasser)
-    }
-
     fun dispose() {
-        logicMsgPasser.passMessage(Msg.Logic.DISPOSE)
         workThread.quitSafely()
     }
 

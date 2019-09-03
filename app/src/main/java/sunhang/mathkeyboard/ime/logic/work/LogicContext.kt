@@ -14,7 +14,7 @@ import sunhang.mathkeyboard.kbdmodel.PlaneType
 
 @WorkerThread
 class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser) : MsgExecutor{
-    var state: State? = null
+    var state: State = IdleState()
     var pinyinDecoder: IPinyinDecoderService? = null
     var planeType: PlaneType? = null
 
@@ -34,15 +34,6 @@ class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser) : Msg
     } as Editor
     */
 
-    private fun init() {
-        state = IdleState()
-    }
-
-    private fun dispose() {
-        state = null
-        pinyinDecoder = null
-    }
-
     override fun execute(msg: Msg) {
         if (BuildConfig.DEBUG) {
             if (Thread.currentThread() == Looper.getMainLooper().thread) {
@@ -51,11 +42,11 @@ class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser) : Msg
         }
 
         when (msg.type) {
-            Msg.Logic.INIT -> init()
-            Msg.Logic.DISPOSE -> dispose()
+//            Msg.Logic.INIT -> init()
+//            Msg.Logic.DISPOSE -> dispose()
             Msg.Logic.PINYIN_DEOCODER -> pinyinDecoder = msg.valuePack.asSingle<IPinyinDecoderService>().value
             Msg.Logic.PLANE_TYPE -> planeType = msg.valuePack.asSingle<PlaneType>().value
-            else -> state?.doAction(this, msg)
+            else -> state.doAction(this, msg)
         }
     }
 }

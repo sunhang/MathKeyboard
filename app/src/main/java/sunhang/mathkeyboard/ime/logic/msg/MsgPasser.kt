@@ -13,15 +13,15 @@ class MsgPasser(private val handler: Handler, private val msgExecutor: MsgExecut
 
     }
 
-    fun <T> passMessage(type: Int, value: T) {
+    fun <T> passMessage(type: Msg.Type, value: T) {
         handler.post(MsgRunnable(Msg(type, SingleValue<T>(value))))
     }
 
-    fun <T, K> passMessage(type: Int, first: T, second: K) {
+    fun <T, K> passMessage(type: Msg.Type, first: T, second: K) {
         handler.post(MsgRunnable(Msg(type, DoubleValue<T, K>(first, second))))
     }
 
-    fun passMessage(type: Int) {
+    fun passMessage(type: Msg.Type) {
         handler.post(MsgRunnable(Msg(type, NoneValue)))
     }
 }

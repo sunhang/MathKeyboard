@@ -3,7 +3,6 @@ package sunhang.mathkeyboard.ime.logic.work.state
 import androidx.annotation.WorkerThread
 import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
-import sunhang.mathkeyboard.ime.logic.msg.Msg.Logic.Companion.CODE
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.State
 
@@ -13,7 +12,7 @@ class IdleState : State {
         val editor = context.editorMsgPasser
 
         when (msg.type) {
-            CODE -> {
+            Msg.Logic.CODE -> {
                 if (context.pinyinDecoderReady && context.zhPlane) {
                     val state = InputState()
                     state.doAction(context, msg)

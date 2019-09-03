@@ -26,11 +26,10 @@
         <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar"/>
-
         <!--
         <include
                 android:id="@+id/candidate"
-                layout="@layout/candidate" />
+                layout="@layout/candidates_container" />
                 -->
     </FrameLayout>
 </sunhang.mathkeyboard.kbdviews.RootView>
