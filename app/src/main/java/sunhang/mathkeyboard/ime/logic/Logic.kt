@@ -1,48 +1,21 @@
 package sunhang.mathkeyboard.ime.logic
 
-import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import androidx.annotation.MainThread
-import sunhang.mathkeyboard.base.common.InstancesContainer
-import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
+import androidx.annotation.WorkerThread
+import com.android.inputmethod.pinyin.IPinyinDecoderService
+import sunhang.mathkeyboard.BuildConfig
 import sunhang.mathkeyboard.ime.logic.msg.Msg
-import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
+import sunhang.mathkeyboard.ime.logic.msg.MsgExecutor
+import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
-import sunhang.openlibrary.uiLazy
+import sunhang.mathkeyboard.kbdmodel.PlaneType
 
 @MainThread
-class Logic {
-    private val workThread = HandlerThread("input-logic").apply { start() }
-    private val editor = Editor()
-    private val logicContext by uiLazy {
-        LogicContext(MsgPasser(Handler(Looper.getMainLooper()), editor))
-    }
-    val logicMsgPasser by uiLazy {
-        // todo 观察looper此时返回null吗？因为怀疑[Thread.isAlive]
-        MsgPasser(Handler(workThread.looper), logicContext)
-    }
-
-    /*
-    val input = Proxy.newProxyInstance(
-        Input::class.java.classLoader,
-        arrayOf(Input::class.java)
-    ) { _, method: Method?, args: Array<out Any>? ->
-        if (method == null) return@newProxyInstance null
-
-        handler.post {
-            if (logicContext.state == null) {
-                logicContext.state = IdleState(logicContext)
-            }
-
-            val array = args ?: arrayOf()
-            method.invoke(logicContext.state, *array)
-        }
-    } as Input
-    */
-
+class Logic(val workerThread: HandlerThread, val editor: Editor, private val logicContext: LogicContext) {
     fun attachInputConnection(inputConnection: InputConnection) {
         editor.currentInputConnection = inputConnection
     }
@@ -51,8 +24,31 @@ class Logic {
         editor.editorInfo = editorInfo
     }
 
+    val logicExecutor = object : MsgExecutor {
+        @WorkerThread
+        override fun execute(msg: Msg) {
+            if (BuildConfig.DEBUG) {
+                if (Thread.currentThread() == Looper.getMainLooper().thread) {
+                    throw RuntimeException("The code should not run on main thread!")
+                }
+            }
+
+            when (msg.type) {
+//            Msg.Logic.INIT -> init()
+//            Msg.Logic.DISPOSE -> dispose()
+                Msg.Logic.PINYIN_DEOCODER -> {
+                    logicContext.pinyinDecoder = msg.valuePack.asSingle<IPinyinDecoderService>().value
+                }
+                Msg.Logic.PLANE_TYPE -> {
+                    logicContext.planeType = msg.valuePack.asSingle<PlaneType>().value
+                }
+                else -> logicContext.callStateAction(msg)
+            }
+        }
+    }
+
     fun dispose() {
-        workThread.quitSafely()
+        workerThread.quitSafely()
     }
 
 }

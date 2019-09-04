@@ -13,7 +13,7 @@ import sunhang.mathkeyboard.ime.logic.work.state.IdleState
 import sunhang.mathkeyboard.kbdmodel.PlaneType
 
 @WorkerThread
-class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser) : MsgExecutor{
+class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser, val kbdUIMsgPasser: MsgPasser) {
     var state: State = IdleState()
     var pinyinDecoder: IPinyinDecoderService? = null
     var planeType: PlaneType? = null
@@ -34,19 +34,7 @@ class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser) : Msg
     } as Editor
     */
 
-    override fun execute(msg: Msg) {
-        if (BuildConfig.DEBUG) {
-            if (Thread.currentThread() == Looper.getMainLooper().thread) {
-                throw RuntimeException("The code should not run on main thread!")
-            }
-        }
-
-        when (msg.type) {
-//            Msg.Logic.INIT -> init()
-//            Msg.Logic.DISPOSE -> dispose()
-            Msg.Logic.PINYIN_DEOCODER -> pinyinDecoder = msg.valuePack.asSingle<IPinyinDecoderService>().value
-            Msg.Logic.PLANE_TYPE -> planeType = msg.valuePack.asSingle<PlaneType>().value
-            else -> state.doAction(this, msg)
-        }
+    fun callStateAction(msg: Msg) {
+        state.doAction(this, msg)
     }
 }

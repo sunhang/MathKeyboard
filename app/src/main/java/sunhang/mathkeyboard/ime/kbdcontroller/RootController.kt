@@ -7,11 +7,13 @@ import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.runOnFile
 
-class RootController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController(), SkinAttrUser {
+class RootController(val imsContext: IMSContext, private val rootView: RootView) : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController(imsContext, rootView)
+    private val candiController = CandiController(imsContext, rootView)
 
     init {
         attach(keyboardController)
+        attach(candiController)
     }
 
     override fun onCreate() {

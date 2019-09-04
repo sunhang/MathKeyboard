@@ -1,9 +1,12 @@
 package sunhang.mathkeyboard.ime.logic.msg
 
 import android.os.Handler
+import android.os.Looper
 import androidx.annotation.WorkerThread
 
 class MsgPasser(private val handler: Handler, private val msgExecutor: MsgExecutor) {
+    constructor(looper: Looper, msgExecutor: MsgExecutor) : this(Handler(looper), msgExecutor)
+
     private inner class MsgRunnable(private val msg: Msg) : Runnable {
 
         @WorkerThread

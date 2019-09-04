@@ -5,32 +5,31 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.inputmethodservice.InputMethodService
+import android.os.HandlerThread
 import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import com.android.inputmethod.pinyin.PinyinDecoderService
-import sunhang.mathkeyboard.base.common.InstancesContainer
-import sunhang.mathkeyboard.base.common.putInstanceIntoContainer
-import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
+import sunhang.mathkeyboard.ime.logic.Editor
 import sunhang.mathkeyboard.ime.logic.Logic
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.kbdviews.RootView
-import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
-    private val rootView by uiLazy {
-        View.inflate(this@MathIMS, R.layout.ime_layout, null) as RootView
-    }
+    private val rootView: RootView
+    private val logic: Logic
+    private val rootController: RootController
 
-    private val logic by uiLazy { Logic() }
+    init {
+        val initializer = Initializer(GlobalVariable.context)
 
-    private val rootController by uiLazy {
-        val imsContext = IMSContext(applicationContext, logic.logicMsgPasser)
-        RootController(imsContext, rootView)
+        rootView = initializer.rootView
+        logic = initializer.logic
+        rootController = initializer.rootController
     }
 
     /**
@@ -88,7 +87,7 @@ class MathIMS : InputMethodService() {
     inner class PinyinDecoderServiceConnection : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val pinyinDecoderService = IPinyinDecoderService.Stub.asInterface(service)
-            logic.logicMsgPasser.passMessage(Msg.Logic.PINYIN_DEOCODER, pinyinDecoderService)
+            rootController.imsContext.logicMsgPasser.passMessage(Msg.Logic.PINYIN_DEOCODER, pinyinDecoderService)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {}
