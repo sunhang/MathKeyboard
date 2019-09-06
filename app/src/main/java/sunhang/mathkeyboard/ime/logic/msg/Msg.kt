@@ -14,4 +14,10 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
     enum class Editor : Type {
         COMMIT_CODE
     }
+
+    enum class KbdUI: Type {
+        CANDI_RESET,
+        CANDI_SHOW,
+        CANDI_APPEND
+    }
 }

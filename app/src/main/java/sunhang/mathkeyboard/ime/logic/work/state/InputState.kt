@@ -18,7 +18,8 @@ class InputState : State {
                 pyBuf[offset++] = code.toByte()
 
                 val totalChoicesNum = pinyinDecoder.imSearch(pyBuf, offset)
-                val candis = pinyinDecoder.imGetChoiceList(0, totalChoicesNum, 0)
+                val candis = pinyinDecoder.imGetChoiceList(0, 10, 0)
+                context.kbdUIMsgPasser.passMessage(Msg.KbdUI.CANDI_SHOW, candis)
 
                 i(candis.toString())
             }

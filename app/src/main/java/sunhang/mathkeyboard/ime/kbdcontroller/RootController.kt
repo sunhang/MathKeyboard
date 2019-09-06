@@ -9,7 +9,7 @@ import sunhang.openlibrary.runOnFile
 
 class RootController(val imsContext: IMSContext, private val rootView: RootView) : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController(imsContext, rootView)
-    private val candiController = CandiController(imsContext, rootView)
+    val candiController = CandiController(imsContext, rootView)
 
     init {
         attach(keyboardController)
