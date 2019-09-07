@@ -1,25 +1,30 @@
 package sunhang.mathkeyboard.kbdviews
 
-import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.kbdskin.CandiVisualAttr
 import sunhang.mathkeyboard.tools.buildStateListDrawable
-import sunhang.mathkeyboard.tools.dp2Px
+import sunhang.openlibrary.runOnMain
 
-class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
+class CandiAdapter(private val requestLoadMore: () -> Unit) : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
     private var candis = mutableListOf<String>()
     var candiVisualAttr: CandiVisualAttr? = null
+
+    private var loading = false
+    private var hasMore = false
 
     fun reset() {
         candis.clear()
         notifyDataSetChanged()
     }
 
-    fun setCandis(list: List<String>) {
+    fun setCandis(list: List<String>, hasMore: Boolean) {
+        loading = false
+        this.hasMore = hasMore
+
         with(candis) {
             clear()
             addAll(list)
@@ -27,23 +32,27 @@ class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun appendCandis(list: List<String>) {
+    fun appendCandis(list: List<String>, hasMore: Boolean) {
+        loading = false
+        this.hasMore = hasMore
+
         candis.addAll(list)
         notifyItemRangeInserted(candis.size - list.size, list.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandiViewHolder {
-        val textView = TextView(parent.context).apply {
-            textSize = 20.0f
-            gravity = Gravity.CENTER
-            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.MATCH_PARENT)
-            minWidth = dp2Px(50.0f).toInt()
-            setPadding(dp2Px(5.0f).toInt(), paddingTop, dp2Px(5.0f).toInt(), paddingBottom)
+        val viewItem = View.inflate(parent.context, R.layout.candi_item, null).apply {
+            layoutParams = RecyclerView.LayoutParams(
+                RecyclerView.LayoutParams.WRAP_CONTENT,
+                RecyclerView.LayoutParams.MATCH_PARENT
+            )
 
-            setOnClickListener {  }
+            setOnClickListener {
+
+            }
         }
 
-        return CandiViewHolder(textView)
+        return CandiViewHolder(viewItem)
     }
 
     override fun getItemCount() = candis.size
@@ -51,15 +60,36 @@ class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
     override fun onBindViewHolder(holder: CandiViewHolder, position: Int) {
         holder.textView.text = candis[position]
 
+        // 显示下标
+        if (position % 5 == 0) {
+            holder.indexTv.text = position.toString()
+            holder.indexTv.visibility = View.VISIBLE
+        } else {
+            holder.indexTv.text = ""
+            holder.indexTv.visibility = View.INVISIBLE
+        }
+
+        // 应用皮肤
         val candiVisualAttr = this.candiVisualAttr
         if (!holder.skinIsApplied && candiVisualAttr != null) {
+            holder.skinIsApplied = true
+
             holder.textView.setTextColor(candiVisualAttr.normalTextColor)
-            holder.textView.background = buildStateListDrawable(0, candiVisualAttr.itemPressedColor)
+            holder.itemView.background = buildStateListDrawable(0, candiVisualAttr.itemPressedColor)
+        }
+
+        if (position >= itemCount - 1 && hasMore && !loading) {
+            loading = true
+
+            runOnMain {
+                requestLoadMore()
+            }
         }
     }
 
     class CandiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var skinIsApplied = false
-        val textView = itemView as TextView
+        val textView = itemView.findViewById<TextView>(R.id.text)
+        val indexTv = itemView.findViewById<TextView>(R.id.index)
     }
 }

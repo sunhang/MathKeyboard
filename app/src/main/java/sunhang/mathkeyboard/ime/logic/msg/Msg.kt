@@ -8,7 +8,8 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
 //      const val DISPOSE = 1
         CODE,
         PINYIN_DEOCODER,
-        PLANE_TYPE
+        PLANE_TYPE,
+        LOAD_MORE_CANDI
     }
 
     enum class Editor : Type {
