@@ -15,7 +15,7 @@ class IdleState : State {
             Msg.Logic.CODE -> {
                 if (context.pinyinDecoderReady && context.zhPlane) {
                     context.state = InputState()
-                    context.state.doAction(context, msg)
+                    context.callStateAction(msg)
                 } else {
                     editor.passMessage(Msg.Editor.COMMIT_CODE, msg.valuePack.asSingle<Int>().value)
                 }

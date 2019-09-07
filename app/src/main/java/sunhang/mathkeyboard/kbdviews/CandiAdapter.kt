@@ -9,7 +9,8 @@ import sunhang.mathkeyboard.kbdskin.CandiVisualAttr
 import sunhang.mathkeyboard.tools.buildStateListDrawable
 import sunhang.openlibrary.runOnMain
 
-class CandiAdapter(private val requestLoadMore: () -> Unit) : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
+class CandiAdapter(private val requestLoadMore: () -> Unit,
+                   private val requestChooseCandi: (Int) -> Unit) : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
     private var candis = mutableListOf<String>()
     var candiVisualAttr: CandiVisualAttr? = null
 
@@ -48,7 +49,7 @@ class CandiAdapter(private val requestLoadMore: () -> Unit) : RecyclerView.Adapt
             )
 
             setOnClickListener {
-
+                requestChooseCandi(it.tag as Int)
             }
         }
 
@@ -78,6 +79,8 @@ class CandiAdapter(private val requestLoadMore: () -> Unit) : RecyclerView.Adapt
             holder.itemView.background = buildStateListDrawable(0, candiVisualAttr.itemPressedColor)
         }
 
+        holder.itemView.tag = position
+
         if (position >= itemCount - 1 && hasMore && !loading) {
             loading = true
 
@@ -89,7 +92,7 @@ class CandiAdapter(private val requestLoadMore: () -> Unit) : RecyclerView.Adapt
 
     class CandiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var skinIsApplied = false
-        val textView = itemView.findViewById<TextView>(R.id.text)
-        val indexTv = itemView.findViewById<TextView>(R.id.index)
+        val textView = itemView.findViewById<TextView>(R.id.text)!!
+        val indexTv = itemView.findViewById<TextView>(R.id.index)!!
     }
 }

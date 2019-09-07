@@ -1,20 +1,32 @@
 package sunhang.mathkeyboard.ime.logic.work.state
 
+import androidx.annotation.WorkerThread
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
+import sunhang.mathkeyboard.ime.logic.msg.SingleValue
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
+import sunhang.mathkeyboard.ime.logic.work.LogicContext.Companion.CANDI_SIZE_IN_PAGE
 import sunhang.mathkeyboard.ime.logic.work.State
 
+@WorkerThread
 class InputState : State {
     private var offset = 0
     private val pyBuf = ByteArray(32)
     private var totalChoicesNum = 0
     private var alreadyCandisSize = 0
 
-    companion object {
-        const val CANDI_SIZE_IN_PAGE = 20
+    override fun doAction(context: LogicContext, msg: Msg) {
+        val pinyinDecoder = context.pinyinDecoder!!
+
+        when (msg.type) {
+            Msg.Logic.LOAD_MORE_CHOICES -> {
+                getCandidatesThenPassMsg(context, pinyinDecoder)
+            }
+            Msg.Logic.CHOOSE_CANDI -> chooseCandi(context, pinyinDecoder, msg.valuePack.asSingle<Int>().value)
+            Msg.Logic.CODE -> handleCode(context, pinyinDecoder, msg.valuePack.asSingle<Int>().value)
+        }
     }
 
     private fun getCandidatesThenPassMsg(context: LogicContext, pinyinDecoder: IPinyinDecoderService) {
@@ -33,36 +45,42 @@ class InputState : State {
         context.kbdUIMsgPasser.passMessage(type, candis, alreadyCandisSize < totalChoicesNum)
     }
 
-    override fun doAction(context: LogicContext, msg: Msg) {
-        val pinyinDecoder = context.pinyinDecoder!!
 
-        when (msg.type) {
-            Msg.Logic.LOAD_MORE_CANDI -> {
-                getCandidatesThenPassMsg(context, pinyinDecoder)
-            }
-            Msg.Logic.CODE -> {
-                val code = msg.valuePack.asSingle<Int>().value
-                when (code) {
-                    KEYCODE_DELETE -> {
-                        pinyinDecoder.imDelSearch(1, false, true)
-                        offset--
-                        if (0 == offset) {
-                            totalChoicesNum = 0
-                            alreadyCandisSize = 0
-                            context.kbdUIMsgPasser.passMessage(Msg.KbdUI.CANDI_RESET)
-                            context.state = IdleState()
-                        } else {
-                            alreadyCandisSize = 0
-                            getCandidatesThenPassMsg(context, pinyinDecoder)
-                        }
-                    }
-                    else -> {
-                        pyBuf[offset++] = code.toByte()
-                        totalChoicesNum = pinyinDecoder.imSearch(pyBuf, offset)
-                        alreadyCandisSize = 0
-                        getCandidatesThenPassMsg(context, pinyinDecoder)
-                    }
+    private fun chooseCandi(context: LogicContext, pinyinDecoder: IPinyinDecoderService, index: Int) {
+        pinyinDecoder.imChoose(index)
+        val seledCandi = pinyinDecoder.imGetChoice(0)
+
+        // 发送消息给editor
+        context.editorMsgPasser.passMessage(Msg.Editor.COMMIT_CANDI, seledCandi)
+
+        // 切换到预测状态
+        context.state = PredictState()
+        context.callStateAction(Msg(Msg.Logic.PREDICT, SingleValue<String>(seledCandi)))
+    }
+
+    private fun handleCode(context: LogicContext, pinyinDecoder: IPinyinDecoderService, code: Int) {
+        when (code) {
+            KEYCODE_DELETE -> {
+                pinyinDecoder.imDelSearch(1, false, true)
+                offset--
+                if (0 == offset) {
+                    totalChoicesNum = 0
+                    alreadyCandisSize = 0
+                    context.kbdUIMsgPasser.passMessage(Msg.KbdUI.CANDI_RESET)
+                    context.state = IdleState()
+                } else {
+                    alreadyCandisSize = 0
+                    getCandidatesThenPassMsg(context, pinyinDecoder)
                 }
+            }
+            else -> {
+                pyBuf[offset++] = code.toByte()
+                totalChoicesNum = pinyinDecoder.imSearch(pyBuf, offset)
+                alreadyCandisSize = 0
+                getCandidatesThenPassMsg(context, pinyinDecoder)
+
+                val choice = pinyinDecoder.imGetChoice(0)
+                context.editorMsgPasser.passMessage(Msg.Editor.COMPOSE, choice)
             }
         }
     }

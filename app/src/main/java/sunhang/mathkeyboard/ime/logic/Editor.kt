@@ -13,6 +13,7 @@ import sunhang.mathkeyboard.ime.getActionId
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.MsgExecutor
 import sunhang.mathkeyboard.ime.logic.msg.SingleValue
+import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import java.lang.RuntimeException
 
 @MainThread
@@ -28,8 +29,18 @@ class Editor : MsgExecutor{
         }
 
         when (msg.type) {
-            Msg.Editor.COMMIT_CODE -> commitCode((msg.valuePack as SingleValue<Int>).value)
+            Msg.Editor.COMMIT_CODE -> commitCode(msg.valuePack.asSingle<Int>().value)
+            Msg.Editor.COMMIT_CANDI -> commitText(msg.valuePack.asSingle<String>().value)
+            Msg.Editor.COMPOSE -> compose(msg.valuePack.asSingle<String>().value)
         }
+    }
+
+    fun compose(str: String) {
+        currentInputConnection?.setComposingText(str, 1)
+    }
+
+    fun commitText(str: String) {
+        currentInputConnection?.commitText(str, 1)
     }
 
     fun commitCode(code: Int) {

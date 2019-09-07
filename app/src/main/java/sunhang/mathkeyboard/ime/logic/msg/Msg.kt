@@ -9,11 +9,15 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
         CODE,
         PINYIN_DEOCODER,
         PLANE_TYPE,
-        LOAD_MORE_CANDI
+        LOAD_MORE_CHOICES,
+        CHOOSE_CANDI,
+        PREDICT,
     }
 
     enum class Editor : Type {
-        COMMIT_CODE
+        COMMIT_CODE,
+        COMMIT_CANDI,
+        COMPOSE,
     }
 
     enum class KbdUI: Type {
