@@ -10,7 +10,7 @@ import sunhang.mathkeyboard.tools.buildStateListDrawable
 import sunhang.openlibrary.runOnMain
 
 class CandiAdapter(private val requestLoadMore: () -> Unit,
-                   private val requestChooseCandi: (Int) -> Unit) : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
+                   private val requestChooseCandi: (Int, String) -> Unit) : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
     private var candis = mutableListOf<String>()
     var candiVisualAttr: CandiVisualAttr? = null
 
@@ -49,7 +49,8 @@ class CandiAdapter(private val requestLoadMore: () -> Unit,
             )
 
             setOnClickListener {
-                requestChooseCandi(it.tag as Int)
+                val index = it.tag as Int
+                requestChooseCandi(index, candis[index])
             }
         }
 

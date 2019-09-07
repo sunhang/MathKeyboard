@@ -6,6 +6,7 @@ import sunhang.mathkeyboard.KEYCODE_DELETE
 import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.SingleValue
+import sunhang.mathkeyboard.ime.logic.msg.asDouble
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.LogicContext.Companion.CANDI_SIZE_IN_PAGE
 import sunhang.mathkeyboard.ime.logic.work.State
@@ -24,7 +25,7 @@ class InputState : State {
             Msg.Logic.LOAD_MORE_CHOICES -> {
                 getCandidatesThenPassMsg(context, pinyinDecoder)
             }
-            Msg.Logic.CHOOSE_CANDI -> chooseCandi(context, pinyinDecoder, msg.valuePack.asSingle<Int>().value)
+            Msg.Logic.CHOOSE_CANDI -> chooseCandi(context, pinyinDecoder, msg.valuePack.asDouble<Int, String>().first)
             Msg.Logic.CODE -> handleCode(context, pinyinDecoder, msg.valuePack.asSingle<Int>().value)
         }
     }
@@ -47,15 +48,24 @@ class InputState : State {
 
 
     private fun chooseCandi(context: LogicContext, pinyinDecoder: IPinyinDecoderService, index: Int) {
-        pinyinDecoder.imChoose(index)
+        alreadyCandisSize = 0
+        totalChoicesNum = pinyinDecoder.imChoose(index)
         val seledCandi = pinyinDecoder.imGetChoice(0)
 
-        // 发送消息给editor
-        context.editorMsgPasser.passMessage(Msg.Editor.COMMIT_CANDI, seledCandi)
+        val composeTotalCount = pinyinDecoder.imGetSplStart()[0]
+        val composeCurrentCount = pinyinDecoder.imGetFixedLen()
 
-        // 切换到预测状态
-        context.state = PredictState()
-        context.callStateAction(Msg(Msg.Logic.PREDICT, SingleValue<String>(seledCandi)))
+        if (composeCurrentCount == composeTotalCount) {
+            // 发送消息给editor
+            context.editorMsgPasser.passMessage(Msg.Editor.COMMIT_CANDI, seledCandi)
+
+            // 切换到预测状态
+            context.state = PredictState()
+            context.callStateAction(Msg(Msg.Logic.PREDICT, SingleValue<String>(seledCandi)))
+        } else {
+            context.editorMsgPasser.passMessage(Msg.Editor.COMPOSE, seledCandi)
+            getCandidatesThenPassMsg(context, pinyinDecoder)
+        }
     }
 
     private fun handleCode(context: LogicContext, pinyinDecoder: IPinyinDecoderService, code: Int) {

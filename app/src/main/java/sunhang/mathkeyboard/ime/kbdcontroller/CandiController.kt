@@ -1,5 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,12 +14,12 @@ import sunhang.mathkeyboard.kbdviews.RootView
 
 class CandiController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController() {
     private val candiRoot = rootView.findViewById<ViewGroup>(R.id.candidate)
-    private val candiRv = candiRoot as RecyclerView
+    private val candiRv = candiRoot.findViewById<RecyclerView>(R.id.candi_rv)
     private val candiAdapter = CandiAdapter(
         requestLoadMore = {
             imsContext.logicMsgPasser.passMessage(Msg.Logic.LOAD_MORE_CHOICES)
-        }, requestChooseCandi = { position ->
-            imsContext.logicMsgPasser.passMessage(Msg.Logic.CHOOSE_CANDI, position)
+        }, requestChooseCandi = { position, candi ->
+            imsContext.logicMsgPasser.passMessage(Msg.Logic.CHOOSE_CANDI, position, candi)
         }
     )
 
@@ -40,5 +42,6 @@ class CandiController(private val imsContext: IMSContext, private val rootView: 
         val candiAttr = skinModel.candiVisualAttr
         candiRv.setBackgroundColor(candiAttr.backgroundColor)
         candiAdapter.candiVisualAttr = candiAttr
+        candiRoot.findViewById<View>(R.id.divider).background = ColorDrawable(candiAttr.normalTextColor and 0x80FFFFFF.toInt())
     }
 }
