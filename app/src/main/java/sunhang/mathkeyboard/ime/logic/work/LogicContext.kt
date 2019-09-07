@@ -14,6 +14,10 @@ import sunhang.mathkeyboard.kbdmodel.PlaneType
 
 @WorkerThread
 class LogicContext @MainThread constructor(val editorMsgPasser: MsgPasser, val kbdUIMsgPasser: MsgPasser) {
+    companion object {
+        const val CANDI_SIZE_IN_PAGE = 20
+    }
+
     var state: State = IdleState()
     var pinyinDecoder: IPinyinDecoderService? = null
     var planeType: PlaneType? = null

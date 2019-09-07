@@ -7,6 +7,7 @@ import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.kbdskin.CloneableNinePatchDrawable
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
+import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdviews.NumColumnView
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.uiLazy
@@ -20,9 +21,9 @@ class NumKbdColumn(private val imsContext: IMSContext, private val rootView: Roo
         super.onCreate()
     }
 
-    override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
-        super.useSkinAttr(skinAttri)
-        val attr = skinAttri.keyVisualAttr
+    override fun useSkinAttr(skinModel: SkinModel) {
+        super.useSkinAttr(skinModel)
+        val attr = skinModel.keyboardVisualAttributes.keyVisualAttr
         numColumnRootView.background = if (attr.keyBackground is CloneableNinePatchDrawable) {
             attr.keyBackground.makeClone()
         } else {
