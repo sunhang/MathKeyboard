@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
+import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdviews.CandiAdapter
 import sunhang.mathkeyboard.kbdviews.RootView
 
@@ -24,5 +25,13 @@ class CandiController(private val imsContext: IMSContext, private val rootView: 
 
     fun appendCandis(list: List<String>) {
         candiAdapter.appendCandis(list)
+    }
+
+    override fun useSkinAttr(skinModel: SkinModel) {
+        super.useSkinAttr(skinModel)
+
+        val candiAttr = skinModel.candiVisualAttr
+        candiRv.setBackgroundColor(candiAttr.backgroundColor)
+        candiAdapter.candiVisualAttr = candiAttr
     }
 }

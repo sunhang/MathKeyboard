@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import sunhang.mathkeyboard.kbdskin.CandiVisualAttr
+import sunhang.mathkeyboard.tools.buildStateListDrawable
 import sunhang.mathkeyboard.tools.dp2Px
-import sunhang.mathkeyboard.tools.setLayoutParamSize
 
 class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
     private var candis = mutableListOf<String>()
+    var candiVisualAttr: CandiVisualAttr? = null
 
     fun reset() {
         candis.clear()
@@ -32,10 +34,13 @@ class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandiViewHolder {
         val textView = TextView(parent.context).apply {
-            textSize = 18.0f
+            textSize = 20.0f
             gravity = Gravity.CENTER
-            layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            minWidth = dp2Px(40.0f).toInt()
+            layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.MATCH_PARENT)
+            minWidth = dp2Px(50.0f).toInt()
+            setPadding(dp2Px(5.0f).toInt(), paddingTop, dp2Px(5.0f).toInt(), paddingBottom)
+
+            setOnClickListener {  }
         }
 
         return CandiViewHolder(textView)
@@ -45,9 +50,16 @@ class CandiAdapter : RecyclerView.Adapter<CandiAdapter.CandiViewHolder>() {
 
     override fun onBindViewHolder(holder: CandiViewHolder, position: Int) {
         holder.textView.text = candis[position]
+
+        val candiVisualAttr = this.candiVisualAttr
+        if (!holder.skinIsApplied && candiVisualAttr != null) {
+            holder.textView.setTextColor(candiVisualAttr.normalTextColor)
+            holder.textView.background = buildStateListDrawable(0, candiVisualAttr.itemPressedColor)
+        }
     }
 
     class CandiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var skinIsApplied = false
         val textView = itemView as TextView
     }
 }

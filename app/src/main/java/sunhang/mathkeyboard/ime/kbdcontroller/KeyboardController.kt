@@ -6,6 +6,7 @@ import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
+import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.screenWidth
@@ -87,10 +88,10 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
         }
     }
 
-    override fun useSkinAttr(skinAttri: KeyboardVisualAttributes) {
-        super.useSkinAttr(skinAttri)
-        keyboardVisualAttributes = skinAttri
-        setKbdVisualAttr(keyboardView.keyboard, skinAttri)
+    override fun useSkinAttr(skinModel: SkinModel) {
+        super.useSkinAttr(skinModel)
+        keyboardVisualAttributes = skinModel.keyboardVisualAttributes
+        setKbdVisualAttr(keyboardView.keyboard, skinModel.keyboardVisualAttributes)
     }
 
     private fun setKbdVisualAttr(keyboard: Keyboard, skinAttri: KeyboardVisualAttributes) {
