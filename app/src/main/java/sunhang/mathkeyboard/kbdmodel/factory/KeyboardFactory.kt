@@ -18,16 +18,16 @@ open class KeyboardFactory(protected var context: Context) {
             .let { Keyboard(it) }
     }
 
-    open protected fun createKey(keyInfo: KeyInfo): Key {
-        return if (isBackslash(keyInfo.getMainCode())) {
+    protected open fun createKey(keyInfo: KeyInfo): Key {
+        return if (isBackslash(keyInfo.mainCode)) {
             BackspaceKey(context, keyInfo)
-        } else if (isEnter(keyInfo.getMainCode())) {
+        } else if (isEnter(keyInfo.mainCode)) {
             EnterKey(context, keyInfo)
-        } else if (isSpace(keyInfo.getMainCode())) {
+        } else if (isSpace(keyInfo.mainCode)) {
             SpaceKey(context, keyInfo)
-        } else if (keyInfo.getType() === KbdInfo.KeyType.NORMAL) {
+        } else if (keyInfo.type === KbdInfo.KeyType.NORMAL) {
             Key(context, keyInfo)
-        } else if (isMultiTextDisplayed(keyInfo.getMainCode())) {
+        } else if (isMultiTextDisplayed(keyInfo.mainCode)) {
             Key(context, keyInfo)
         } else if (isShift(keyInfo.mainCode)) {
             return ShiftKey(context, keyInfo)

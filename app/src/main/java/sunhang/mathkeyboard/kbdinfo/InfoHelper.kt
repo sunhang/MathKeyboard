@@ -30,22 +30,21 @@ fun buildKeyInfo(
         .setType(keyType)
         .setTextSize(textSize)
         .setTextSizeUpperCase(textSizeUpperCase)
-        .setKeyColor(keyColor)
-        .setHintTextSize(hintTextSize)
+        .setKeyColor(keyColor).hintTextSize = hintTextSize
 
-    if (baseLine != 0f) keyBuilder.setBaseLine(baseLine)
-    if (upperCaseBaseLine != 0f) keyBuilder.setUpperCaseBaseLine(upperCaseBaseLine)
+    if (baseLine != 0f) keyBuilder.baseLine = baseLine
+    if (upperCaseBaseLine != 0f) keyBuilder.upperCaseBaseLine = upperCaseBaseLine
 
-    if (hintCode != 0) keyBuilder.setHintCode(hintCode)
-    if (hintText != null) keyBuilder.setHintText(hintText)
+    if (hintCode != 0) keyBuilder.hintCode = hintCode
+    if (hintText != null) keyBuilder.hintText = hintText
 
-    if (hintBaseLine != 0f) keyBuilder.setHintBaseLine(hintBaseLine)
-    if (hintUpperCaseBaseLine != 0f) keyBuilder.setHintUpperCaseBaseLine(hintUpperCaseBaseLine)
+    if (hintBaseLine != 0f) keyBuilder.hintBaseLine = hintBaseLine
+    if (hintUpperCaseBaseLine != 0f) keyBuilder.hintUpperCaseBaseLine = hintUpperCaseBaseLine
 
     val rectBuilder = KbdInfo.RectInfo.newBuilder()
     rectBuilder.setX(x).setY(y).setWidth(keyWidth).setHeight(keyHeight)
-        .setHorPadding(keyHorPadding).setVerPadding(keyVerPadding)
-    keyBuilder.setRectInfo(rectBuilder.build())
+        .setHorPadding(keyHorPadding).verPadding = keyVerPadding
+    keyBuilder.rectInfo = rectBuilder.build()
 
     return keyBuilder.build()
 }

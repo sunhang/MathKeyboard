@@ -10,7 +10,7 @@ import sunhang.mathkeyboard.kbdmodel.ZhEnSwitchKey
 
 class QwertyEnKeyboardFactory(context: Context) : KeyboardFactory(context) {
     override fun createKey(keyInfo: KbdInfo.KeyInfo): Key {
-        if (keyInfo.getType() === KbdInfo.KeyType.NORMAL && isLetter(keyInfo.getMainCode())) {
+        if (keyInfo.type === KbdInfo.KeyType.NORMAL && isLetter(keyInfo.mainCode)) {
             return UpperCaseSupportedKey(context, keyInfo)
         } else if (keyInfo.mainCode == CODE_SWITCH_MAIN) {
             return ZhEnSwitchKey(context, keyInfo, false)

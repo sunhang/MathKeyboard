@@ -16,11 +16,11 @@ import sunhang.mathkeyboard.MathIMS
 import java.lang.reflect.InvocationTargetException
 
 fun sp2Px(sp: Float): Float {
-    return GlobalVariable.context.getResources().getDisplayMetrics().density * sp
+    return GlobalVariable.context.resources.displayMetrics.density * sp
 }
 
 fun dp2Px(dp: Float): Float {
-    return GlobalVariable.context.getResources().getDisplayMetrics().density * dp
+    return GlobalVariable.context.resources.displayMetrics.density * dp
 }
 
 fun setLayoutParamSize(cls: Class<*>, view: View, width: Int, height: Int) {
@@ -92,7 +92,7 @@ fun isImeDefault(context: Context): Boolean {
 }
 
 fun isPortrait(context: Context): Boolean {
-    return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+    return context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 }
 
 fun debugTime(): Float {
