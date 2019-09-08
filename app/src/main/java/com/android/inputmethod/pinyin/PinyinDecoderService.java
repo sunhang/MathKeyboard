@@ -17,21 +17,19 @@
 package com.android.inputmethod.pinyin;
 
 
+import android.app.Service;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.os.IBinder;
+import android.util.Log;
+import sunhang.mathkeyboard.R;
+
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
-
-import android.app.Service;
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.util.Log;
-import sunhang.mathkeyboard.R;
-import sunhang.mathkeyboard.tools.LKt;
 
 /**
  * This class is used to separate the input method kernel in an individual
@@ -133,11 +131,9 @@ public class PinyinDecoderService extends Service {
         // a file descriptor...
         AssetFileDescriptor afd = getResources().openRawResourceFd(
                 R.raw.dict_pinyin);
-        if (Environment.getInstance().needDebug()) {
-            Log.i("foo", "Dict: start=" + afd.getStartOffset()
-                            + ", length=" + afd.getLength() + ", fd="
-                            + afd.getParcelFileDescriptor());
-        }
+        Log.i("foo", "Dict: start=" + afd.getStartOffset()
+                        + ", length=" + afd.getLength() + ", fd="
+                        + afd.getParcelFileDescriptor());
         if (getUsrDictFileName(usr_dict)) {
             inited = nativeImOpenDecoderFd(afd.getFileDescriptor(), afd
                     .getStartOffset(), afd.getLength(), usr_dict);
