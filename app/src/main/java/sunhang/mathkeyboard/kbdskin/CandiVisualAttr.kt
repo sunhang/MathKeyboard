@@ -5,5 +5,4 @@ data class CandiVisualAttr(
     val highlightTextColor: Int,
     val itemPressedColor: Int,
     val backgroundColor: Int
-) {
-}
+)
