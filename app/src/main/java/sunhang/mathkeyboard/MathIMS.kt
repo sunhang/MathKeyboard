@@ -12,24 +12,25 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import com.android.inputmethod.pinyin.PinyinDecoderService
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.ime.logic.Editor
-import sunhang.mathkeyboard.ime.logic.Logic
 import sunhang.mathkeyboard.ime.logic.msg.Msg
-import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.uiLazy
 
 class MathIMS : InputMethodService() {
-    private val rootView: RootView
-    private val logic: Logic
     private val rootController: RootController
+    private val logicThread: HandlerThread
+    private val editor: Editor
+    private val imsContext: IMSContext
 
     init {
         val initializer = Initializer(GlobalVariable.context)
 
-        rootView = initializer.rootView
-        logic = initializer.logic
         rootController = initializer.rootController
+        logicThread = initializer.logicThread
+        editor = initializer.editor
+        imsContext = initializer.imsContext
     }
 
     /**
@@ -48,30 +49,28 @@ class MathIMS : InputMethodService() {
         rootController.onCreateInputViewInvoked()
 
         // 处理横竖屏切换时的问题
-        val parent = rootView.parent as? ViewGroup
-        parent?.let {
-            it.removeView(rootView)
+        return rootController.rootView.also {
+            (it.parent as? ViewGroup)?.removeView(it)
         }
-
-        return rootView
     }
 
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
 
-        logic.attachInputConnection(currentInputConnection)
-        logic.attachEditorInfo(info)
+        editor.currentInputConnection = currentInputConnection
+        editor.editorInfo = info
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
+        imsContext.logicMsgPasser.passMessage(Msg.Logic.FINISH_INPUT_VIEW)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         // todo logic中的pinyinDecoder可以使用吗？
         unbindService(pinyinDecoderServiceConnection)
-        logic.dispose()
+        logicThread.quitSafely()
     }
 
     private fun startPinyinDecoderService(): Boolean {

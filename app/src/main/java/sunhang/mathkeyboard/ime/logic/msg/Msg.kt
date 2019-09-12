@@ -12,6 +12,8 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
         LOAD_MORE_CHOICES,
         CHOOSE_CANDI,
         PREDICT,
+        START_INPUT_VIEW,
+        FINISH_INPUT_VIEW
     }
 
     enum class Editor : Type {

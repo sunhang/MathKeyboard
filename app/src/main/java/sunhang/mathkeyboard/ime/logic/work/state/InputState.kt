@@ -19,6 +19,10 @@ class InputState : State {
     private var alreadyCandisSize = 0
 
     override fun doAction(context: LogicContext, msg: Msg) {
+        if (preHandle(context, msg)) {
+            return
+        }
+
         val pinyinDecoder = context.pinyinDecoder!!
 
         when (msg.type) {
@@ -45,7 +49,6 @@ class InputState : State {
 
         context.kbdUIMsgPasser.passMessage(type, candis, alreadyCandisSize < totalChoicesNum)
     }
-
 
     private fun chooseCandi(context: LogicContext, pinyinDecoder: IPinyinDecoderService, index: Int) {
         alreadyCandisSize = 0

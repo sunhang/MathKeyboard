@@ -5,7 +5,7 @@ import sunhang.mathkeyboard.kbdskin.*
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.runOnFile
 
-class RootController(val imsContext: IMSContext, private val rootView: RootView) : BaseController(), SkinAttrUser {
+class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController(imsContext, rootView)
     val candiController = CandiController(imsContext, rootView)
 
