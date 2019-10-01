@@ -107,20 +107,17 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
 
     override val fourthRowCodeTextWidthRatio: Triple<IntArray, Array<String>, FloatArray>
         get() {
-            val COMMA: Int = ','.toInt()
-            val PERIOD: Int = '.'.toInt()
-
             return Triple(
                 intArrayOf(
                     CODE_SWITCH_SYMBOL,
                     CODE_SWITCH_NUM_SODUKU,
-                    COMMA,
+                    EN_COMMA,
                     KEYCODE_SPACE,
-                    PERIOD,
+                    EN_PERIOD,
                     CODE_SWITCH_MAIN,
                     CODE_ENTER
                 ),
-                arrayOf("符", "123", String(Character.toChars(COMMA)), "", String(Character.toChars(PERIOD)), "", ""),
+                arrayOf("符", "123", String(Character.toChars(EN_COMMA)), "", String(Character.toChars(EN_PERIOD)), "", ""),
                 floatArrayOf(1.5f, 1.22f, 1f, 2.56f, 1f, 1.22f, 1.5f)
             )
         }

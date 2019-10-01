@@ -57,10 +57,4 @@ fun isZhSymbol(code: Int): Boolean {
 
 }
 
-fun isSwitchCode(code: Int): Boolean {
-    return (code == CODE_SWITCH_EN_QWERTY
-            || code == CODE_SWITCH_MAIN
-            || code == CODE_SWITCH_NUM_SODUKU
-            || code == CODE_SWITCH_SYMBOL
-            || code == CODE_BACK)
-}
+fun isSwitchCode(code: Int) = sunhang.mathkeyboard.isSwitchCode(code)
