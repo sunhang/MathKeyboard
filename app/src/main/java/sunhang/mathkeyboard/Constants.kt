@@ -39,6 +39,7 @@ fun isSwitchCode(code: Int): Boolean {
 }
 
 
+//从-10开始，给switch codes更多可添加的空间
 const val CODE_ENTER = -10 + CUSTOM_BEGIN // 回车键
 const val CODE_CLEAR = -11 + CUSTOM_BEGIN // 清空
 const val CODE_BACK = -12 + CUSTOM_BEGIN // 从符号键盘返回
