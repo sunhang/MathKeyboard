@@ -9,6 +9,7 @@ import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.State
 import sunhang.mathkeyboard.kbdmodel.PlaneType
+import sunhang.mathkeyboard.tools.isLetter
 
 @WorkerThread
 class IdleState : State {
@@ -26,7 +27,7 @@ class IdleState : State {
                         editor.passMessage(Msg.Editor.COMMIT_CODE, code)
                     }
                     else -> {
-                        if (context.pinyinDecoderReady && context.zhPlane) {
+                        if (context.pinyinDecoderReady && context.zhPlane && isLetter(code)) {
                             val pinyinDecoder = context.pinyinDecoder!!
                             pinyinDecoder.imResetSearch()
 

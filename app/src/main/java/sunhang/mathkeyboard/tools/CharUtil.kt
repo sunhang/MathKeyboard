@@ -20,6 +20,7 @@ fun isSpace(code: Int): Boolean {
 
 fun isLetter(code: Int): Boolean {
     return code >= 'a'.toInt() && code <= 'z'.toInt()
+            || code >= 'A'.toInt() && code <= 'Z'.toInt()
 }
 
 fun isCharacter(code: Int): Boolean {
