@@ -13,7 +13,7 @@ import sunhang.mathkeyboard.tools.isShift
 class QwertyZHKeyboardFactory(context: Context) : KeyboardFactory(context) {
     override fun createKey(keyInfo: KbdInfo.KeyInfo): Key {
         return if (keyInfo.type === KbdInfo.KeyType.NORMAL && isLetter(keyInfo.mainCode)) {
-            UpperCaseSupportedKey(context, keyInfo)
+            Key(context, keyInfo)
         } else if (keyInfo.mainCode == CODE_SWITCH_EN_QWERTY) {
             ZhEnSwitchKey(context, keyInfo, true)
         } else if (keyInfo.mainCode == ZH_COMMA || keyInfo.mainCode == ZH_PERIOD) {
