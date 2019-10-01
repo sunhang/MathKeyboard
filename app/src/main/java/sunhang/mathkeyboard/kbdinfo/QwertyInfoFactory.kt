@@ -3,9 +3,7 @@ package sunhang.mathkeyboard.kbdinfo
 import android.content.Context
 import android.util.Pair
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.KEYCODE_DELETE
-import sunhang.mathkeyboard.ZH_COMMA
-import sunhang.mathkeyboard.ZH_PERIOD
+import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.mathkeyboard.tools.isEnter
 
@@ -134,8 +132,8 @@ abstract class QwertyInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int
             throw RuntimeException()
         }
 
-        val comma: Int = ','.toInt()
-        val period: Int = '.'.toInt()
+        val comma = EN_COMMA
+        val period = EN_PERIOD
 
         val len = triple.first.size
         for (i in 0 until len) {
