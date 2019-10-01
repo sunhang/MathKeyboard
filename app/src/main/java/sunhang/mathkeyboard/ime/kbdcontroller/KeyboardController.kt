@@ -133,9 +133,10 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
                 CODE_SWITCH_MAIN -> PlaneType.QWERTY_ZH
                 CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
-                CODE_SWITCH_SYMBOL -> PlaneType.MATH_SYMBOL_0
+                CODE_SWITCH_MATH_SYM -> PlaneType.MATH_SYMBOL_0
                 CODE_NEXT_PAGE -> PlaneType.MATH_SYMBOL_1
                 CODE_PRE_PAGE -> PlaneType.MATH_SYMBOL_0
+                // todo [CODE_SWITCH_SYMBOL]
                 else -> null
             }
 
