@@ -35,6 +35,10 @@ class PredictState : State {
     }
 
     override fun doAction(context: LogicContext, msg: Msg) {
+        if (preHandle(context, msg)) {
+            return
+        }
+
         val pinyinDecoder = context.pinyinDecoder!!
 
         when (msg.type) {

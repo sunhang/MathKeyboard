@@ -8,14 +8,18 @@ import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.State
+import sunhang.mathkeyboard.kbdmodel.PlaneType
+import sunhang.mathkeyboard.tools.isLetter
 
 @WorkerThread
 class IdleState : State {
     override fun doAction(context: LogicContext, msg: Msg) {
         val editor = context.editorMsgPasser
-        val pinyinDecoder = context.pinyinDecoder!!
 
         when (msg.type) {
+            Msg.Logic.PLANE_TYPE -> {
+                context.planeType = msg.valuePack.asSingle<PlaneType>().value
+            }
             Msg.Logic.CODE -> {
                 val code = msg.valuePack.asSingle<Int>().value
                 when (code) {
@@ -23,7 +27,8 @@ class IdleState : State {
                         editor.passMessage(Msg.Editor.COMMIT_CODE, code)
                     }
                     else -> {
-                        if (context.pinyinDecoderReady && context.zhPlane) {
+                        if (context.pinyinDecoderReady && context.zhPlane && isLetter(code)) {
+                            val pinyinDecoder = context.pinyinDecoder!!
                             pinyinDecoder.imResetSearch()
 
                             context.state = InputState()

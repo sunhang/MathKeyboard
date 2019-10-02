@@ -32,6 +32,7 @@ class MathSymbolInfo0Factory(context: Context, kbdWidth: Int, kbdHeight: Int) :
 
         val columnCounts = arrayOf(10, 10, 10, 9, 8)
 
+        // todo 居然没有π!!!!
         val codes = arrayOf(
             toIntArray('≈', '≡', '≠', '＝', '≤', '≥', '＜', '＞', '≮', '≯'),
             toIntArray('∷', '±', '＋', '－', '×', '÷', '／', '∫', '∮', '∝'),

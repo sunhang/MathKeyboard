@@ -5,6 +5,7 @@
     <string name="step_two">第二步</string>
     <string name="key_text_zh">中</string>
     <string name="key_text_en">英</string>
+    <string name="key_text_sym">符</string>
 
     <!-- 第三方 -->
     <!-- version = apk(java) + ime engine + sys dict + [hotlist (TBD)] -->

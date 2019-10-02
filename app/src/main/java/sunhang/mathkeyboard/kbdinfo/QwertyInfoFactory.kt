@@ -3,7 +3,7 @@ package sunhang.mathkeyboard.kbdinfo
 import android.content.Context
 import android.util.Pair
 import protoinfo.KbdInfo
-import sunhang.mathkeyboard.KEYCODE_DELETE
+import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.mathkeyboard.tools.isEnter
 
@@ -132,8 +132,8 @@ abstract class QwertyInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int
             throw RuntimeException()
         }
 
-        val COMMA: Int = ','.toInt()
-        val PERIOD: Int = '.'.toInt()
+        val comma = EN_COMMA
+        val period = EN_PERIOD
 
         val len = triple.first.size
         for (i in 0 until len) {
@@ -151,7 +151,7 @@ abstract class QwertyInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int
                 keyColor = if (code < 0) KbdInfo.KeyColor.SPECIAL else KbdInfo.KeyColor.COLOR_NORMAL
             }
 
-            val baseLine = if (code == COMMA || code == PERIOD) {
+            val baseLine = if (code == comma || code == period || code == ZH_COMMA || code == ZH_PERIOD) {
                 0.58f
             } else {
                 0f

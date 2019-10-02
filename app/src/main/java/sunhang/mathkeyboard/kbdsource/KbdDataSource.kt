@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import protoinfo.KbdInfo
+import sunhang.mathkeyboard.BuildConfig
 import sunhang.mathkeyboard.files.FilePath
 import sunhang.mathkeyboard.kbdinfo.*
 import sunhang.mathkeyboard.kbdmodel.Keyboard
@@ -22,6 +23,11 @@ import java.util.*
 
 class KbdDataSource(private val context: Context) {
     private val kbdMemCache = WeakHashMap<String, Keyboard>()
+
+    companion object {
+        // 为方便调试keyboard UI，不使用diskcache
+        const val USE_DISK_CACHE = false
+    }
 
     private fun getKbdProtoFromDisk(file: File): Observable<KbdInfo.KeyboardInfo> {
         return Observable.create<KbdInfo.KeyboardInfo> {
@@ -64,8 +70,10 @@ class KbdDataSource(private val context: Context) {
         val protoFromFactory = getKbdProtoFromFactory(infoFactory)
             .observeOn(fileScheduler)
             .doOnNext {
-                // 缓存起来
-                file.writeBytes(it.toByteArray())
+                if (!BuildConfig.DEBUG || USE_DISK_CACHE) {
+                    // 缓存起来
+                    file.writeBytes(it.toByteArray())
+                }
                 i("doOnNext in ${Thread.currentThread()}")
             }
 

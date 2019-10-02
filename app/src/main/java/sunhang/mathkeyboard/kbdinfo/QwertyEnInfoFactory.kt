@@ -8,7 +8,8 @@ import sunhang.mathkeyboard.tools.isSwitchCode
 import sunhang.mathkeyboard.tools.sp2Px
 import sunhang.openlibrary.isPortrait
 
-class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : QwertyInfoFactory(context, kbdWidth, kbdHeight) {
+class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
+    QwertyInfoFactory(context, kbdWidth, kbdHeight) {
     override var baseLine: Float = 0.toFloat()
     override var upperCaseBaseLine: Float = 0.toFloat()
     override var hintBaseLine: Float = 0.toFloat()
@@ -57,7 +58,15 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
 
     override val thirdRowHint: Pair<IntArray, Array<String>>
         get() = Pair(
-            intArrayOf('('.toInt(), ')'.toInt(), '-'.toInt(), '_'.toInt(), ':'.toInt(), ';'.toInt(), '/'.toInt()),
+            intArrayOf(
+                '('.toInt(),
+                ')'.toInt(),
+                '-'.toInt(),
+                '_'.toInt(),
+                ':'.toInt(),
+                ';'.toInt(),
+                '/'.toInt()
+            ),
             arrayOf("(", ")", "-", "_", ":", ";", "/")
         )
 
@@ -98,7 +107,15 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
 
     override val thirdRow: Pair<IntArray, Array<String>>
         get() = Pair(
-            intArrayOf('z'.toInt(), 'x'.toInt(), 'c'.toInt(), 'v'.toInt(), 'b'.toInt(), 'n'.toInt(), 'm'.toInt()),
+            intArrayOf(
+                'z'.toInt(),
+                'x'.toInt(),
+                'c'.toInt(),
+                'v'.toInt(),
+                'b'.toInt(),
+                'n'.toInt(),
+                'm'.toInt()
+            ),
             arrayOf("z", "x", "c", "v", "b", "n", "m")
         )
 
@@ -107,26 +124,35 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
 
     override val fourthRowCodeTextWidthRatio: Triple<IntArray, Array<String>, FloatArray>
         get() {
-            val COMMA: Int = ','.toInt()
-            val PERIOD: Int = '.'.toInt()
-
             return Triple(
                 intArrayOf(
+                    CODE_SWITCH_MATH_SYM,
                     CODE_SWITCH_SYMBOL,
                     CODE_SWITCH_NUM_SODUKU,
-                    COMMA,
+                    EN_COMMA,
                     KEYCODE_SPACE,
-                    PERIOD,
+                    EN_PERIOD,
                     CODE_SWITCH_MAIN,
                     CODE_ENTER
                 ),
-                arrayOf("符", "123", String(Character.toChars(COMMA)), "", String(Character.toChars(PERIOD)), "", ""),
-                floatArrayOf(1.5f, 1.22f, 1f, 2.56f, 1f, 1.22f, 1.5f)
+                arrayOf(
+                    "αβ..",
+                    context.getString(R.string.key_text_sym),
+                    "123",
+                    String(Character.toChars(EN_COMMA)),
+                    "",
+                    String(Character.toChars(EN_PERIOD)),
+                    "",
+                    ""
+                ),
+                floatArrayOf(1.5f, 1f, 1f, 1f, 1.78f, 1f, 1.22f, 1.5f)
             )
         }
 
     override fun getTextSize(code: Int): Float {
         if (code == CODE_SWITCH_MAIN) {
+            return 18f
+        } else if (code == CODE_SWITCH_NUM_SODUKU) {
             return 18f
         } else if (isSwitchCode(code)) {
             return 20f
@@ -140,7 +166,8 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
     override fun setupBaseLine(keyHeight: Float) {
         val visualHeight = keyHeight - keyVerPadding * 2
         baseLine = adjustBaseLine("abcd", visualHeight, sp2Px(DEFAULT_TEXTSIZE.toFloat()))
-        upperCaseBaseLine = adjustBaseLine("ASDF", visualHeight,
+        upperCaseBaseLine = adjustBaseLine(
+            "ASDF", visualHeight,
             sp2Px(DEFAULT_UPPERCASE_TEXTSIZE.toFloat())
         )
 

@@ -103,24 +103,22 @@ class QwertyZhInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) : Qwe
         )
 
     override val shiftPlaceCodeAndText: Pair<Int, String>
-        get() = Pair(KEYCODE_SHIFT, "")
+        get() = Pair(CODE_SWITCH_SYMBOL, context.getString(R.string.key_text_sym))
 
     override val fourthRowCodeTextWidthRatio: Triple<IntArray, Array<String>, FloatArray>
         get() {
-            val COMMA: Int = '，'.toInt()
-            val PERIOD: Int = '。'.toInt()
-
             return Triple(
                 intArrayOf(
-                    CODE_SWITCH_SYMBOL,
+                    CODE_SWITCH_MATH_SYM,
                     CODE_SWITCH_NUM_SODUKU,
-                    COMMA,
+                    ZH_COMMA,
                     KEYCODE_SPACE,
-                    PERIOD,
+                    ZH_PERIOD,
                     CODE_SWITCH_EN_QWERTY,
                     CODE_ENTER
                 ),
-                arrayOf("符", "123", String(Character.toChars(COMMA)), "", String(Character.toChars(PERIOD)), "", ""),
+                arrayOf("αβ..", "123", String(Character.toChars(ZH_COMMA)), "", String(Character.toChars(
+                    ZH_PERIOD)), "", ""),
                 floatArrayOf(1.5f, 1.22f, 1f, 2.56f, 1f, 1.22f, 1.5f)
             )
         }

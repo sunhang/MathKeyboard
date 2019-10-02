@@ -5,10 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.HandlerThread
 import android.os.IBinder
-import android.os.Looper
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -16,26 +15,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import com.android.inputmethod.pinyin.PinyinDecoderService
 import kotlinx.android.synthetic.main.activity_preview.*
-import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.ime.logic.Editor
-import sunhang.mathkeyboard.ime.logic.Logic
 import sunhang.mathkeyboard.ime.logic.msg.Msg
-import sunhang.mathkeyboard.ime.logic.work.LogicContext
-import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.uiLazy
 
 class PreviewActivity : AppCompatActivity() {
-    private val rootView: RootView
-    private val logic: Logic
     private val rootController: RootController
+    private val editor: Editor
+    private val logicThread: HandlerThread
 
     init {
         val initializer = Initializer(GlobalVariable.context)
 
-        rootView = initializer.rootView
-        logic = initializer.logic
+        editor = initializer.editor
         rootController = initializer.rootController
+        logicThread = initializer.logicThread
     }
 
     private val pinyinDecoderServiceConnection = object : ServiceConnection {
@@ -51,9 +46,10 @@ class PreviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preview)
 
-        logic.attachEditorInfo((et as EditTextForKbdDebug).editorInfo)
-        logic.attachInputConnection((et as EditTextForKbdDebug).inputConnection)
+        editor.editorInfo = (et as EditTextForKbdDebug).editorInfo
+        editor.currentInputConnection = (et as EditTextForKbdDebug).inputConnection
 
+        val rootView = rootController.rootView
         fl.addView(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         rootController.onCreate()
@@ -69,7 +65,7 @@ class PreviewActivity : AppCompatActivity() {
         super.onDestroy()
 
         unbindService(pinyinDecoderServiceConnection)
-        logic.dispose()
+        logicThread.quitSafely()
     }
 
     class EditTextForKbdDebug(context: Context?, attrs: AttributeSet?) : EditText(context, attrs) {
