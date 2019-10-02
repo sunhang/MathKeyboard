@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="symbol_titles">
+        <item>常用</item>
+        <item>数学</item>
+        <item>中文</item>
+        <item>英文</item>
+    </string-array>
+</resources>
