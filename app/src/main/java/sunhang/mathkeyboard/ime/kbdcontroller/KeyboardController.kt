@@ -3,6 +3,7 @@ package sunhang.mathkeyboard.ime.kbdcontroller
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.ime.IMSContext
+import sunhang.mathkeyboard.ime.kbdcontroller.symcontroller.SymController
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.kbdmodel.*
 import sunhang.mathkeyboard.kbdskin.KeyboardVisualAttributes
@@ -20,9 +21,11 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
     private var shiftState = ShiftState.UNSHIFT
     private val numKbdColumn = NumKbdColumn(imsContext, rootView)
     private var planeType: PlaneType = PlaneType.QWERTY_EN
+    private val symController = SymController(imsContext, rootView)
 
     init {
         attach(numKbdColumn)
+        attach(symController)
     }
 
     override fun onCreate() {
@@ -133,7 +136,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 CODE_SWITCH_NUM_SODUKU -> PlaneType.NUMBER
                 CODE_SWITCH_MAIN -> PlaneType.QWERTY_ZH
                 CODE_SWITCH_EN_QWERTY -> PlaneType.QWERTY_EN
-                CODE_SWITCH_MATH_SYM -> PlaneType.MATH_SYMBOL_0
+//                CODE_SWITCH_MATH_SYM -> PlaneType.MATH_SYMBOL_0
                 CODE_NEXT_PAGE -> PlaneType.MATH_SYMBOL_1
                 CODE_PRE_PAGE -> PlaneType.MATH_SYMBOL_0
                 // todo [CODE_SWITCH_SYMBOL]
