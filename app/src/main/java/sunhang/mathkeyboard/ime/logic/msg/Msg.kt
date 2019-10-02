@@ -13,7 +13,8 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
         CHOOSE_CANDI,
         PREDICT,
         START_INPUT_VIEW,
-        FINISH_INPUT_VIEW
+        FINISH_INPUT_VIEW,
+        TEXT
     }
 
     enum class Editor : Type {

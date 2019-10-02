@@ -6,6 +6,10 @@
     <string name="key_text_zh">中</string>
     <string name="key_text_en">英</string>
     <string name="key_text_sym">符</string>
+    <string name="symbol_titles_common">常用</string>
+    <string name="symbol_titles_math">数学</string>
+    <string name="symbol_titles_en">英文</string>
+    <string name="symbol_titles_zh">中文</string>
 
     <!-- 第三方 -->
     <!-- version = apk(java) + ime engine + sys dict + [hotlist (TBD)] -->
