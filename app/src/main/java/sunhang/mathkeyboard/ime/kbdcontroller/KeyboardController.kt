@@ -139,16 +139,22 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 //                CODE_SWITCH_MATH_SYM -> PlaneType.MATH_SYMBOL_0
                 CODE_NEXT_PAGE -> PlaneType.MATH_SYMBOL_1
                 CODE_PRE_PAGE -> PlaneType.MATH_SYMBOL_0
-                // todo [CODE_SWITCH_SYMBOL]
+                CODE_SWITCH_SYMBOL -> PlaneType.SYMBOL
                 else -> null
             }
 
-            if (planeType != null) {
-                loadKeyboardData(planeType)
-                this@KeyboardController.planeType = planeType
-                imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
-            } else {
-                imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
+            when (planeType){
+                null -> {
+                    imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
+                }
+                PlaneType.SYMBOL -> {
+                    symController.show()
+                }
+                else -> {
+                    loadKeyboardData(planeType)
+                    this@KeyboardController.planeType = planeType
+                    imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
+                }
             }
         }
     }
