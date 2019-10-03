@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
+import sunhang.mathkeyboard.R
 
 class SkinModelFactory {
     fun create(context: Context): SkinModel {
@@ -44,7 +46,11 @@ class SkinModelFactory {
 
         val universalPanelAttr = UniversalPanelAttr(
             itemBackground = Color.WHITE,
-            itemPressedBackground = Color.argb(128, 255, 255, 255)
+            itemPressedBackground = Color.argb(128, 255, 255, 255),
+            itemDividerColor = 0xFFDDDFE2.toInt(),
+            specialColor = ContextCompat.getColor(context, R.color.colorPrimary),
+            funcBackgroundColor = 0xFFEEEEF1.toInt(),
+            funTextColor = 0xFF706D8E.toInt()
         )
 
         return SkinModel(

@@ -20,13 +20,22 @@ class SymPagerAdapter(
     override var universalPanelAttr: UniversalPanelAttr? = null
         set(value) {
             field = value
-            applySkin(value)
+//            applySkin(value)
+
+            notifyDataSetChanged()
         }
 
-    private fun applySkin(attr: UniversalPanelAttr?) {
+    /*
+    private fun applySkin(args: UniversalPanelAttr?) {
         weakViewpagers.forEach {
-            (it.get() as? SymRvAdapter)?.let {
-                universalPanelAttr = attr
+            it.get()?.run {
+                (adapter as SymRvAdapter).run {
+                    universalPanelAttr = args
+                }
+
+                (getItemDecorationAt(0) as RvItemDecoration).run {
+                    dividerColor = args?.itemDividerColor ?: 0
+                }
             }
         }
 
@@ -38,7 +47,7 @@ class SymPagerAdapter(
                 }
             }
         }
-    }
+    }*/
 
     override fun isViewFromObject(view: View, `object`: Any) = view == `object`
 
@@ -56,13 +65,14 @@ class SymPagerAdapter(
             adapter = if (symTypes[position] == SymType.RECENT_USED) {
                 SymRecentRvAdapter(logicMsgPasser)
             } else {
-                SymRvAdapter(logicMsgPasser, SymData.map[symTypes[position]]!!).also {
-                    it.universalPanelAttr = universalPanelAttr
-                }
+                SymRvAdapter(logicMsgPasser, SymData.map[symTypes[position]]!!)
+            }.also {
+                it.universalPanelAttr = universalPanelAttr
             }
 
-//            var rvItemDecoration: RvItemDecoration
-//            addItemDecoration(RvItemDecoration())
+            addItemDecoration(RvItemDecoration().apply {
+                dividerColor = universalPanelAttr?.itemDividerColor ?: 0
+            })
         }.also {
             weakViewpagers.add(WeakReference<RecyclerView>(it))
             container.addView(it)

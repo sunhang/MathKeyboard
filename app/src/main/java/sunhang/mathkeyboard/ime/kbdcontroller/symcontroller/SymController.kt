@@ -2,9 +2,7 @@ package sunhang.mathkeyboard.ime.kbdcontroller.symcontroller
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
 import android.os.Build
-import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayout
@@ -16,7 +14,6 @@ import sunhang.mathkeyboard.ime.kbdcontroller.BaseController
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdviews.RootView
-import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.screenWidth
 import sunhang.openlibrary.uiLazy
 
@@ -68,7 +65,6 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
             })
 
             fb_back.setOnClickListener {
-                i("fb_back clicked")
                 hide()
             }
         }
@@ -86,42 +82,6 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         }
     }
 
-    class Layout(context: Context) {
-        val real = View.inflate(context, R.layout.kbd_sym, null)!!
-
-        fun applySkin(skinModel: SkinModel) {
-            with(real) {
-                background = skinModel.keyboardVisualAttributes.wallpaper
-                tab_layout.background = skinModel.keyboardVisualAttributes.topBackground
-                with(view_pager.adapter as SymPagerAdapter) {
-                    universalPanelAttr = skinModel.universalPanelAttr
-                }
-            }
-        }
-
-        val shown = real.parent != null
-
-        /**
-         * 是不是编写得过了？
-         */
-        fun view(statement: View.() -> Unit = {}) = real.apply {
-            statement()
-        }
-
-
-        class LayoutBuilder {
-            lateinit var builderContext: Context
-            lateinit var viewInitializer: View.() -> Unit
-            lateinit var skinInitializer: Layout.() -> Unit
-
-            fun build(): Layout {
-                return Layout(builderContext).apply {
-                    real.viewInitializer()
-                    skinInitializer()
-                }
-            }
-        }
-    }
 
     override fun useSkinAttr(skinModel: SkinModel) {
         super.useSkinAttr(skinModel)

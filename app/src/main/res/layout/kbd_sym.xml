@@ -29,6 +29,8 @@
             android:id="@+id/fb_back"
             android:layout_width="52dip"
             android:layout_height="52dip"
+            app:fabCustomSize="52dp"
+            app:backgroundTint="@color/colorPrimary"
             app:elevation="4dp"
             app:borderWidth="0dp"
             app:layout_constraintRight_toRightOf="parent"
