@@ -38,51 +38,51 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         }
 
         viewInitializer = {
-            val symPagerAdapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes).apply {
-                universalPanelAttr = skinModel?.universalPanelAttr
+            val fbBack = fb_back
+            val tabLayout = tab_layout
+            val viewPager = view_pager
 
-                hideFab = {
-                    if (fb_back.isShown) {
-                        fb_back.hide()
+            with(viewPager) {
+                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+                adapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes).apply {
+                    universalPanelAttr = skinModel?.universalPanelAttr
+
+                    hideFab = {
+                        if (fbBack.isShown) {
+                            fbBack.hide()
+                        }
+                    }
+
+                    showFab = {
+                        if (!fbBack.isShown) {
+                            fbBack.show()
+                        }
                     }
                 }
-
-                showFab = {
-                    if (!fb_back.isShown) {
-                        fb_back.show()
-                    }
-                }
             }
 
-            with(view_pager) {
-                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
-                adapter = symPagerAdapter
-            }
-
-            val baseOnTabSelectedListener = object :
-                TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
-                override fun onTabReselected(tab: TabLayout.Tab?) {}
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    val position = tab?.position ?: 0
-                    view_pager.currentItem = position
-                }
-
-            }
-
-            with(tab_layout) {
+            with(tabLayout) {
                 symTypes.map { it.textStr(context) }.forEach { title ->
                     addTab(newTab().apply {
                         text = title
                     })
                 }
 
-                addOnTabSelectedListener(baseOnTabSelectedListener)
+                addOnTabSelectedListener(object :
+                    TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+                    override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        val position = tab?.position ?: 0
+                        viewPager.currentItem = position
+                    }
+
+                })
             }
 
-            fb_back.setOnClickListener {
+            fbBack.setOnClickListener {
                 hide()
             }
         }
