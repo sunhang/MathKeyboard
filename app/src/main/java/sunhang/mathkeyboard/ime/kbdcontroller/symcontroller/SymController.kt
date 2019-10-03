@@ -18,6 +18,7 @@ import sunhang.openlibrary.screenWidth
 import sunhang.openlibrary.uiLazy
 
 
+// todo 需要有个删除键，删除键可以放在列表第一排最后一个位置，浮动在那里不动，背后遮挡的位置置空
 class SymController(private val imsContext: IMSContext, rootView: RootView) : BaseController(),
     IMSAction, SkinAttrUser {
     private val containter = rootView.findViewById<ViewGroup>(R.id.ime_layer)

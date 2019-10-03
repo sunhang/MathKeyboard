@@ -147,7 +147,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 }
                 PlaneType.SYMBOL -> {
                     val (x, y) = with(key.visualRect) {
-                        Pair(centerX().toInt(), centerY().toInt())
+                        Pair(centerX().toInt(), centerY().toInt() + rootView.keyboardView.top)
                     }
                     symController.show(x, y)
                 }
