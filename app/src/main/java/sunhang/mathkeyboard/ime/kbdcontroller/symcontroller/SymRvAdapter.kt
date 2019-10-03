@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import sunhang.mathkeyboard.data.SymEntity
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.UniPanelSkinAttrUser
 import sunhang.mathkeyboard.ime.logic.msg.Msg
 import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
@@ -14,18 +16,18 @@ import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.mathkeyboard.tools.i
 import sunhang.mathkeyboard.tools.setLayoutParamSize
 import sunhang.openlibrary.methodStack
+import sunhang.openlibrary.runOnDB
 import kotlin.math.roundToInt
 
 open class SymRvAdapter(
-    private val logicMsgPasser: MsgPasser,
-    private val list: List<String>
+    private val imsContext: IMSContext,
+    var list: List<String>
 ) : RecyclerView.Adapter<SymRvAdapter.SymViewHolder>(),
     UniPanelSkinAttrUser {
 
     override var universalPanelAttr: UniversalPanelAttr? = null
         set(value) {
             field = value
-            i(methodStack())
             notifyDataSetChanged()
         }
 
@@ -38,7 +40,11 @@ open class SymRvAdapter(
         }
 
         itemView.setOnClickListener {
-            logicMsgPasser.passMessage(Msg.Logic.TEXT, it.tag as String)
+            val str = it.tag as String
+            imsContext.logicMsgPasser.passMessage(Msg.Logic.TEXT, str)
+            runOnDB {
+                imsContext.kbdDb.recentDao().insert(SymEntity(str, System.currentTimeMillis()))
+            }
         }
 
         return SymViewHolder(itemView)

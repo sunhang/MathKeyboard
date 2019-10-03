@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import sunhang.mathkeyboard.GlobalVariable
 import sunhang.mathkeyboard.base.common.RvItemDecoration
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.UniPanelSkinAttrUser
 import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
 import sunhang.mathkeyboard.kbdskin.UniversalPanelAttr
 import java.lang.ref.WeakReference
 
 class SymPagerAdapter(
-    private val logicMsgPasser: MsgPasser,
+    private val imsContext: IMSContext,
     private val symTypes: Array<SymType>
 ) : PagerAdapter(), UniPanelSkinAttrUser {
     private val weakViewpagers = HashSet<WeakReference<RecyclerView>>()
@@ -66,9 +67,9 @@ class SymPagerAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val symAdapter = if (symTypes[position] == SymType.RECENT_USED) {
-            SymRecentRvAdapter(logicMsgPasser)
+            SymRecentRvAdapter.build(imsContext)
         } else {
-            SymRvAdapter(logicMsgPasser, SymData.map[symTypes[position]]!!)
+            SymRvAdapter(imsContext, SymData.map[symTypes[position]]!!)
         }.also {
             it.universalPanelAttr = universalPanelAttr
         }

@@ -44,7 +44,7 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
 
             with(viewPager) {
                 addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-                adapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes).apply {
+                adapter = SymPagerAdapter(imsContext, symTypes).apply {
                     universalPanelAttr = skinModel?.universalPanelAttr
 
                     hideFab = {

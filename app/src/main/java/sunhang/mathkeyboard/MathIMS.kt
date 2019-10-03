@@ -71,6 +71,8 @@ class MathIMS : InputMethodService() {
         // todo logic中的pinyinDecoder可以使用吗？
         unbindService(pinyinDecoderServiceConnection)
         logicThread.quitSafely()
+
+        imsContext.dispose()
     }
 
     private fun startPinyinDecoderService(): Boolean {
