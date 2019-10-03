@@ -1,7 +1,9 @@
 package sunhang.mathkeyboard.ime.kbdcontroller.symcontroller
 
 import android.content.Context
+import android.os.Build
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.kbd_sym.view.*
@@ -12,6 +14,7 @@ import sunhang.mathkeyboard.ime.kbdcontroller.BaseController
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdviews.RootView
+import sunhang.openlibrary.screenWidth
 import sunhang.openlibrary.uiLazy
 
 
@@ -117,15 +120,27 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         }
     }
 
-    fun show() {
-        if (!layout.shown) {
-            containter.addView(
-                layout.view {
-                    tablayout.layoutParams.height = imsContext.imeLayoutConfig.toolbarHeight
-                },
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+    fun show(centerX: Int, centerY: Int) {
+        if (layout.shown) {
+            return
+        }
+
+        val view = layout.view {
+            tablayout.layoutParams.height = imsContext.imeLayoutConfig.toolbarHeight
+        }
+
+        containter.addView(
+            view,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ViewAnimationUtils.createCircularReveal(view, centerX, centerY, 0f, context.screenWidth.toFloat())
+                .run {
+                    duration = 309
+                    start()
+                }
         }
 
         shown = true

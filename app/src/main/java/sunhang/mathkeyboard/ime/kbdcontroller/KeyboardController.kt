@@ -148,7 +148,10 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                     imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
                 }
                 PlaneType.SYMBOL -> {
-                    symController.show()
+                    val (x, y) = with(key.visualRect) {
+                        Pair(centerX().toInt(), centerY().toInt())
+                    }
+                    symController.show(x, y)
                 }
                 else -> {
                     loadKeyboardData(planeType)
