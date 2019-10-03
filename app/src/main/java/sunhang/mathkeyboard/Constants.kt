@@ -43,5 +43,3 @@ fun isSwitchCode(code: Int): Boolean {
 const val CODE_ENTER = -10 + CUSTOM_BEGIN // 回车键
 const val CODE_CLEAR = -11 + CUSTOM_BEGIN // 清空
 const val CODE_BACK = -12 + CUSTOM_BEGIN // 从符号键盘返回
-const val CODE_NEXT_PAGE = -13 + CUSTOM_BEGIN // 下一页
-const val CODE_PRE_PAGE = -14 + CUSTOM_BEGIN //  上一页

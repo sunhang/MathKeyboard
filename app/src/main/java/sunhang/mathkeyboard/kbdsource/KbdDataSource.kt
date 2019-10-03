@@ -104,20 +104,6 @@ class KbdDataSource(private val context: Context) {
                     KeyboardFactory(context)
                 )
             }
-            PlaneType.MATH_SYMBOL_0 -> {
-                getKbdModel(
-                    FilePath.keyboardMathSymbol0ProtoFile(keyboardWidth, keyboardHeight),
-                    MathSymbolInfo0Factory(context, keyboardWidth, keyboardHeight),
-                    KeyboardFactory(context)
-                )
-            }
-            PlaneType.MATH_SYMBOL_1 -> {
-                getKbdModel(
-                    FilePath.keyboardMathSymbol1ProtoFile(keyboardWidth, keyboardHeight),
-                    MathSymbolInfo1Factory(context, keyboardWidth, keyboardHeight),
-                    KeyboardFactory(context)
-                )
-            }
             PlaneType.QWERTY_ZH -> {
                 getKbdModel(
                     FilePath.keyboardZhProtoFile(keyboardWidth, keyboardHeight),
