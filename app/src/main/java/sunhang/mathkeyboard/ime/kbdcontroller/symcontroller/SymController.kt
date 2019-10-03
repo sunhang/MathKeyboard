@@ -28,6 +28,7 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
     private var animating = false
     private var positionX = 0
     private var positionY = 0
+    var onSymPlaneBack: (() -> Unit)? = null
 
     private val layout by lazyBuildLayout {
         builderContext = context
@@ -85,6 +86,7 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
 
             fbBack.setOnClickListener {
                 hide()
+                onSymPlaneBack?.invoke()
             }
         }
     }

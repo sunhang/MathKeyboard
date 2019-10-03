@@ -11,16 +11,18 @@ import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdsource.KbdDataSource
 import sunhang.mathkeyboard.kbdviews.RootView
 import sunhang.openlibrary.screenWidth
+import java.util.*
 import kotlin.math.roundToInt
 
-class KeyboardController(private val imsContext: IMSContext, private val rootView: RootView) : BaseController() {
+class KeyboardController(private val imsContext: IMSContext, private val rootView: RootView) :
+    BaseController() {
     private val context = imsContext.context
     private val keyboardView = rootView.keyboardView
     private val kbdDataSource = KbdDataSource(imsContext.context)
     private var keyboardVisualAttributes: KeyboardVisualAttributes? = null
     private var shiftState = ShiftState.UNSHIFT
     private val numKbdColumn = NumKbdColumn(imsContext, rootView)
-    private var planeType: PlaneType = PlaneType.QWERTY_EN
+    private val planeStack = PlaneStack()
     private val symController = SymController(imsContext, rootView)
 
     init {
@@ -28,8 +30,34 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
         attach(symController)
     }
 
+    /**
+     * 为回退键盘服务
+     */
+    class PlaneStack {
+        private val stack = LinkedList<PlaneType>()
+
+        fun push(planeType: PlaneType) {
+            stack.push(planeType)
+
+            while (stack.size > 3) {
+                stack.removeLast()
+            }
+        }
+
+        fun pop(): PlaneType? {
+            if (stack.size == 0) {
+                return null
+            }
+
+            return stack.pop()
+        }
+
+        fun peek() = stack.peek()
+    }
+
     override fun onCreate() {
         super.onCreate()
+        symController.onSymPlaneBack = onSymPlaneBack
         loadKeyboardData(PlaneType.QWERTY_ZH)
         imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, PlaneType.QWERTY_ZH)
     }
@@ -141,7 +169,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 else -> null
             }
 
-            when (planeType){
+            when (planeType) {
                 null -> {
                     imsContext.logicMsgPasser.passMessage(Msg.Logic.CODE, code)
                 }
@@ -153,11 +181,24 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
                 }
                 else -> {
                     loadKeyboardData(planeType)
-                    this@KeyboardController.planeType = planeType
-                    imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
                 }
             }
+
+            if (planeType != null) {
+                planeStack.push(planeType)
+                imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
+            }
         }
+    }
+
+    private val onSymPlaneBack = {
+        planeStack.pop()
+        val planeType = planeStack.peek() ?: PlaneType.QWERTY_ZH
+
+        if (planeType != PlaneType.SYMBOL) {
+            loadKeyboardData(planeType)
+        }
+        imsContext.logicMsgPasser.passMessage(Msg.Logic.PLANE_TYPE, planeType)
     }
 
     private val onShiftStateListener = object : ShiftKey.ShiftStateListener {
