@@ -20,6 +20,10 @@ class IdleState : State {
             Msg.Logic.PLANE_TYPE -> {
                 context.planeType = msg.valuePack.asSingle<PlaneType>().value
             }
+            Msg.Logic.TEXT -> {
+                val str = msg.valuePack.asSingle<String>().value
+                editor.passMessage(Msg.Editor.COMMIT_TEXT, str)
+            }
             Msg.Logic.CODE -> {
                 val code = msg.valuePack.asSingle<Int>().value
                 when (code) {

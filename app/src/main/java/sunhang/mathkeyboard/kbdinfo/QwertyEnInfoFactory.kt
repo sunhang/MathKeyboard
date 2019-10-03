@@ -126,7 +126,6 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
         get() {
             return Triple(
                 intArrayOf(
-                    CODE_SWITCH_MATH_SYM,
                     CODE_SWITCH_SYMBOL,
                     CODE_SWITCH_NUM_SODUKU,
                     EN_COMMA,
@@ -136,7 +135,6 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
                     CODE_ENTER
                 ),
                 arrayOf(
-                    "αβ..",
                     context.getString(R.string.key_text_sym),
                     "123",
                     String(Character.toChars(EN_COMMA)),
@@ -145,16 +143,16 @@ class QwertyEnInfoFactory(context: Context, kbdWidth: Int, kbdHeight: Int) :
                     "",
                     ""
                 ),
-                floatArrayOf(1.5f, 1f, 1f, 1f, 1.78f, 1f, 1.22f, 1.5f)
+                floatArrayOf(1.5f, 1.22f, 1f, 2.56f, 1f, 1.22f, 1.5f)
             )
         }
 
     override fun getTextSize(code: Int): Float {
         if (code == CODE_SWITCH_MAIN) {
             return 18f
-        } else if (code == CODE_SWITCH_NUM_SODUKU) {
+        } /*else if (code == CODE_SWITCH_NUM_SODUKU) {
             return 18f
-        } else if (isSwitchCode(code)) {
+        } */else if (isSwitchCode(code)) {
             return 20f
         } else if (isEnter(code)) {
             return 17f

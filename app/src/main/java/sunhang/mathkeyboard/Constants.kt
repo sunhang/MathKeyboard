@@ -24,7 +24,7 @@ const val CODE_SWITCH_SYMBOL = -1 + CUSTOM_BEGIN // 切换到符号键盘
 const val CODE_SWITCH_NUM_SODUKU = -2 + CUSTOM_BEGIN // 切换到9宫格数字键盘
 const val CODE_SWITCH_EN_QWERTY = -3 + CUSTOM_BEGIN // 切换到26键英文键盘
 const val CODE_SWITCH_MAIN = -4 + CUSTOM_BEGIN // 切换到中文键盘
-const val CODE_SWITCH_MATH_SYM = -5 + CUSTOM_BEGIN // 切换到数学符号键盘
+//const val CODE_SWITCH_MATH_SYM = -5 + CUSTOM_BEGIN // 切换到数学符号键盘
 
 /**
  * 写到这里，因为经常变动switch codes这些常量，避免变动时函数不能及时更新
@@ -34,7 +34,7 @@ fun isSwitchCode(code: Int): Boolean {
             || code == CODE_SWITCH_MAIN
             || code == CODE_SWITCH_NUM_SODUKU
             || code == CODE_SWITCH_SYMBOL
-            || code == CODE_SWITCH_MATH_SYM
+//            || code == CODE_SWITCH_MATH_SYM
             || code == CODE_BACK)
 }
 
@@ -43,5 +43,3 @@ fun isSwitchCode(code: Int): Boolean {
 const val CODE_ENTER = -10 + CUSTOM_BEGIN // 回车键
 const val CODE_CLEAR = -11 + CUSTOM_BEGIN // 清空
 const val CODE_BACK = -12 + CUSTOM_BEGIN // 从符号键盘返回
-const val CODE_NEXT_PAGE = -13 + CUSTOM_BEGIN // 下一页
-const val CODE_PRE_PAGE = -14 + CUSTOM_BEGIN //  上一页

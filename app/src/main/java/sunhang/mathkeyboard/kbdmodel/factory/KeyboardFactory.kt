@@ -40,13 +40,11 @@ open class KeyboardFactory(protected var context: Context) {
     private fun isMultiTextDisplayed(code: Int): Boolean {
         return (code == CODE_SWITCH_SYMBOL
                 || code == CODE_SWITCH_NUM_SODUKU
-                || code == CODE_SWITCH_MATH_SYM
+//                || code == CODE_SWITCH_MATH_SYM
                 || code == KEYCODE_APOSTROPHE
                 || code == CODE_SWITCH_MAIN
                 || code == CODE_SWITCH_EN_QWERTY
-                || code == CODE_CLEAR
-                || code == CODE_NEXT_PAGE
-                || code == CODE_PRE_PAGE)
+                || code == CODE_CLEAR)
     }
 
     companion object {

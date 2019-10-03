@@ -1,5 +1,8 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import android.widget.FrameLayout
+import kotlinx.android.synthetic.main.ime_layout.view.*
+import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.*
 import sunhang.mathkeyboard.kbdviews.RootView
@@ -32,11 +35,13 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
         val topViewLp = rootView.topView.layoutParams
         val kbdViewLp = rootView.keyboardView.layoutParams
         val wallpaperLp = rootView.wallpaperView.layoutParams
+        val imeLayerLp = rootView.findViewById<FrameLayout>(R.id.ime_layer).layoutParams
         val layoutConfig = imsContext.imeLayoutConfig
 
         topViewLp.height = layoutConfig.toolbarHeight
         kbdViewLp.height = layoutConfig.keyboardHeight
         wallpaperLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
+        imeLayerLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
         rootView.inputAreaMaxHeight = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
     }
 
@@ -44,5 +49,6 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
         super.useSkinAttr(skinModel)
 
         rootView.wallpaperView.background = skinModel.keyboardVisualAttributes.wallpaper
+        rootView.topView.background = skinModel.keyboardVisualAttributes.topBackground
     }
 }

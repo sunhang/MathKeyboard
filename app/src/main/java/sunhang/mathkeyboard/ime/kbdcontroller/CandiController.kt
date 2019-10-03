@@ -40,7 +40,7 @@ class CandiController(private val imsContext: IMSContext, private val rootView: 
         super.useSkinAttr(skinModel)
 
         val candiAttr = skinModel.candiVisualAttr
-        candiRv.setBackgroundColor(candiAttr.backgroundColor)
+//        candiRv.setBackgroundColor(candiAttr.backgroundColor)
         candiAdapter.candiVisualAttr = candiAttr
         candiRoot.findViewById<View>(R.id.divider).background = ColorDrawable(candiAttr.normalTextColor and 0x80FFFFFF.toInt())
     }

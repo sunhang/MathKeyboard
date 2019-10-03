@@ -17,7 +17,7 @@ import sunhang.mathkeyboard.ime.logic.msg.asSingle
 import java.lang.RuntimeException
 
 @MainThread
-class Editor : MsgExecutor{
+class Editor : MsgExecutor {
     var editorInfo: EditorInfo? = null
     var currentInputConnection: InputConnection? = null
 
@@ -32,6 +32,7 @@ class Editor : MsgExecutor{
             Msg.Editor.COMMIT_CODE -> commitCode(msg.valuePack.asSingle<Int>().value)
             Msg.Editor.COMMIT_CANDI -> commitText(msg.valuePack.asSingle<String>().value)
             Msg.Editor.COMPOSE -> compose(msg.valuePack.asSingle<String>().value)
+            Msg.Editor.COMMIT_TEXT -> commitText(msg.valuePack.asSingle<String>().value)
         }
     }
 
@@ -70,11 +71,12 @@ class Editor : MsgExecutor{
 
         // 对微信输入框做了个单独处理
         // 不要考虑EditorInfo.IME_FLAG_NO_ENTER_ACTION这个字段
-        val actionId = if ("com.tencent.mm" == editorInfo.packageName && (editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION === EditorInfo.IME_ACTION_SEND)) {
-            EditorInfo.IME_ACTION_SEND
-        } else {
-            getActionId(editorInfo)
-        }
+        val actionId =
+            if ("com.tencent.mm" == editorInfo.packageName && (editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION === EditorInfo.IME_ACTION_SEND)) {
+                EditorInfo.IME_ACTION_SEND
+            } else {
+                getActionId(editorInfo)
+            }
 
         if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED || actionId == EditorInfo.IME_ACTION_NONE) {
             // do nothing
