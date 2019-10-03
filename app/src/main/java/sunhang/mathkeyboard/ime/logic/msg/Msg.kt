@@ -20,6 +20,7 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
     enum class Editor : Type {
         COMMIT_CODE,
         COMMIT_CANDI,
+        COMMIT_TEXT,
         COMPOSE,
     }
 
