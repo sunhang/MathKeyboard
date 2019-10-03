@@ -61,8 +61,12 @@ class SymPagerAdapter(
         return symTypes.size
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
+    override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
+        container.removeView(any as View)
+
+        if (any is SymRecentRvAdapter && !any.rxDispose.isDisposed) {
+            any.rxDispose.dispose()
+        }
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

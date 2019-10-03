@@ -4,30 +4,36 @@ import android.annotation.SuppressLint
 import sunhang.mathkeyboard.ime.IMSContext
 import androidx.recyclerview.widget.DiffUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import sunhang.mathkeyboard.data.SymEntity
+import java.lang.ref.WeakReference
 
 
 class SymRecentRvAdapter private constructor(imsContext: IMSContext) :
     SymRvAdapter(imsContext, listOf()) {
 
+    lateinit var rxDispose: Disposable
+
     companion object {
         @SuppressLint("CheckResult")
         fun build(imsContext: IMSContext): SymRecentRvAdapter {
             val adapter = SymRecentRvAdapter(imsContext)
+            val weakRef = WeakReference(adapter)
 
-            // todo 可能会有内存泄漏
-            imsContext.kbdDb.recentDao().getAll()
+            adapter.rxDispose = imsContext.kbdDb.recentDao().getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ list: List<SymEntity> ->
-                val oldList = adapter.list
-                val newList = list.map { it.content }
+                    val adapter = weakRef.get() ?: return@subscribe
 
-                val diffResult = DiffUtil.calculateDiff(DiffCallBack(oldList, newList), true)
-                adapter.list = newList
-                diffResult.dispatchUpdatesTo(adapter)
-            }, {
-                it.printStackTrace()
-            })
+                    val oldList = adapter.list
+                    val newList = list.map { it.content }
+
+                    val diffResult = DiffUtil.calculateDiff(DiffCallBack(oldList, newList), true)
+                    adapter.list = newList
+                    diffResult.dispatchUpdatesTo(adapter)
+                }, {
+                    it.printStackTrace()
+                })
 
             return adapter
         }
