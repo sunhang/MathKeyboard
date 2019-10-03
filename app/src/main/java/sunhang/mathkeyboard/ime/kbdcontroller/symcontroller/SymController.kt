@@ -1,5 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller.symcontroller
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.os.Build
 import android.view.View
@@ -14,6 +16,7 @@ import sunhang.mathkeyboard.ime.kbdcontroller.BaseController
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
 import sunhang.mathkeyboard.kbdskin.SkinModel
 import sunhang.mathkeyboard.kbdviews.RootView
+import sunhang.mathkeyboard.tools.i
 import sunhang.openlibrary.screenWidth
 import sunhang.openlibrary.uiLazy
 
@@ -24,6 +27,10 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
     private val context = imsContext.context
     private var skinModel: SkinModel? = null
     private var shown = false
+    private var animating = false
+    private var positionX = 0
+    private var positionY = 0
+
     private val layout by lazyBuildLayout {
         builderContext = context
 
@@ -34,12 +41,12 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         }
 
         viewInitializer = {
-            with(viewpager) {
-                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tablayout))
+            with(view_pager) {
+                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
                 adapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes)
             }
 
-            with(tablayout) {
+            with(tab_layout) {
                 symTypes.map { it.textStr(context) }.forEach { title ->
                     addTab(newTab().apply {
                         text = title
@@ -47,7 +54,7 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
                 }
             }
 
-            tablayout.addOnTabSelectedListener(object :
+            tab_layout.addOnTabSelectedListener(object :
                 TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
 
@@ -55,10 +62,15 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     val position = tab?.position ?: 0
-                    viewpager.currentItem = position
+                    view_pager.currentItem = position
                 }
 
             })
+
+            fb_back.setOnClickListener {
+                i("fb_back clicked")
+                hide()
+            }
         }
     }
 
@@ -80,7 +92,10 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         fun applySkin(skinModel: SkinModel) {
             with(real) {
                 background = skinModel.keyboardVisualAttributes.wallpaper
-                tablayout.background = skinModel.keyboardVisualAttributes.topBackground
+                tab_layout.background = skinModel.keyboardVisualAttributes.topBackground
+                with(view_pager.adapter as SymPagerAdapter) {
+                    universalPanelAttr = skinModel.universalPanelAttr
+                }
             }
         }
 
@@ -121,12 +136,15 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
     }
 
     fun show(centerX: Int, centerY: Int) {
-        if (layout.shown) {
+        if (animating || shown) {
             return
         }
 
+        positionX = centerX
+        positionY = centerY
+
         val view = layout.view {
-            tablayout.layoutParams.height = imsContext.imeLayoutConfig.toolbarHeight
+            tab_layout.layoutParams.height = imsContext.imeLayoutConfig.toolbarHeight
         }
 
         containter.addView(
@@ -136,19 +154,58 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ViewAnimationUtils.createCircularReveal(view, centerX, centerY, 0f, context.screenWidth.toFloat())
-                .run {
-                    duration = 309
-                    start()
-                }
+            ViewAnimationUtils.createCircularReveal(
+                view,
+                centerX,
+                centerY,
+                0f,
+                context.screenWidth.toFloat()
+            ).run {
+                addListener(object : AnimatorListenerAdapter() {
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        animating = false
+                    }
+
+                })
+
+                duration = 309
+                start()
+                animating = true
+            }
         }
 
         shown = true
     }
 
     fun hide() {
-        if (shown && layout.shown) {
+        if (animating || !shown) {
+            return
+        }
+
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             containter.removeView(layout.view())
+        } else {
+            ViewAnimationUtils.createCircularReveal(
+                layout.view(),
+                positionX,
+                positionY,
+                context.screenWidth.toFloat(),
+                0f
+            ).run {
+                duration = 309
+                start()
+                animating = true
+
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        containter.removeView(layout.view())
+                        animating = false
+                    }
+                })
+            }
         }
 
         shown = false

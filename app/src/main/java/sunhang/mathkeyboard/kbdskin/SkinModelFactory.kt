@@ -42,9 +42,15 @@ class SkinModelFactory {
             backgroundColor = Color.WHITE
         )
 
+        val universalPanelAttr = UniversalPanelAttr(
+            itemBackground = Color.WHITE,
+            itemPressedBackground = Color.argb(128, 255, 255, 255)
+        )
+
         return SkinModel(
             candiVisualAttr = candiVisualAttr,
-            keyboardVisualAttributes = kbd
+            keyboardVisualAttributes = kbd,
+            universalPanelAttr = universalPanelAttr
         )
 
     }
