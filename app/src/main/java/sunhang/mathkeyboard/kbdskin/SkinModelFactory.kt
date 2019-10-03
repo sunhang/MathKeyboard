@@ -40,8 +40,8 @@ class SkinModelFactory {
         val candiVisualAttr = CandiVisualAttr(
             normalTextColor = 0xFF706D8E.toInt(),
             highlightTextColor = 0xFF4B53E5.toInt(),
-            itemPressedColor = 0x26B0AEC3.toInt(),
-            backgroundColor = Color.WHITE
+            itemPressedColor = 0x26B0AEC3.toInt()
+//            backgroundColor = Color.WHITE
         )
 
         val universalPanelAttr = UniversalPanelAttr(

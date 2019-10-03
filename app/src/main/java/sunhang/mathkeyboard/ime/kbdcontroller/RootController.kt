@@ -49,5 +49,6 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
         super.useSkinAttr(skinModel)
 
         rootView.wallpaperView.background = skinModel.keyboardVisualAttributes.wallpaper
+        rootView.topView.background = skinModel.keyboardVisualAttributes.topBackground
     }
 }
