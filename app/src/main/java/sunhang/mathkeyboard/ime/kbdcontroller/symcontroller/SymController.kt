@@ -38,20 +38,28 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
         }
 
         viewInitializer = {
-            with(view_pager) {
-                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
-                adapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes)
-            }
+            val symPagerAdapter = SymPagerAdapter(imsContext.logicMsgPasser, symTypes).apply {
+                universalPanelAttr = skinModel?.universalPanelAttr
 
-            with(tab_layout) {
-                symTypes.map { it.textStr(context) }.forEach { title ->
-                    addTab(newTab().apply {
-                        text = title
-                    })
+                hideFab = {
+                    if (fb_back.isShown) {
+                        fb_back.hide()
+                    }
+                }
+
+                showFab = {
+                    if (!fb_back.isShown) {
+                        fb_back.show()
+                    }
                 }
             }
 
-            tab_layout.addOnTabSelectedListener(object :
+            with(view_pager) {
+                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
+                adapter = symPagerAdapter
+            }
+
+            val baseOnTabSelectedListener = object :
                 TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
 
@@ -62,7 +70,17 @@ class SymController(private val imsContext: IMSContext, rootView: RootView) : Ba
                     view_pager.currentItem = position
                 }
 
-            })
+            }
+
+            with(tab_layout) {
+                symTypes.map { it.textStr(context) }.forEach { title ->
+                    addTab(newTab().apply {
+                        text = title
+                    })
+                }
+
+                addOnTabSelectedListener(baseOnTabSelectedListener)
+            }
 
             fb_back.setOnClickListener {
                 hide()

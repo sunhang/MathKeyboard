@@ -1,10 +1,13 @@
 package sunhang.mathkeyboard.ime.kbdcontroller.symcontroller
 
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
+import sunhang.mathkeyboard.GlobalVariable
 import sunhang.mathkeyboard.base.common.RvItemDecoration
 import sunhang.mathkeyboard.ime.kbdcontroller.UniPanelSkinAttrUser
 import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
@@ -16,6 +19,8 @@ class SymPagerAdapter(
     private val symTypes: Array<SymType>
 ) : PagerAdapter(), UniPanelSkinAttrUser {
     private val weakViewpagers = HashSet<WeakReference<RecyclerView>>()
+    lateinit var showFab: () -> Unit
+    lateinit var hideFab: () -> Unit
 
     override var universalPanelAttr: UniversalPanelAttr? = null
         set(value) {
@@ -60,22 +65,39 @@ class SymPagerAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val symAdapter = if (symTypes[position] == SymType.RECENT_USED) {
+            SymRecentRvAdapter(logicMsgPasser)
+        } else {
+            SymRvAdapter(logicMsgPasser, SymData.map[symTypes[position]]!!)
+        }.also {
+            it.universalPanelAttr = universalPanelAttr
+        }
+
         return RecyclerView(container.context).apply {
             layoutManager = GridLayoutManager(container.context, 8)
-            adapter = if (symTypes[position] == SymType.RECENT_USED) {
-                SymRecentRvAdapter(logicMsgPasser)
-            } else {
-                SymRvAdapter(logicMsgPasser, SymData.map[symTypes[position]]!!)
-            }.also {
-                it.universalPanelAttr = universalPanelAttr
-            }
+            adapter = symAdapter
 
             addItemDecoration(RvItemDecoration().apply {
                 dividerColor = universalPanelAttr?.itemDividerColor ?: 0
             })
+
+            addOnScrollListener(ChangeFabOnScrollListener())
         }.also {
-            weakViewpagers.add(WeakReference<RecyclerView>(it))
+            weakViewpagers.add(WeakReference(it))
             container.addView(it)
+        }
+    }
+
+    inner class ChangeFabOnScrollListener : RecyclerView.OnScrollListener() {
+        private val threshold = ViewConfiguration.get(GlobalVariable.context).scaledTouchSlop
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (dy > threshold) {
+                hideFab()
+            } else if (dy < threshold) {
+                showFab()
+            }
         }
     }
 }

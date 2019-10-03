@@ -49,7 +49,10 @@ open class SymRvAdapter(
     override fun onBindViewHolder(holder: SymViewHolder, position: Int) {
         val sym = list[position]
         with(holder) {
-            textView.text = sym
+            with(textView) {
+                text = sym
+                textSize = 18.0f
+            }
             itemView.tag = sym
 
             universalPanelAttr = this@SymRvAdapter.universalPanelAttr
