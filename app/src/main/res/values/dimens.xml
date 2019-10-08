@@ -2,4 +2,6 @@
 <resources>
     <dimen name="key_horizontal_padding">1.5dp</dimen>
     <dimen name="key_vertical_padding">2dp</dimen>
+    <dimen name="candidate_margin_left_right">3dip</dimen>
+    <dimen name="composing_height">18dip</dimen>
 </resources>
