@@ -1,6 +1,8 @@
 package sunhang.mathkeyboard.data
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
@@ -20,6 +22,16 @@ class KbdDb(context: Context) {
     private val dbCallback = object : RoomDatabase.Callback() {
         override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
             super.onCreate(db)
+
+            // init default symbols
+
+            RECENT_DEFAULT_SYMBOLS.forEach {
+                val contentValues = ContentValues().apply {
+                    put("id", it)
+                    put("time_stamp", 0)
+                }
+                db.insert("recent_symbols", SQLiteDatabase.CONFLICT_REPLACE, contentValues)
+            }
         }
 
         override fun onOpen(@NonNull db: SupportSQLiteDatabase) {
