@@ -7,7 +7,7 @@ import kotlin.reflect.KProperty
 private val maps = WeakHashMap<Any?, MutableMap<String, Any>>()
 
 /**
- * 应用场景是在延迟初始化val属性
+ * 应用在延迟初始化val属性的地方
  */
 object InstancesContainer {
 
