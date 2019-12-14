@@ -1,7 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import android.inputmethodservice.InputMethodService
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.ime_layout.view.*
 import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.*
@@ -10,11 +10,13 @@ import sunhang.openlibrary.runOnFile
 
 class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController(imsContext, rootView)
+    private val composePinyinController = ComposePinyinController(imsContext, rootView.findViewById(R.id.layer_above_ime))
     val candiController = CandiController(imsContext, rootView)
 
     init {
         attach(keyboardController)
         attach(candiController)
+        attach(composePinyinController)
     }
 
     override fun onCreate() {
@@ -27,6 +29,20 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
                 useSkinAttr(it)
             }
         })
+    }
+
+    fun onComputeInsets(outInsets: InputMethodService.Insets?) {
+        if (outInsets == null) {
+            return
+        }
+
+        val location = IntArray(2)
+        rootView.topView.getLocationInWindow(location)
+
+        with(outInsets) {
+            contentTopInsets = location[1]
+            visibleTopInsets = location[1]
+        }
     }
 
     override fun onCreateInputViewInvoked() {
@@ -42,7 +58,8 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
         kbdViewLp.height = layoutConfig.keyboardHeight
         wallpaperLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
         imeLayerLp.height = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
-        rootView.inputAreaMaxHeight = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight
+
+        rootView.inputAreaMaxHeight = layoutConfig.toolbarHeight + layoutConfig.keyboardHeight + composePinyinController.getContentHeight()
     }
 
     override fun useSkinAttr(skinModel: SkinModel) {

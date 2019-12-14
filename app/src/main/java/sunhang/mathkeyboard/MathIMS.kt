@@ -54,6 +54,11 @@ class MathIMS : InputMethodService() {
         }
     }
 
+    override fun onComputeInsets(outInsets: Insets?) {
+        super.onComputeInsets(outInsets)
+        rootController.onComputeInsets(outInsets)
+    }
+
     override fun onStartInputView(info: EditorInfo, restarting: Boolean) {
         super.onStartInputView(info, restarting)
 

@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sunhang.mathkeyboard.kbdviews.RootView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
             android:id="@+id/iv_wallpaper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:scaleType="centerCrop" />
+
     <sunhang.mathkeyboard.kbdviews.KeyboardView
             android:id="@+id/kbd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
+
     <FrameLayout
             android:id="@+id/kbd_layer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignTop="@id/kbd"
-            android:layout_alignBottom="@id/kbd"/>
+            android:layout_alignBottom="@id/kbd" />
+
     <FrameLayout
             android:id="@+id/top_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/kbd">
+
         <include
                 android:id="@+id/toolbar"
+                layout="@layout/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/toolbar"/>
+                android:layout_height="match_parent" />
+
         <include
                 android:id="@+id/candidate"
+                layout="@layout/candidate_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/candidate_layout" />
+                android:layout_height="match_parent" />
     </FrameLayout>
+
     <FrameLayout
             android:id="@+id/ime_layer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"/>
+
+    <FrameLayout
+            android:id="@+id/layer_above_ime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/ime_layer"/>
 </sunhang.mathkeyboard.kbdviews.RootView>
