@@ -84,6 +84,8 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
         } else {
             numKbdColumn.dismissView()
         }
+
+        imsContext.composePinyinObservable.onNext(planeType == PlaneType.QWERTY_ZH)
     }
 
     private fun NumKbdColumn.showViewAlignedWithKbd(keyboard: Keyboard) {

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
+import io.reactivex.disposables.Disposable
 import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.kbdskin.SkinAttrUser
@@ -18,9 +19,18 @@ class ComposePinyinController(
 ) : BaseController(), SkinAttrUser {
     private val context = imsContext.context
     private val view by uiLazy { View.inflate(context, R.layout.compose_pinyin, null) }
+    private lateinit var disposable: Disposable
 
     override fun onCreate() {
         super.onCreate()
+
+        disposable = imsContext.composePinyinObservable.subscribe {
+            if (it) {
+                showView()
+            } else {
+                dismissView()
+            }
+        }
     }
 
     override fun onCreateInputViewInvoked() {
@@ -37,6 +47,7 @@ class ComposePinyinController(
 
     override fun onDestroy() {
         super.onDestroy()
+        disposable.dispose()
     }
 
     override fun useSkinAttr(skinModel: SkinModel) {
@@ -47,19 +58,17 @@ class ComposePinyinController(
         return if (view.parent == null) 0 else view.layoutParams.height
     }
 
-    fun showView() {
+    private fun showView() {
         if (view.parent != null) {
             return
         }
 
-        view.setBackgroundColor(Color.RED)
-        layer.setBackgroundColor(Color.RED)
         val lp =
-            FrameLayout.LayoutParams(dp2Px(120.0f).toInt(), dp2Px(30.0f).toInt())
+            FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dp2Px(30.0f).toInt())
         layer.addView(view, lp)
     }
 
-    fun dismissView() {
+    private fun dismissView() {
         val parent = view.parent as? FrameLayout
         parent?.let {
             it.removeView(view)

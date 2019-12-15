@@ -1,6 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
 import android.inputmethodservice.InputMethodService
+import android.view.View
 import android.widget.FrameLayout
 import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
@@ -37,7 +38,7 @@ class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseC
         }
 
         val location = IntArray(2)
-        rootView.topView.getLocationInWindow(location)
+        rootView.findViewById<View>(R.id.layer_above_ime).getLocationInWindow(location)
 
         with(outInsets) {
             contentTopInsets = location[1]
