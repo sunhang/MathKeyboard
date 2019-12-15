@@ -1,9 +1,10 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
-import android.graphics.Color
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
+import android.widget.HorizontalScrollView
+import android.widget.TextView
 import io.reactivex.disposables.Disposable
 import sunhang.mathkeyboard.R
 import sunhang.mathkeyboard.ime.IMSContext
@@ -13,7 +14,8 @@ import sunhang.mathkeyboard.tools.dp2Px
 import sunhang.openlibrary.uiLazy
 
 // todo 需要考虑横竖屏切换
-class ComposePinyinController(
+// todo 需要考虑皮肤
+class PinyinComposeController(
     private val imsContext: IMSContext,
     val layer: FrameLayout
 ) : BaseController(), SkinAttrUser {
@@ -52,6 +54,15 @@ class ComposePinyinController(
 
     override fun useSkinAttr(skinModel: SkinModel) {
         super.useSkinAttr(skinModel)
+    }
+
+    fun setPyCompose(pyCompose: String) {
+        val tvPinyin = view.findViewById<TextView>(R.id.tv_pinyin)
+        tvPinyin.text = pyCompose
+        val hsv = view as HorizontalScrollView
+        hsv.post {
+            hsv.fullScroll(View.FOCUS_RIGHT)
+        }
     }
 
     fun getContentHeight(): Int {

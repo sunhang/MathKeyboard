@@ -18,6 +18,10 @@ class KbdUIExecutor(private val rootController: RootController) : MsgExecutor {
                 val (candis, hasMore) = msg.valuePack.asDouble<List<String>, Boolean>()
                 rootController.candiController.appendCandis(candis, hasMore)
             }
+            Msg.KbdUI.COMPOSE -> {
+                val pyCompose = msg.valuePack.asSingle<String>().value
+                rootController.composePinyinController.setPyCompose(pyCompose)
+            }
         }
     }
 }

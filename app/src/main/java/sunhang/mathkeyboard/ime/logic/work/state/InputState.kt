@@ -1,5 +1,6 @@
 package sunhang.mathkeyboard.ime.logic.work.state
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import sunhang.mathkeyboard.KEYCODE_DELETE
@@ -10,6 +11,7 @@ import sunhang.mathkeyboard.ime.logic.msg.asDouble
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.ime.logic.work.LogicContext.Companion.CANDI_SIZE_IN_PAGE
 import sunhang.mathkeyboard.ime.logic.work.State
+import java.lang.StringBuilder
 
 @WorkerThread
 class InputState : State {
@@ -48,6 +50,21 @@ class InputState : State {
         alreadyCandisSize += requestSize
 
         context.kbdUIMsgPasser.passMessage(type, candis, alreadyCandisSize < totalChoicesNum)
+    }
+
+    private fun getComposeThenPassMsg(context: LogicContext, pinyinDecoder: IPinyinDecoderService) {
+        // todo decoded是什么意思？
+        val pyBuilder = StringBuilder(pinyinDecoder.imGetPyStr(true))
+        val splStart = pinyinDecoder.imGetSplStart()
+
+        splStart
+            .slice(2 until splStart.size - 1)
+            .reversed()
+            .forEach {
+                pyBuilder.insert(it, "'")
+        }
+
+        context.kbdUIMsgPasser.passMessage(Msg.KbdUI.COMPOSE, pyBuilder.toString())
     }
 
     private fun chooseCandi(context: LogicContext, pinyinDecoder: IPinyinDecoderService, index: Int) {
@@ -91,6 +108,7 @@ class InputState : State {
                 totalChoicesNum = pinyinDecoder.imSearch(pyBuf, offset)
                 alreadyCandisSize = 0
                 getCandidatesThenPassMsg(context, pinyinDecoder)
+                getComposeThenPassMsg(context, pinyinDecoder)
 
                 val choice = pinyinDecoder.imGetChoice(0)
                 context.editorMsgPasser.passMessage(Msg.Editor.COMPOSE, choice)

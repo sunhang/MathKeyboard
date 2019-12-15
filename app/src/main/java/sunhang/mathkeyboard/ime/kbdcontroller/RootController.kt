@@ -11,7 +11,7 @@ import sunhang.openlibrary.runOnFile
 
 class RootController(val imsContext: IMSContext, val rootView: RootView) : BaseController(), SkinAttrUser {
     private val keyboardController = KeyboardController(imsContext, rootView)
-    private val composePinyinController = ComposePinyinController(imsContext, rootView.findViewById(R.id.layer_above_ime))
+    val composePinyinController = PinyinComposeController(imsContext, rootView.findViewById(R.id.layer_above_ime))
     val candiController = CandiController(imsContext, rootView)
 
     init {

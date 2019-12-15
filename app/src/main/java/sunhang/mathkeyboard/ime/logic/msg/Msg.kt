@@ -27,6 +27,7 @@ data class Msg(val type: Type, val valuePack: ValuePack) {
     enum class KbdUI: Type {
         CANDI_RESET,
         CANDI_SHOW,
-        CANDI_APPEND
+        CANDI_APPEND,
+        COMPOSE // 写作串
     }
 }
