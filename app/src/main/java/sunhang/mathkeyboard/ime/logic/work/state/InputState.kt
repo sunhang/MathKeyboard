@@ -54,6 +54,7 @@ class InputState : State {
 
     private fun getComposeThenPassMsg(context: LogicContext, pinyinDecoder: IPinyinDecoderService) {
         // todo decoded是什么意思？
+        // todo 用[pyBuf]是不是更好一些
         val pyBuilder = StringBuilder(pinyinDecoder.imGetPyStr(true))
         val splStart = pinyinDecoder.imGetSplStart()
 
@@ -65,6 +66,10 @@ class InputState : State {
         }
 
         context.kbdUIMsgPasser.passMessage(Msg.KbdUI.COMPOSE, pyBuilder.toString())
+    }
+
+    private fun resetCompose(context: LogicContext) {
+        context.kbdUIMsgPasser.passMessage(Msg.KbdUI.COMPOSE, "")
     }
 
     private fun chooseCandi(context: LogicContext, pinyinDecoder: IPinyinDecoderService, index: Int) {
@@ -82,9 +87,11 @@ class InputState : State {
             // 切换到预测状态
             context.state = PredictState()
             context.callStateAction(Msg(Msg.Logic.PREDICT, SingleValue<String>(seledCandi)))
+            resetCompose(context)
         } else {
             context.editorMsgPasser.passMessage(Msg.Editor.COMPOSE, seledCandi)
             getCandidatesThenPassMsg(context, pinyinDecoder)
+            getComposeThenPassMsg(context, pinyinDecoder)
         }
     }
 
@@ -98,9 +105,11 @@ class InputState : State {
                     alreadyCandisSize = 0
                     context.kbdUIMsgPasser.passMessage(Msg.KbdUI.CANDI_RESET)
                     context.state = IdleState()
+                    resetCompose(context)
                 } else {
                     alreadyCandisSize = 0
                     getCandidatesThenPassMsg(context, pinyinDecoder)
+                    getComposeThenPassMsg(context, pinyinDecoder)
                 }
             }
             else -> {
@@ -108,10 +117,10 @@ class InputState : State {
                 totalChoicesNum = pinyinDecoder.imSearch(pyBuf, offset)
                 alreadyCandisSize = 0
                 getCandidatesThenPassMsg(context, pinyinDecoder)
-                getComposeThenPassMsg(context, pinyinDecoder)
 
                 val choice = pinyinDecoder.imGetChoice(0)
                 context.editorMsgPasser.passMessage(Msg.Editor.COMPOSE, choice)
+                getComposeThenPassMsg(context, pinyinDecoder)
             }
         }
     }
