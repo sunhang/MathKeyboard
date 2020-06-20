@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.HandlerThread
 import android.os.IBinder
 import android.util.AttributeSet
 import android.view.ViewGroup
@@ -15,28 +14,35 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.inputmethod.pinyin.IPinyinDecoderService
 import com.android.inputmethod.pinyin.PinyinDecoderService
 import kotlinx.android.synthetic.main.activity_preview.*
+import sunhang.mathkeyboard.ime.IMSContext
 import sunhang.mathkeyboard.ime.kbdcontroller.RootController
 import sunhang.mathkeyboard.ime.logic.Editor
 import sunhang.mathkeyboard.ime.logic.msg.Msg
+import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.openlibrary.uiLazy
 
 class PreviewActivity : AppCompatActivity() {
+    private val editor = Editor()
+    private val logicContext = LogicContext()
+    private val imsContext: IMSContext
     private val rootController: RootController
-    private val editor: Editor
-    private val logicThread: HandlerThread
 
     init {
-        val initializer = Initializer(GlobalVariable.context)
+        with(generateImsContextAndController(GlobalVariable.context, logicContext.looper)) {
+            imsContext = first
+            rootController = second
+        }
 
-        editor = initializer.editor
-        rootController = initializer.rootController
-        logicThread = initializer.logicThread
+        attachEachOther(imsContext, logicContext, editor, rootController)
     }
 
     private val pinyinDecoderServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val pinyinDecoderService = IPinyinDecoderService.Stub.asInterface(service)
-            rootController.imsContext.logicMsgPasser.passMessage(Msg.Logic.PINYIN_DEOCODER, pinyinDecoderService)
+            rootController.imsContext.logicMsgPasser.passMessage(
+                Msg.Logic.PINYIN_DEOCODER,
+                pinyinDecoderService
+            )
         }
 
         override fun onServiceDisconnected(name: ComponentName) {}
@@ -50,7 +56,11 @@ class PreviewActivity : AppCompatActivity() {
         editor.currentInputConnection = (et as EditTextForKbdDebug).inputConnection
 
         val rootView = rootController.rootView
-        fl.addView(rootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        fl.addView(
+            rootView,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
 
         rootController.onCreate()
         rootController.onCreateInputViewInvoked()
@@ -65,7 +75,7 @@ class PreviewActivity : AppCompatActivity() {
         super.onDestroy()
 
         unbindService(pinyinDecoderServiceConnection)
-        logicThread.quitSafely()
+        logicContext.dispose()
     }
 
     class EditTextForKbdDebug(context: Context?, attrs: AttributeSet?) : EditText(context, attrs) {
