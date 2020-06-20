@@ -1,5 +1,7 @@
 package sunhang.mathkeyboard.ime.kbdcontroller
 
+import android.opengl.GLSurfaceView
+import android.view.TextureView
 import protoinfo.KbdInfo
 import sunhang.mathkeyboard.*
 import sunhang.mathkeyboard.ime.IMSContext
@@ -138,8 +140,8 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
             }
             key.normalColor = keyAttr.keyLabelColor
             key.pressedColor = keyAttr.keyLabelColorPressed
-            key.normalBackground = keyAttr.keyBackground
-            key.pressedBackground = keyAttr.keyBackgroundPressed
+//            key.normalBackground = keyAttr.keyBackground
+//            key.pressedBackground = keyAttr.keyBackgroundPressed
         }
         keyboardView.invalidate()
     }

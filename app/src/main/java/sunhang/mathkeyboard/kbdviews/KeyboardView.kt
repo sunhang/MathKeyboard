@@ -3,9 +3,13 @@ package sunhang.mathkeyboard.kbdviews
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.opengl.GLSurfaceView
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import sunhang.mathkeyboard.kbdmodel.Keyboard
 import sunhang.mathkeyboard.kbdmodel.nullobj.NullKeyboard
 import sunhang.mathkeyboard.touch.TouchContext
@@ -40,6 +44,7 @@ class KeyboardView(context: Context?, attrs: AttributeSet?) : View(context, attr
         }
 
         invalidate()
+//        requestLayout()
 
         return true
     }
