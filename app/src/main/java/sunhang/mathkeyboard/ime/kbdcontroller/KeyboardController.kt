@@ -26,6 +26,7 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
     private val numKbdColumn = NumKbdColumn(imsContext, rootView)
     private val planeStack = PlaneStack()
     private val symController = SymController(imsContext, rootView)
+    lateinit var callback: ((Boolean) -> Unit)
 
     init {
         attach(numKbdColumn)
@@ -169,6 +170,12 @@ class KeyboardController(private val imsContext: IMSContext, private val rootVie
 //                CODE_SWITCH_MATH_SYM -> PlaneType.MATH_SYMBOL_0
                 CODE_SWITCH_SYMBOL -> PlaneType.SYMBOL
                 else -> null
+            }
+
+            if (code == 'a'.toInt()) {
+                callback(true)
+            } else {
+                callback(false)
             }
 
             when (planeType) {

@@ -315,7 +315,8 @@ public class LessonOneRenderer implements GLSurfaceView.Renderer
 	public void onDrawFrame(GL10 glUnused)
 	{
 		GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-                
+		GLES20.glClearColor(1f, 0.5f, 1f, 1f);
+
         // Do a complete rotation every 10 seconds.
         long time = SystemClock.uptimeMillis() % 10000L;
         float angleInDegrees = (360.0f / 10000.0f) * ((int) time);

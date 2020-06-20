@@ -17,7 +17,7 @@ class GLController(val imsContext: IMSContext, val rootView: RootView) : BaseCon
 
     override fun onCreate() {
         super.onCreate()
-        strategy0 = Strategy0(rootView.findViewById<GLSurfaceView>(R.id.gl_sv))
-//        strategy1 = Strategy1(imsContext.context, rootView.findViewById<TextureView>(R.id.tv))
+//        strategy0 = Strategy0(rootView.findViewById<GLSurfaceView>(R.id.gl_sv))
+        strategy1 = Strategy1(imsContext.context, rootView.findViewById<TextureView>(R.id.tv))
     }
 }

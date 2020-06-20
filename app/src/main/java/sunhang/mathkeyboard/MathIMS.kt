@@ -45,6 +45,11 @@ class MathIMS : InputMethodService() {
         startPinyinDecoderService()
     }
 
+    override fun onComputeInsets(outInsets: Insets?) {
+        super.onComputeInsets(outInsets)
+        rootController.onComputeInsets(outInsets)
+    }
+
     override fun onCreateInputView(): View {
         rootController.onCreateInputViewInvoked()
 
