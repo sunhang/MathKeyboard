@@ -15,36 +15,28 @@ import sunhang.mathkeyboard.ime.logic.msg.MsgPasser
 import sunhang.mathkeyboard.ime.logic.work.LogicContext
 import sunhang.mathkeyboard.kbdviews.RootView
 
-class Initializer(context: Context) {
-    val rootController: RootController
-    val logicThread: HandlerThread
-    val editor = Editor()
-    val imsContext: IMSContext
+fun generateImsContextAndController(
+    globalContext: Context,
+    logicLooper: Looper
+): Pair<IMSContext, RootController> {
+    val rootView = View.inflate(globalContext, R.layout.ime_layout, null) as RootView
 
-    init {
-        // 解决循环依赖的问题
-        class MsgExecutorWrapper : MsgExecutor {
-            var msgExecutor: MsgExecutor? = null
+    val imsContext = IMSContext(globalContext, MsgPasser(logicLooper))
+    val rootController = RootController(imsContext, rootView)
 
-            override fun execute(msg: Msg) {
-                msgExecutor?.execute(msg)
-            }
-        }
+    return Pair(imsContext, rootController)
+}
 
-        val logicContextWrapper = MsgExecutorWrapper()
-        val rootView = View.inflate(context, R.layout.ime_layout, null) as RootView
-
-        // todo 观察[logicThread.looper]此时返回null吗？因为怀疑[Thread.isAlive]
-        logicThread = HandlerThread("input-logic").apply { start() }
-        imsContext = IMSContext(context, MsgPasser(Handler(logicThread.looper), logicContextWrapper))
-        rootController = RootController(imsContext, rootView)
-
-        val mainLooper = Looper.getMainLooper()
-        val logicContext = LogicContext(
-            MsgPasser(mainLooper, editor),
-            MsgPasser(mainLooper, KbdUIExecutor(rootController))
-        )
-
-        logicContextWrapper.msgExecutor = LogicExecutor(logicContext)
+fun attachEachOther(
+    imsContext: IMSContext,
+    logicContext: LogicContext,
+    editor: Editor,
+    rootController: RootController
+) {
+    // 把executor关联到msg passer中
+    imsContext.logicMsgPasser.attachExecutor(logicContext.logicMsgExecutor)
+    with(logicContext) {
+        editorMsgPasser.attachExecutor(editor)
+        kbdUIMsgPasser.attachExecutor(sunhang.mathkeyboard.KbdUIExecutor(rootController))
     }
 }

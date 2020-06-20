@@ -4,8 +4,10 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.WorkerThread
 
-class MsgPasser(private val handler: Handler, private val msgExecutor: MsgExecutor) {
-    constructor(looper: Looper, msgExecutor: MsgExecutor) : this(Handler(looper), msgExecutor)
+class MsgPasser(private val handler: Handler) {
+    private lateinit var msgExecutor: MsgExecutor
+
+    constructor(looper: Looper) : this(Handler(looper))
 
     private inner class MsgRunnable(private val msg: Msg) : Runnable {
 
@@ -14,6 +16,10 @@ class MsgPasser(private val handler: Handler, private val msgExecutor: MsgExecut
             msgExecutor.execute(msg)
         }
 
+    }
+
+    fun attachExecutor(msgExecutor: MsgExecutor) {
+        this.msgExecutor = msgExecutor
     }
 
     fun <T> passMessage(type: Msg.Type, value: T) {
